@@ -1,8 +1,11 @@
+import EventSideBarArticle from '@/components/EventSideBarArticle'
+import HomeButton from '@/components/HomeButton'
 import Image from 'next/image'
 
 export default function EventDetailPage() {
   return (
     <div className="container mx-auto px-4 py-8">
+      <HomeButton />
       <div className="flex gap-1">
         <span className="text-1l text-gray-400 mb-4">일회성</span>
         <span className="text-1l text-gray-400 mb-4">봉사시간 부여</span>
@@ -12,9 +15,9 @@ export default function EventDetailPage() {
       </h1>
       <div className="text-sm text-gray-500 mb-4">참여: 양재도서관</div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
+        <section className="md:col-span-2">
           <Image
-            src="/placeholder.svg?height=400&width=600"
+            src="https://picsum.photos/200/300"
             alt="Plogging event main image"
             width={600}
             height={400}
@@ -23,49 +26,49 @@ export default function EventDetailPage() {
           <div className="p-4 rounded-lg mb-4 grid grid-cols-2 gap-2 text-sm">
             <div>
               <span className="bg-emerald-400 border border-green- text-white font-semibold">
-                참여기간:{' '}
+                참여기간:
               </span>
               2024-10-01 - 2024-11-30
             </div>
             <div>
               <span className="bg-emerald-400 border border-green- text-white font-semibold">
-                참여대상:{' '}
+                참여대상:
               </span>
               누구나
             </div>
             <div>
               <span className="bg-emerald-400 border border-green- text-white font-semibold">
-                참여방법:{' '}
+                참여방법:
               </span>
               양재천 ~ 양재천 일대를 걸으며 쓰레기(플로깅)
             </div>
             <div>
               <span className="bg-emerald-400 border border-green- text-white font-semibold">
-                참여시간:{' '}
+                참여시간:
               </span>
               롤로깅 구조 (자갈, 잔디, 록타운)
             </div>
             <div>
               <span className="bg-emerald-400 border border-green- text-white font-semibold">
-                참여비용:{' '}
+                참여비용:
               </span>
               필수이용 시간 24시간 부여
             </div>
             <div>
               <span className="bg-emerald-400 border border-green- text-white font-semibold">
-                참여문의:{' '}
+                참여문의:
               </span>
               www.relogging.com
             </div>
             <div>
               <span className="bg-emerald-400 border border-green- text-white font-semibold">
-                참여장소:{' '}
+                참여장소:
               </span>
               양재천
             </div>
             <div>
               <span className="bg-emerald-400 border border-green- text-white font-semibold">
-                전화번호:{' '}
+                전화번호:
               </span>
               010-7531-5522
             </div>
@@ -115,87 +118,14 @@ export default function EventDetailPage() {
           <div className="mt-8">
             <button className="w-full text-center">참여하기</button>
           </div>
-        </div>
-        <div>
+        </section>
+        <section>
           <h2 className="text-2xl font-bold mb-4">서울</h2>
-          <div className="mb-4">
-            <div className="p-4">
-              <h3 className="font-bold">
-                지구살리기 캠페인 - 양산시자원봉사센터
-              </h3>
-              <div className="text-xs text-gray-500 mb-2">
-                양산시 자원봉사센터
-              </div>
-              <Image
-                src="/placeholder.svg?height=150&width=300"
-                alt="Campaign image"
-                width={300}
-                height={150}
-                className="w-full rounded-lg mt-2"
-              />
-            </div>
-          </div>
-          <div className="mb-4">
-            <div className="p-4">
-              <h3 className="font-bold">2024 제로해 플로깅 (양재천 중심)</h3>
-              <div className="text-xs text-gray-500 mb-2">
-                양재시 자원봉사센터
-              </div>
-              <Image
-                src="/placeholder.svg?height=150&width=300"
-                alt="Plogging event image"
-                width={300}
-                height={150}
-                className="w-full rounded-lg mt-2"
-              />
-            </div>
-          </div>
-          <h2 className="text-2xl font-bold mb-4 mt-8">경기도</h2>
-          <div className="mb-4">
-            <div className="p-4">
-              <h3 className="font-bold">2024 제로해 플로깅 (양재천 중심)</h3>
-              <div className="text-xs text-gray-500 mb-2">
-                양재시 자원봉사센터
-              </div>
-              <Image
-                src="/placeholder.svg?height=150&width=300"
-                alt="Plogging event image"
-                width={300}
-                height={150}
-                className="w-full rounded-lg mt-2"
-              />
-            </div>
-          </div>
-          <h2 className="text-2xl font-bold mb-4 mt-8">강원도</h2>
-          <div className="mb-4">
-            <div className="p-4">
-              <h3 className="font-bold">2024 제로해 플로깅 (양재천 중심)</h3>
-              <div className="text-xs text-gray-500 mb-2">
-                양재시 자원봉사센터
-              </div>
-              <Image
-                src="/placeholder.svg?height=150&width=300"
-                alt="Plogging event image"
-                width={300}
-                height={150}
-                className="w-full rounded-lg mt-2"
-              />
-            </div>
-          </div>
-          <div className="mb-4">
-            <div className="p-4">
-              <h3 className="font-bold">2024 제로해 플로깅 (양재천 중심)</h3>
-              <div className="text-xs text-gray-500 mb-2">양재도서관</div>
-              <Image
-                src="/placeholder.svg?height=150&width=300"
-                alt="Plogging event image"
-                width={300}
-                height={150}
-                className="w-full rounded-lg mt-2"
-              />
-            </div>
-          </div>
-        </div>
+          {/* 이벤트 사이드바 아티클 컴포넌트 */}
+          {[...Array(5)].map((index) => (
+            <EventSideBarArticle key={index} />
+          ))}
+        </section>
       </div>
     </div>
   )
