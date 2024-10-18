@@ -10,7 +10,7 @@ export default function NewsListGrid() {
       {[...Array(9)].map((_, i) => (
         <div
           key={i}
-          className="border rounded-lg overflow-hidden"
+          className="border rounded-lg overflow-hidden cursor-pointer"
           onClick={() => {
             toNewsDetail(i.toString())
           }}

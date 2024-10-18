@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import './globals.css'
-import Link from 'next/link'
+import '@/styles/globals.css'
+import CommonLayout from '@/components/layouts/CommonLayout'
 
 export const metadata: Metadata = {
   title: 'Re-logging',
@@ -12,14 +12,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return (
-    <html lang="ko">
-      <body className="">
-        <header>
-        </header>
-        {children}
-        <footer>푸터</footer>
-      </body>
-    </html>
-  )
+  return <CommonLayout>{children}</CommonLayout>
 }
