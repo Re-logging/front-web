@@ -5,7 +5,10 @@ import { useSession } from 'next-auth/react'
 
 const LoginButton = () => {
   const { openModal } = useLoginModal()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+
+  console.log('🐯세션 상태 Session:', session)
+  console.log('🐯Auth Status:', status)
 
   if (session) {
     return (

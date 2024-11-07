@@ -11,12 +11,17 @@ export default function OAuthSuccessPage() {
 
   useEffect(() => {
     const accessToken = searchParams.get('accessToken')
-
+    console.log('🌱 Received access token:', accessToken)
     if (accessToken) {
       // NextAuth 세션에 토큰 저장
-      update({ accessToken }).then(() => {
-        router.replace('/')
-      })
+      update({ accessToken })
+        .then(() => {
+          console.log('🐯Session updated with token')
+          router.replace('/')
+        })
+        .catch((error) => {
+          console.error('🐯Failed to update session:', error)
+        })
     }
   }, [searchParams, router, update])
 

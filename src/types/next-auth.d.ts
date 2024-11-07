@@ -1,8 +1,3 @@
-import NextAuth from 'next-auth'
-import { authConfig } from './auth.config'
-
-export const { auth, signIn, signOut } = NextAuth(authConfig)
-
 // types/next-auth.d.ts
 import type { DefaultSession } from 'next-auth'
 

@@ -1,33 +1,47 @@
-// auth.config.ts
-import type { NextAuthConfig } from 'next-auth'
-
 export const authConfig = {
   providers: [],
-  pages: {
-    signIn: '/login',
-  },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user
-      const isProtected = nextUrl.pathname.startsWith('/protected')
+    jwt({
+      token,
+      user,
+      account,
+      profile,
+      trigger,
+      session,
+    }: {
+      token: any
 
-      if (isProtected && !isLoggedIn) {
-        return false
-      }
+      user?: any
 
-      return true
-    },
-    jwt({ token, trigger, session }) {
-      if (trigger === 'update' && session?.accessToken) {
-        token.accessToken = session.accessToken
+      account?: any
+
+      profile?: any
+      session?: any
+      trigger?: 'signIn' | 'signUp' | 'update'
+    }) {
+      console.log('JWT Callback:', { trigger, token })
+      console.log('JWT Callback:', { user, account, profile })
+      if (trigger === 'update') {
+        token.accessToken = session?.accessToken
       }
       return token
     },
-    session({ session, token }) {
+    async session({
+      session,
+      token,
+    }: {
+      token: any
+      session?: { accessToken?: string; expires?: string }
+    }) {
+      console.log('Session Callback:', { session, token })
+
       return {
         ...session,
+
         accessToken: token.accessToken,
+
+        expires: session?.expires || new Date().toISOString(),
       }
     },
   },
-} satisfies NextAuthConfig
+}
