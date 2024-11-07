@@ -1,20 +1,24 @@
 'use client'
 
+import { useSession } from 'next-auth/react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export default function OAuthSuccessPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { update } = useSession()
 
   useEffect(() => {
     const accessToken = searchParams.get('accessToken')
-    console.log('accessToken', accessToken)
+
     if (accessToken) {
-      localStorage.setItem('accessToken', accessToken)
-      router.replace('/')
+      // NextAuth 세션에 토큰 저장
+      update({ accessToken }).then(() => {
+        router.replace('/')
+      })
     }
-  }, [searchParams, router])
+  }, [searchParams, router, update])
 
   return (
     <div className="flex h-screen items-center justify-center">

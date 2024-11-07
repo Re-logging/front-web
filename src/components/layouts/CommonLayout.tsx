@@ -38,6 +38,8 @@ export default function CommonLayout({
             {/* 데스크탑 로그인 버튼 */}
             <div>
               <LoginButton />
+
+              
             </div>
             {/* 모바일 햄버거 메뉴 */}
             {/* <div className="laptop:hidden">
