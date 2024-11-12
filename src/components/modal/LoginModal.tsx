@@ -1,6 +1,6 @@
 'use client'
 
-import { useLoginModal } from '@/hooks/useLoginModal'
+import { useStatusModal } from '@/hooks/useStatusModal'
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,8 @@ import {
 import KakaoOauthButton from '@/components/KakaoOauthButton'
 import GoogleOauthButton from '@/components/GoogleOauthButton'
 
-export default function LoginModal() {
-  const { isOpen, closeModal } = useLoginModal()
+export function LoginModal() {
+  const { isOpen, closeModal } = useStatusModal({ type: 'auth', mode: 'login' })
 
   return (
     <Dialog open={isOpen} onOpenChange={closeModal}>

@@ -1,74 +1,44 @@
-// components/common/Dialog/CommonDialog.tsx
-import { ReactNode } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+'use client'
+
+import { CommonModal } from '@/components/modal/CommonModal'
 import { Button } from '@/components/ui/button'
+import { useStatusModal } from '@/hooks/useStatusModal'
+import { useRouter } from 'next/navigation'
 
-interface MyPageModalProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  title?: string
-  description?: string
-  children?: ReactNode
-  footer?: ReactNode
-  showCloseButton?: boolean
-  closeButtonLabel?: string
-  onClose?: () => void
-  className?: string
-}
+export function MyPageModal() {
+  const router = useRouter()
+  const { isOpen, closeModal } = useStatusModal({
+    type: 'auth',
+    mode: 'mypage',
+  })
 
-export function MyPageModal({
-  open = true,
-  onOpenChange,
-  title,
-  description,
-  children,
-  footer,
-  showCloseButton = true,
-  closeButtonLabel = '로그아웃',
-  onClose,
-  className,
-}: MyPageModalProps) {
-  const handleClose = () => {
-    onClose?.()
-    onOpenChange(false)
+  const handleProfileClick = () => {
+    closeModal()
+    router.push('/profile')
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={className}>
-        {(title || description) && (
-          <DialogHeader>
-            {title && <DialogTitle>{title}</DialogTitle>}
-            {description && (
-              <DialogDescription>{description}</DialogDescription>
-            )}
-          </DialogHeader>
-        )}
-
-        {children}
-
-        {(footer || showCloseButton) && (
-          <DialogFooter>
-            {footer}
-            {showCloseButton && (
-              <Button
-                className="rounded-none bg-white"
-                variant="outline"
-                onClick={handleClose}
-              >
-                {closeButtonLabel}
-              </Button>
-            )}
-          </DialogFooter>
-        )}
-      </DialogContent>
-    </Dialog>
+    <CommonModal
+      open={isOpen}
+      onClose={closeModal}
+      onOpenChange={(open) => {
+        if (!open) router.back()
+      }}
+      title="야채비빔밥1 님"
+      className="h-full max-h-[280px] w-full max-w-[368px] bg-white"
+    >
+      <Button
+        onClick={handleProfileClick}
+        className="rounded-md bg-white px-3 py-2 text-sm font-medium text-text"
+      >
+        프로필 관리 및 수정
+      </Button>
+      <Button
+        onClick={handleProfileClick}
+        className="rounded-md bg-white px-3 py-2 text-sm font-medium text-text"
+      >
+        계정 관리 및 수정
+      </Button>
+    </CommonModal>
   )
 }

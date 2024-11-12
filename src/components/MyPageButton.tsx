@@ -1,19 +1,21 @@
+
 'use client'
 
-import React from 'react'
-import { Button } from './ui/button'
-import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { useStatusModal } from '@/hooks/useStatusModal'
 
-const MyPageButton = () => {
+export default function MyPageButton() {
+  const { openModal } = useStatusModal({
+    type: 'auth',
+    mode: 'mypage',
+  })
+
   return (
-    <>
-      <Link href="mypage">
-        <Button className="rounded-md bg-white px-3 py-2 text-sm font-medium text-text">
-          마이페이지
-        </Button>
-      </Link>
-    </>
+    <Button
+      onClick={openModal}
+      className="rounded-md bg-white px-3 py-2 text-sm font-medium text-text"
+    >
+      마이페이지
+    </Button>
   )
 }
-
-export default MyPageButton

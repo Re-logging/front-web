@@ -1,9 +1,10 @@
 import React from 'react'
 import { Button } from './ui/button'
-import { useLoginModal } from '@/hooks/useLoginModal'
+import { useStatusModal } from '@/hooks/useStatusModal'
 
 const LoginButton = () => {
-  const { openModal } = useLoginModal()
+  const { openModal } = useStatusModal({ type: 'auth', mode: 'login' }) //
+
   return (
     <Button
       onClick={openModal}

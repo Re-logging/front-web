@@ -1,15 +1,15 @@
 'use client'
-import { MyPageModal } from '@/components/modal/MyPageModal'
+import { CommonModal } from '@/components/modal/CommonModal'
 import { Button } from '@/components/ui/button'
 import { useCommonModal } from '@/hooks/useCommonModal'
 import { useRouter } from 'next/navigation'
 
 const Mypage = () => {
-  const { isOpen, open, close, toggle, setIsOpen } = useCommonModal()
+  const { isOpen, close, setIsOpen } = useCommonModal()
   const router = useRouter()
   return (
     <div>
-      <MyPageModal
+      <CommonModal
         open={isOpen}
         onOpenChange={setIsOpen}
         title="야채비빔밥 님"
@@ -33,7 +33,7 @@ const Mypage = () => {
         >
           계정 관리 및 수정
         </Button>
-      </MyPageModal>
+      </CommonModal>
     </div>
   )
 }
