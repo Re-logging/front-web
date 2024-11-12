@@ -8,8 +8,8 @@ import {
   DialogOverlay,
   DialogTitle,
 } from '@/components/ui/dialog'
-import KakaoOauthButton from './KakaoOauthButton'
-import GoogleOauthButton from './GoogleOauthButton'
+import KakaoOauthButton from '@/components/KakaoOauthButton'
+import GoogleOauthButton from '@/components/GoogleOauthButton'
 
 export default function LoginModal() {
   const { isOpen, closeModal } = useLoginModal()

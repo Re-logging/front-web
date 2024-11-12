@@ -3,7 +3,6 @@ import CommonLayout from '@/components/layouts/CommonLayout'
 import ReactQueryProviders from '@/utils/ReactQueryProvider'
 import { MswComponent } from '@/components/msw.component'
 import SessionWrapper from '@/components/SessionWrapper'
-
 export const metadata: Metadata = {
   title: 'Re-logging',
   description: 'Re-logging',
@@ -11,6 +10,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  myPage,
 }: Readonly<{
   children: React.ReactNode
 }>) {
@@ -18,7 +18,10 @@ export default function RootLayout({
     <CommonLayout>
       <SessionWrapper>
         <MswComponent />
-        <ReactQueryProviders>{children}</ReactQueryProviders>
+        <ReactQueryProviders>
+          {myPage}
+          {children}
+        </ReactQueryProviders>
       </SessionWrapper>
     </CommonLayout>
   )

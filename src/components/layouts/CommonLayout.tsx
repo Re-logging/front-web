@@ -4,9 +4,10 @@ import type { Metadata } from 'next'
 import '@/styles/globals.css'
 import Link from 'next/link'
 import Image from 'next/image'
-import LoginModal from '../LoginModal'
-import LoginButton from '../LoginButton'
+import LoginModal from '@/components/modal/LoginModal'
+import LoginButton from '@/components/LoginButton'
 import { Suspense } from 'react'
+import MyPageButton from '@/components/MyPageButton'
 
 export const metadata: Metadata = {
   title: '리로깅',
@@ -38,6 +39,7 @@ export default function CommonLayout({
             {/* 데스크탑 로그인 버튼 */}
             <div>
               <LoginButton />
+              <MyPageButton />
             </div>
             {/* 모바일 햄버거 메뉴 */}
             {/* <div className="laptop:hidden">
