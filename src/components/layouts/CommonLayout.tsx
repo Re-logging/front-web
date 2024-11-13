@@ -6,8 +6,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import LoginButton from '@/components/LoginButton'
 import MyPageButton from '@/components/MyPageButton'
-import { LoginModal } from '../modal/LoginModal'
-import { MyPageModal } from '../modal/MypageModal'
+import { LoginModal } from '@/components/modal/LoginModal'
+import { MyPageModal } from '@/components/modal/MyPageModal'
 
 export const metadata: Metadata = {
   title: 'Relogging',

@@ -39,7 +39,7 @@ export default function ProfileModalRoute() {
     setModalType('main')
   }
 
-  const handleDelete = (reason: string) => {
+  const handleDelete = () => {
     router.back()
   }
 
@@ -74,7 +74,6 @@ function MainProfileModal({
   profileInfo,
   onEdit,
   onDelete,
-  onClose,
 }: {
   profileInfo: ProfileInfo
   onEdit: () => void
