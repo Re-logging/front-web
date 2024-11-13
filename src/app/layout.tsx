@@ -19,8 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <Suspense fallback={<div>Loading...</div>}>
-        <body className="bg-white">
+      <body className="bg-white">
+        <Suspense fallback={<div>Loading...</div>}>
           <ReactQueryProviders>
             <MswComponent />
             <CommonLayout>
@@ -28,8 +28,8 @@ export default function RootLayout({
               {modal}
             </CommonLayout>
           </ReactQueryProviders>
-        </body>
-      </Suspense>
+        </Suspense>
+      </body>
     </html>
   )
 }
