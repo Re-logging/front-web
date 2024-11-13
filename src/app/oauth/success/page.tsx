@@ -5,11 +5,15 @@ import { useOAuth } from '@/hooks/useOAuth'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
+type SocialType = 'KAKAO' | 'GOOGLE'
+
 export default function OAuthSuccessPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { mutate: login } = useOAuth()
   const redirectUri = process.env.NEXT_PUBLIC_AUTH_REDIRECT_URI
+  const provider = searchParams.get('provider')?.toUpperCase() as SocialType
+
   useEffect(() => {
     const authCode = searchParams.get('code')
     if (!authCode) {
@@ -20,7 +24,7 @@ export default function OAuthSuccessPage() {
       router.replace('/login?error=no_redirect_uri')
       return
     }
-    login({ authCode, redirectUri, socialType: 'KAKAO' })
+    login({ authCode, redirectUri, socialType: provider })
     // TODO : 카카오 및 구글 로그인 분기 처리 필요
   }, [searchParams, redirectUri])
 

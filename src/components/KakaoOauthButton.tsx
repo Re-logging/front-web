@@ -1,7 +1,10 @@
-import OauthButton from './OauthButton'
+import OauthButton from '@/components/OauthButton'
 
 function KakaoOauthButton() {
-  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_AUTH_REDIRECT_URI}&response_type=code`
+  const redirectUri = `${process.env.NEXT_PUBLIC_AUTH_REDIRECT_URI}?provider=kakao`
+
+  console.log('redirectUri', redirectUri)
+  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code`
 
   return <OauthButton oauthType="kakao" authUrl={kakaoAuthUrl} />
 }
