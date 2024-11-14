@@ -74,6 +74,7 @@ function MainProfileModal({
   profileInfo,
   onEdit,
   onDelete,
+  onClose,
 }: {
   profileInfo: ProfileInfo
   onEdit: () => void
@@ -113,6 +114,13 @@ function MainProfileModal({
           <Button
             className="h-[48px] w-full bg-solid text-white hover:bg-gray-300"
             variant="secondary"
+            onClick={onClose}
+          >
+            닫기
+          </Button>
+          <Button
+            className="h-[48px] w-full bg-white text-textLight"
+            variant="secondary"
             onClick={onDelete}
           >
             계정 탈퇴하기
@@ -150,6 +158,7 @@ function EditProfileModal({
               이름<span className="text-green">*</span>
             </Label>
             <Input
+              className="radius-none border-b-1 rounded-none border-l-0 border-r-0 border-t-0 bg-white focus:outline-none"
               value={info.name}
               onChange={(e) => setInfo({ ...info, name: e.target.value })}
             />
@@ -157,6 +166,7 @@ function EditProfileModal({
           <div className="space-y-2">
             <Label>이메일</Label>
             <Input
+              className="border-b-1 rounded-none border-l-0 border-r-0 border-t-0 bg-white outline-none focus:outline-none"
               value={info.email}
               onChange={(e) => setInfo({ ...info, email: e.target.value })}
             />

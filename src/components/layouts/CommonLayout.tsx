@@ -43,9 +43,9 @@ export function CommonLayout({
         {/* <div className="laptop:hidden">
               <MobileNav />
             </div> */}
-        <LoginModal />
-        <MyPageModal />
       </nav>
+      <LoginModal />
+      <MyPageModal />
       <main>{children}</main>
       {/* <footer>푸터</footer> */}
     </>

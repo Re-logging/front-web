@@ -126,7 +126,7 @@ function AfterEditingProfile({ setIsEditing }: EditingProfileProps) {
             </Label>
             <Input
               placeholder="야채비빔밥2024"
-              className="h-10 w-full bg-gray-50"
+              className="h-10 w-full"
               defaultValue="야채비빔밥2024"
             />
           </div>
