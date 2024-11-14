@@ -1,7 +1,7 @@
 import OauthButton from '@/components/OauthButton'
 
 function GoogleOauthButton() {
-  const redirectUri = `${process.env.NEXT_PUBLIC_AUTH_REDIRECT_URI}?provider=google`
+  const redirectUri = `${process.env.NEXT_PUBLIC_AUTH_REDIRECT_URI}/google`
 
   const googleAuthUrl =
     `https://accounts.google.com/o/oauth2/v2/auth?` +
