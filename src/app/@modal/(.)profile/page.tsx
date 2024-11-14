@@ -1,4 +1,3 @@
-// app/@modal/(.)profile/page.tsx
 'use client'
 
 import { useRouter } from 'next/navigation'
@@ -13,9 +12,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Image from 'next/image'
-import { Pencil } from 'lucide-react'
 import { DEFAULT_IMAGE } from '@/types/INews'
 import { useState } from 'react'
+import EditIcon from '@/assets/icon_edit.svg'
 
 type EditingProfileProps = {
   setIsEditing: (value: boolean) => void
@@ -105,9 +104,9 @@ function AfterEditingProfile({ setIsEditing }: EditingProfileProps) {
   return (
     <DialogContent className="w-full max-w-[560px] bg-white p-0">
       <DialogHeader className="p-6 pb-2">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-2">
           <div className="flex items-center gap-2">
-            <Pencil className="h-4 w-4" />
+            <EditIcon />
             <DialogTitle className="text-lg font-semibold">
               프로필 수정
             </DialogTitle>
@@ -127,7 +126,7 @@ function AfterEditingProfile({ setIsEditing }: EditingProfileProps) {
             </Label>
             <Input
               placeholder="야채비빔밥2024"
-              className="h-10 w-full bg-gray-50"
+              className="h-10 w-full"
               defaultValue="야채비빔밥2024"
             />
           </div>

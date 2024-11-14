@@ -4,6 +4,8 @@ import { CommonModal } from '@/components/modal/CommonModal'
 import { Button } from '@/components/ui/button'
 import { useStatusModal } from '@/hooks/useStatusModal'
 import { useRouter } from 'next/navigation'
+import ProfileIcon from '@/assets/icon_profile.svg'
+import SettingIcon from '@/assets/icon_setting.svg'
 
 export function MyPageModal() {
   const router = useRouter()
@@ -12,33 +14,37 @@ export function MyPageModal() {
     mode: 'mypage',
   })
 
-  const handleProfileClick = () => {
+  const handleLocationClick = (location: string) => {
     closeModal()
-    router.push('/profile')
+    router.push(`/${location}`)
   }
 
   return (
-    <CommonModal
-      open={isOpen}
-      onClose={closeModal}
-      onOpenChange={(open) => {
-        if (!open) router.back()
-      }}
-      title="야채비빔밥1 님"
-      className="h-full max-h-[280px] w-full max-w-[368px] bg-white"
-    >
-      <Button
-        onClick={handleProfileClick}
-        className="rounded-md bg-white px-3 py-2 text-sm font-medium text-text"
+    <div className="">
+      <CommonModal
+        open={isOpen}
+        onClose={closeModal}
+        onOpenChange={(open) => {
+          if (!open) router.back()
+        }}
+        title="야채비빔밥1 님"
+        closeButtonLabel="로그아웃"
+        className="h-full max-h-[280px] w-full max-w-[368px] bg-white"
+        buttonClassName="bg-white border-none"
       >
-        프로필 관리 및 수정
-      </Button>
-      <Button
-        onClick={handleProfileClick}
-        className="rounded-md bg-white px-3 py-2 text-sm font-medium text-text"
-      >
-        계정 관리 및 수정
-      </Button>
-    </CommonModal>
+        <Button
+          onClick={() => handleLocationClick('profile')}
+          className="bg-hover flex justify-start rounded-md bg-white px-3 py-2 text-sm font-medium text-text"
+        >
+          <ProfileIcon /> 프로필 관리 및 수정
+        </Button>
+        <Button
+          onClick={() => handleLocationClick('account')}
+          className="flex justify-start rounded-md bg-white px-3 py-2 text-sm font-medium text-text"
+        >
+          <SettingIcon /> 계정 관리 및 수정
+        </Button>
+      </CommonModal>
+    </div>
   )
 }

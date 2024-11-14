@@ -21,6 +21,7 @@ interface CommonModalProps {
   closeButtonLabel?: string
   onClose?: () => void
   className?: string
+  buttonClassName?: string
 }
 
 export function CommonModal({
@@ -31,9 +32,10 @@ export function CommonModal({
   children,
   footer,
   showCloseButton = true,
-  closeButtonLabel = '닫기',
+  closeButtonLabel,
   onClose,
   className,
+  buttonClassName,
 }: CommonModalProps) {
   const handleClose = () => {
     onClose?.()
@@ -44,7 +46,7 @@ export function CommonModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={className}>
         {(title || description) && (
-          <DialogHeader>
+          <DialogHeader className="border-b-2">
             {title && <DialogTitle>{title}</DialogTitle>}
             {description && (
               <DialogDescription>{description}</DialogDescription>
@@ -58,7 +60,11 @@ export function CommonModal({
           <DialogFooter>
             {footer}
             {showCloseButton && (
-              <Button variant="outline" onClick={handleClose}>
+              <Button
+                variant="outline"
+                onClick={handleClose}
+                className={buttonClassName}
+              >
                 {closeButtonLabel}
               </Button>
             )}
