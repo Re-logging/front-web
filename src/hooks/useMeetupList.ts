@@ -8,14 +8,19 @@ interface ImeetupQueries {
 }
 
 export async function fetchMeetupingArticle(page: number, size: number) {
-  const queryParams = new URLSearchParams({
-    page: page.toString(),
-    size: size.toString(),
-    sort: 'desc',
+  const params = new URLSearchParams()
+  params.append('page', page.toString())
+  params.append('size', size.toString())
+  params.append('sort', 'desc')
+
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingMeetups/list?${params.toString()}`
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   })
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingMeetups/list?${queryParams}`,
-  )
   if (!response.ok) {
     throw new Error('Network response was not ok')
   }
