@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/store/authStore'
 import { OAuthRequest, OAuthResponse } from '@/types/IAuth'
 import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 // 백엔드 서버로부터 리프레쉬 토큰을 요청하는 함수
@@ -67,7 +67,7 @@ const getAccessToken = async ({
 }
 
 export const useAccessToken = () => {
-  const router = useRouter()
+  // const router = useRouter()
   const { setAccessToken } = useAuthStore()
 
   return useMutation({
