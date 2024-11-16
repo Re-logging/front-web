@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
   )
 
   if (isProtectedPath && !token) {
-    return NextResponse.redirect(new URL('/?auth=login', request.url))
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   if (token && request.nextUrl.pathname === '/?auth=login') {
