@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }: AuthProviderType) => {
 
   useEffect(() => {
     if (!accessToken) {
-      router.replace('?auth=login')
+      router.replace('/')
     }
   }, [accessToken, router])
 
