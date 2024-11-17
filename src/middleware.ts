@@ -4,7 +4,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('accessToken')
   const { searchParams } = request.nextUrl
 
-  const protedtedPaths = ['/profile', '/settings']
+  const protedtedPaths = ['/profile', '/account']
   const isProtectedPath = protedtedPaths.some((path) =>
     request.nextUrl.pathname.startsWith(path),
   )

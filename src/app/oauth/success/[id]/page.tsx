@@ -1,7 +1,7 @@
 // app/oauth/success/[provider]/page.tsx
 'use client'
 
-import { useAccessToken } from '@/hooks/useOAuth'
+import { useOAuth } from '@/hooks/useOAuth'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -11,7 +11,7 @@ export default function OAuthSuccessPage() {
   const router = useRouter()
   const params = useParams()
   const searchParams = useSearchParams()
-  const { mutate: login } = useAccessToken()
+  const { login } = useOAuth()
   const currentProvider = params.id as string
   const redirectUri = `${process.env.NEXT_PUBLIC_AUTH_REDIRECT_URI}/${currentProvider}`
 
