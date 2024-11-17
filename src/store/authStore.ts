@@ -2,10 +2,12 @@ import { clearToken } from '@/app/actions/auth'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-interface User {
+export interface User {
+  image: string
   id: string
   email: string
   nickname: string
+  name: string
 }
 
 interface AuthState {

@@ -13,56 +13,59 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import EditIcon from '@/assets/icon_edit.svg'
+import { useAuthStore, User } from '@/store/authStore'
 
 // 기본 프로필 정보 타입
-interface ProfileInfo {
-  name: string
-  phone: string
-  email: string
-}
+// interface ProfileInfo {
+//   name: string
+//   phone: string
+//   email: string
+// }
 
 export default function ProfileModalRoute() {
   const router = useRouter()
   const [modalType, setModalType] = useState<'main' | 'edit' | 'delete'>('main')
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
-    name: '양채윤',
-    phone: '+82 10 7531 5522',
-    email: 'chaeyun.journey@gmail.com',
-  })
+  const { user } = useAuthStore()
+
+  // const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
+  //   name: '양채윤',
+  //   phone: '+82 10 7531 5522',
+  //   email: 'chaeyun.journey@gmail.com',
+  // })
 
   const handleClose = () => {
     router.back()
   }
 
-  const handleEditSubmit = (updatedInfo: ProfileInfo) => {
-    setProfileInfo(updatedInfo)
-    setModalType('main')
-  }
+  // const handleEditSubmit = () => {
+  //   // setProfileInfo(updatedInfo)
+  //   setModalType('main')
+  // }
 
-  const handleDelete = () => {
-    router.back()
-  }
+  // const handleDelete = () => {
+  //   router.back()
+  // }
 
   return (
     <Dialog open={true} onOpenChange={(open) => !open && handleClose()}>
-      {modalType === 'main' && (
+      {modalType === 'main' && user && (
         <MainProfileModal
-          profileInfo={profileInfo}
+          profileInfo={user}
           onEdit={() => setModalType('edit')}
           onDelete={() => setModalType('delete')}
           onClose={handleClose}
         />
       )}
-      {modalType === 'edit' && (
+      {modalType === 'edit' && user && (
         <EditProfileModal
-          initialInfo={profileInfo}
-          onSubmit={handleEditSubmit}
+          profileInfo={user}
+          // onSubmit={handleEditSubmit}
           onCancel={() => setModalType('main')}
         />
       )}
       {modalType === 'delete' && (
         <DeleteProfileModal
-          onSubmit={handleDelete}
+          // onSubmit={user}
           onCancel={() => setModalType('main')}
         />
       )}
@@ -76,7 +79,7 @@ function MainProfileModal({
   onDelete,
   onClose,
 }: {
-  profileInfo: ProfileInfo
+  profileInfo: User
   onEdit: () => void
   onDelete: () => void
   onClose: () => void
@@ -133,16 +136,14 @@ function MainProfileModal({
 
 // 프로필 수정 모달
 function EditProfileModal({
-  initialInfo,
-  onSubmit,
+  profileInfo,
+  // onSubmit,
   onCancel,
 }: {
-  initialInfo: ProfileInfo
-  onSubmit: (info: ProfileInfo) => void
+  profileInfo: User
+  // onSubmit: (info: ProfileInfo) => void
   onCancel: () => void
 }) {
-  const [info, setInfo] = useState(initialInfo)
-
   return (
     <DialogContent className="h-full max-h-[689px] w-full max-w-[580px] bg-white">
       <DialogHeader>
@@ -159,23 +160,25 @@ function EditProfileModal({
             </Label>
             <Input
               className="radius-none border-b-1 rounded-none border-l-0 border-r-0 border-t-0 bg-white focus:outline-none"
-              value={info.name}
-              onChange={(e) => setInfo({ ...info, name: e.target.value })}
+              value={profileInfo.name}
+              // onChange={(e) =>
+              //   setInfo({ ...ProfileInfo, name: e.target.value })
+              // }
             />
           </div>
           <div className="space-y-2">
             <Label>이메일</Label>
             <Input
               className="border-b-1 rounded-none border-l-0 border-r-0 border-t-0 bg-white outline-none focus:outline-none"
-              value={info.email}
-              onChange={(e) => setInfo({ ...info, email: e.target.value })}
+              value={profileInfo.email}
+              // onChange={(e) => setInfo({ ...info, email: e.target.value })}
             />
           </div>
         </div>
         <div className="space-y-2">
           <Button
             className="h-[48px] w-full bg-green hover:bg-[#4ADE80]/90"
-            onClick={() => onSubmit(info)}
+            // onClick={() => onSubmit(info)}
           >
             적용하기
           </Button>
@@ -193,10 +196,10 @@ function EditProfileModal({
 }
 
 function DeleteProfileModal({
-  onSubmit,
+  // onSubmit,
   onCancel,
 }: {
-  onSubmit: (reason: string) => void
+  // onSubmit: (reason: string) => void
   onCancel: () => void
 }) {
   const [reason, setReason] = useState('')
@@ -222,7 +225,7 @@ function DeleteProfileModal({
         <div className="space-y-2">
           <Button
             className="h-[48px] w-full bg-red-500 hover:bg-red-600"
-            onClick={() => onSubmit(reason)}
+            // onClick={() => onSubmit(reason)}
           >
             탈퇴하기
           </Button>
