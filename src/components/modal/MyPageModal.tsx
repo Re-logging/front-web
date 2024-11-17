@@ -6,6 +6,7 @@ import { useStatusModal } from '@/hooks/useStatusModal'
 import { useRouter } from 'next/navigation'
 import ProfileIcon from '@/assets/icon_profile.svg'
 import SettingIcon from '@/assets/icon_setting.svg'
+import { useAuthStore } from '@/store/authStore'
 
 export function MyPageModal() {
   const router = useRouter()
@@ -13,17 +14,22 @@ export function MyPageModal() {
     type: 'auth',
     mode: 'mypage',
   })
-
+  const { clearAuth } = useAuthStore()
   const handleLocationClick = (location: string) => {
     closeModal()
     router.push(`/${location}`)
+  }
+
+  const handleLogout = async () => {
+    await clearAuth()
+    closeModal()
   }
 
   return (
     <div className="">
       <CommonModal
         open={isOpen}
-        onClose={closeModal}
+        onClose={handleLogout}
         onOpenChange={(open) => {
           if (!open) router.back()
         }}

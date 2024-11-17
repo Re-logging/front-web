@@ -8,6 +8,7 @@ import LoginButton from '@/components/LoginButton'
 import MyPageButton from '@/components/MyPageButton'
 import { LoginModal } from '@/components/modal/LoginModal'
 import { MyPageModal } from '@/components/modal/MyPageModal'
+import { useAuthStore } from '@/store/authStore'
 
 export const metadata: Metadata = {
   title: 'Relogging',
@@ -20,6 +21,8 @@ export function CommonLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { isAuthenticated } = useAuthStore()
+
   return (
     <>
       <nav className="flex h-full max-h-[60px] w-full items-center justify-between bg-white p-5 laptop:h-16">
@@ -35,10 +38,7 @@ export function CommonLayout({
           </Link>
         </div>
         {/* 데스크탑 로그인 버튼 */}
-        <div>
-          <LoginButton />
-          <MyPageButton />
-        </div>
+        <div>{!isAuthenticated ? <LoginButton /> : <MyPageButton />}</div>
         {/* 모바일 햄버거 메뉴 */}
         {/* <div className="laptop:hidden">
               <MobileNav />
