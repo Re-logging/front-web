@@ -14,7 +14,7 @@ export function MyPageModal() {
     type: 'auth',
     mode: 'mypage',
   })
-  const { clearAuth } = useAuthStore()
+  const { user, clearAuth } = useAuthStore()
   const handleLocationClick = (location: string) => {
     closeModal()
     router.push(`/${location}`)
@@ -25,6 +25,7 @@ export function MyPageModal() {
     closeModal()
   }
 
+  console.log
   return (
     <div className="">
       <CommonModal
@@ -33,7 +34,7 @@ export function MyPageModal() {
         onOpenChange={(open) => {
           if (!open) router.back()
         }}
-        title="야채비빔밥1 님"
+        title={`${user?.name} 님`}
         closeButtonLabel="로그아웃"
         className="h-full max-h-[280px] w-full max-w-[368px] bg-white"
         buttonClassName="bg-white border-none"

@@ -15,8 +15,10 @@ import Image from 'next/image'
 import { DEFAULT_IMAGE } from '@/types/INews'
 import { useState } from 'react'
 import EditIcon from '@/assets/icon_edit.svg'
+import { useAuthStore, User } from '@/store/authStore'
 
 type EditingProfileProps = {
+  user: User
   setIsEditing: (value: boolean) => void
   handleClose: () => void
 }
@@ -24,6 +26,7 @@ type EditingProfileProps = {
 function BeforeEditingProfile({
   setIsEditing,
   handleClose,
+  user,
 }: EditingProfileProps) {
   const handleEditProfile = () => {
     setIsEditing(true)
@@ -51,7 +54,7 @@ function BeforeEditingProfile({
             <Input
               disabled
               id="nickname"
-              placeholder="야채비빔밥2024"
+              placeholder={user?.nickname}
               className="w-full bg-gray-50"
             />
           </div>
@@ -66,7 +69,7 @@ function BeforeEditingProfile({
             <div className="mt-2 flex justify-center">
               <div className="relative h-32 w-32 rounded-md bg-gray-100">
                 <Image
-                  src={DEFAULT_IMAGE}
+                  src={user?.image ?? DEFAULT_IMAGE}
                   alt="Profile"
                   fill
                   className="rounded-md object-cover"
@@ -97,7 +100,7 @@ function BeforeEditingProfile({
   )
 }
 
-function AfterEditingProfile({ setIsEditing }: EditingProfileProps) {
+function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
   const handleEditProfile = () => {
     setIsEditing(false)
   }
@@ -124,11 +127,7 @@ function AfterEditingProfile({ setIsEditing }: EditingProfileProps) {
             <Label className="text-sm font-medium">
               닉네임 <span className="text-green">*</span>
             </Label>
-            <Input
-              placeholder="야채비빔밥2024"
-              className="h-10 w-full"
-              defaultValue="야채비빔밥2024"
-            />
+            <Input className="h-10 w-full" defaultValue={user?.nickname} />
           </div>
 
           <div className="space-y-2">
@@ -176,10 +175,14 @@ function AfterEditingProfile({ setIsEditing }: EditingProfileProps) {
 export default function ProfileModalPage() {
   const router = useRouter()
   const [isEditing, setIsEditing] = useState(false)
+  const { user } = useAuthStore()
 
   const handleExitButton = () => {
     router.back()
   }
+
+  if (!user) return null
+
   return (
     <Dialog
       open={true}
@@ -191,11 +194,13 @@ export default function ProfileModalPage() {
         <AfterEditingProfile
           setIsEditing={setIsEditing}
           handleClose={handleExitButton}
+          user={user}
         />
       ) : (
         <BeforeEditingProfile
           setIsEditing={setIsEditing}
           handleClose={handleExitButton}
+          user={user}
         />
       )}
     </Dialog>
