@@ -27,31 +27,31 @@ export function MyPageModal() {
 
   console.log
   return (
-    <div className="">
-      <CommonModal
-        open={isOpen}
-        onClose={handleLogout}
-        onOpenChange={(open) => {
-          if (!open) router.back()
-        }}
-        title={`${user?.name} 님`}
-        closeButtonLabel="로그아웃"
-        className="h-full max-h-[280px] w-full max-w-[368px] bg-white"
-        buttonClassName="bg-white border-none"
+    // <div className="">
+    <CommonModal
+      open={isOpen}
+      onClose={handleLogout}
+      onOpenChange={(open) => {
+        if (!open) router.back()
+      }}
+      title={`${user?.name} 님`}
+      closeButtonLabel="로그아웃"
+      className="flex h-dvh w-full flex-col justify-center bg-white laptop:max-h-[280px] laptop:max-w-[368px]"
+      buttonClassName="bg-white border-none  justify-end text-base"
+    >
+      <Button
+        onClick={() => handleLocationClick('profile')}
+        className="bg-hover flex justify-start rounded-md bg-white px-3 py-2 text-base font-medium text-textStrong"
       >
-        <Button
-          onClick={() => handleLocationClick('profile')}
-          className="bg-hover flex justify-start rounded-md bg-white px-3 py-2 text-sm font-medium text-text"
-        >
-          <ProfileIcon /> 프로필 관리 및 수정
-        </Button>
-        <Button
-          onClick={() => handleLocationClick('account')}
-          className="flex justify-start rounded-md bg-white px-3 py-2 text-sm font-medium text-text"
-        >
-          <SettingIcon /> 계정 관리 및 수정
-        </Button>
-      </CommonModal>
-    </div>
+        <ProfileIcon /> 프로필 관리 및 수정
+      </Button>
+      <Button
+        onClick={() => handleLocationClick('account')}
+        className="flex justify-start rounded-md bg-white px-3 py-2 text-base font-medium text-textStrong"
+      >
+        <SettingIcon /> 계정 관리 및 수정
+      </Button>
+    </CommonModal>
+    // </div>
   )
 }
