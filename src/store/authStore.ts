@@ -4,7 +4,6 @@ import { persist } from 'zustand/middleware'
 
 export interface User {
   image: string
-  id: string
   email: string
   nickname: string
   name: string
