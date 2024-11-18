@@ -16,6 +16,7 @@ import { DEFAULT_IMAGE } from '@/types/INews'
 import { useState } from 'react'
 import EditIcon from '@/assets/icon_edit.svg'
 import { useAuthStore, User } from '@/store/authStore'
+import { useUpdateProfile } from '@/hooks/useUpdateProfile'
 
 type EditingProfileProps = {
   user: User
@@ -100,9 +101,32 @@ function BeforeEditingProfile({
 }
 
 function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
+  const [userInfo, setUserInfo] = useState<User>(user)
+  const { updateProfile } = useUpdateProfile()
+
   const handleEditProfile = () => {
     setIsEditing(false)
   }
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setUserInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleUpdateSubmit = async () => {
+    try {
+      await updateProfile.mutateAsync({
+        nickname: userInfo.nickname,
+      })
+      setIsEditing(false)
+    } catch (error) {
+      console.error('프로필 업데이트 오류:', error)
+    }
+  }
+
   return (
     <DialogContent className="h-dvh w-full max-w-[560px] bg-white p-0 laptop:max-h-[689px]">
       <DialogHeader className="p-6 pb-2">
@@ -126,7 +150,12 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
             <Label className="text-sm font-medium">
               닉네임 <span className="text-green">*</span>
             </Label>
-            <Input className="h-10 w-full" defaultValue={user?.nickname} />
+            <Input
+              className="h-10 w-full"
+              value={userInfo?.nickname}
+              name="nickname"
+              onChange={handleChangeInput}
+            />
           </div>
 
           <div className="space-y-2">
@@ -156,8 +185,12 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
 
       <DialogFooter className="p-6 pt-4">
         <div className="mx-auto flex w-full max-w-[400px] flex-col gap-2">
-          <Button className="h-[48px] w-full bg-green hover:bg-[#4ADE80]/90">
-            적용하기
+          <Button
+            className="h-[48px] w-full bg-green hover:bg-[#4ADE80]/90"
+            onClick={handleUpdateSubmit}
+            disabled={updateProfile.isPending}
+          >
+            {updateProfile.isPending ? '적용 중...' : '적용하기'}
           </Button>
           <Button
             variant="secondary"

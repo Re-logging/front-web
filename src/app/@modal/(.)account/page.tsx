@@ -14,42 +14,21 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import EditIcon from '@/assets/icon_edit.svg'
 import { useAuthStore, User } from '@/store/authStore'
-
-// 기본 프로필 정보 타입
-// interface ProfileInfo {
-//   name: string
-//   phone: string
-//   email: string
-// }
+import { useUpdateAccount } from '@/hooks/useUpdateAccount'
 
 export default function ProfileModalRoute() {
   const router = useRouter()
   const [modalType, setModalType] = useState<'main' | 'edit' | 'delete'>('main')
   const { user } = useAuthStore()
 
-  // const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
-  //   name: '양채윤',
-  //   phone: '+82 10 7531 5522',
-  //   email: 'chaeyun.journey@gmail.com',
-  // })
-
   const handleClose = () => {
     router.back()
   }
 
-  // const handleEditSubmit = () => {
-  //   // setProfileInfo(updatedInfo)
-  //   setModalType('main')
-  // }
-
-  // const handleDelete = () => {
-  //   router.back()
-  // }
-
   return (
     <Dialog open={true} onOpenChange={(open) => !open && handleClose()}>
       {modalType === 'main' && user && (
-        <MainProfileModal
+        <MainAccountModal
           profileInfo={user}
           onEdit={() => setModalType('edit')}
           onDelete={() => setModalType('delete')}
@@ -57,23 +36,19 @@ export default function ProfileModalRoute() {
         />
       )}
       {modalType === 'edit' && user && (
-        <EditProfileModal
+        <EditAccountModal
           profileInfo={user}
-          // onSubmit={handleEditSubmit}
           onCancel={() => setModalType('main')}
         />
       )}
       {modalType === 'delete' && (
-        <DeleteProfileModal
-          // onSubmit={user}
-          onCancel={() => setModalType('main')}
-        />
+        <DeleteAccountModal onCancel={() => setModalType('main')} />
       )}
     </Dialog>
   )
 }
 
-function MainProfileModal({
+function MainAccountModal({
   profileInfo,
   onEdit,
   onDelete,
@@ -134,16 +109,37 @@ function MainProfileModal({
   )
 }
 
-// 프로필 수정 모달
-function EditProfileModal({
+// 계정 수정 모달
+function EditAccountModal({
   profileInfo,
-  // onSubmit,
   onCancel,
 }: {
   profileInfo: User
-  // onSubmit: (info: ProfileInfo) => void
+
   onCancel: () => void
 }) {
+  const [userInfo, setUserInfo] = useState<User>(profileInfo)
+  const { updateAccount } = useUpdateAccount()
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setUserInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleUpdateSubmit = async () => {
+    try {
+      await updateAccount.mutateAsync({
+        name: userInfo.name,
+      })
+      onCancel()
+    } catch (error) {
+      console.error('프로필 업데이트 오류:', error)
+    }
+  }
+
   return (
     <DialogContent className="h-dvh w-full max-w-[580px] bg-white laptop:max-h-[689px]">
       <DialogHeader>
@@ -160,27 +156,29 @@ function EditProfileModal({
             </Label>
             <Input
               className="radius-none border-b-1 rounded-none border-l-0 border-r-0 border-t-0 bg-white focus:outline-none"
-              value={profileInfo.name}
-              // onChange={(e) =>
-              //   setInfo({ ...ProfileInfo, name: e.target.value })
-              // }
+              value={userInfo.name}
+              name="name"
+              onChange={handleChangeInput}
             />
           </div>
-          <div className="space-y-2">
+          {/* TODO 이메일 수정 여부에 따라 추가 혹은 삭제 */}
+          {/* <div className="space-y-2">
             <Label>이메일</Label>
             <Input
               className="border-b-1 rounded-none border-l-0 border-r-0 border-t-0 bg-white outline-none focus:outline-none"
-              value={profileInfo.email}
-              // onChange={(e) => setInfo({ ...info, email: e.target.value })}
+              value={userInfo.email}
+              name="email"
+              onChange={handleChangeInput}
             />
-          </div>
+          </div> */}
         </div>
         <div className="space-y-2">
           <Button
             className="h-[48px] w-full bg-green hover:bg-[#4ADE80]/90"
-            // onClick={() => onSubmit(info)}
+            onClick={handleUpdateSubmit}
+            disabled={updateAccount.isPending}
           >
-            적용하기
+            {updateAccount.isPending ? '업데이트 중...' : '적용하기'}
           </Button>
           <Button
             className="h-[48px] w-full bg-solid text-white hover:bg-gray-300"
@@ -195,14 +193,19 @@ function EditProfileModal({
   )
 }
 
-function DeleteProfileModal({
-  // onSubmit,
-  onCancel,
-}: {
-  // onSubmit: (reason: string) => void
-  onCancel: () => void
-}) {
+function DeleteAccountModal({ onCancel }: { onCancel: () => void }) {
+  // TODO : 탈퇴 사유 입력 필드 추가해서 api로 전달
   const [reason, setReason] = useState('')
+  const { deleteAccount } = useUpdateAccount()
+
+  const handleDeleteSubmit = async () => {
+    try {
+      await deleteAccount.mutateAsync()
+      onCancel()
+    } catch (error) {
+      console.error('계정 삭제 오류:', error)
+    }
+  }
 
   return (
     <DialogContent className="h-dvh w-full max-w-[580px] bg-white laptop:max-h-[689px]">
@@ -225,9 +228,10 @@ function DeleteProfileModal({
         <div className="space-y-2">
           <Button
             className="h-[48px] w-full bg-red-500 hover:bg-red-600"
-            // onClick={() => onSubmit(reason)}
+            onClick={handleDeleteSubmit}
+            disabled={deleteAccount.isPending}
           >
-            탈퇴하기
+            {deleteAccount.isPending ? '탈퇴 중...' : '탈퇴하기'}
           </Button>
           <Button
             className="h-[48px] w-full bg-solid text-white"
