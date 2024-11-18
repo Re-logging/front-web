@@ -32,7 +32,7 @@ function BeforeEditingProfile({
     setIsEditing(true)
   }
   return (
-    <DialogContent className="w-full max-w-[560px] bg-white p-0">
+    <DialogContent className="h-dvh w-full max-w-[560px] bg-white p-0 laptop:max-h-[689px]">
       <DialogHeader className="p-6 pb-2">
         <div className="flex items-center justify-center">
           <DialogTitle className="text-center font-semibold">
@@ -40,7 +40,6 @@ function BeforeEditingProfile({
           </DialogTitle>
         </div>
       </DialogHeader>
-
       <div className="px-6 pb-4">
         <p className="mb-6 text-sm text-gray-600">
           리로깅 내에서 활동하실 닉네임과 프로필사진을 설정해주세요.
@@ -105,7 +104,7 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
     setIsEditing(false)
   }
   return (
-    <DialogContent className="w-full max-w-[560px] bg-white p-0">
+    <DialogContent className="h-dvh w-full max-w-[560px] bg-white p-0 laptop:max-h-[689px]">
       <DialogHeader className="p-6 pb-2">
         <div className="flex items-center justify-center gap-2">
           <div className="flex items-center gap-2">

@@ -46,7 +46,7 @@ export function CommonModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={className}>
         {(title || description) && (
-          <DialogHeader className="border-b-2">
+          <DialogHeader className="items-start border-b-2 px-3 py-4">
             {title && <DialogTitle>{title}</DialogTitle>}
             {description && (
               <DialogDescription>{description}</DialogDescription>

@@ -85,7 +85,7 @@ function MainProfileModal({
   onClose: () => void
 }) {
   return (
-    <DialogContent className="h-full max-h-[689px] w-full max-w-[580px] bg-white">
+    <DialogContent className="h-dvh w-full max-w-[580px] bg-white laptop:max-h-[689px]">
       <DialogHeader>
         <DialogTitle className="flex items-center justify-center">
           계정 관리
@@ -145,7 +145,7 @@ function EditProfileModal({
   onCancel: () => void
 }) {
   return (
-    <DialogContent className="h-full max-h-[689px] w-full max-w-[580px] bg-white">
+    <DialogContent className="h-dvh w-full max-w-[580px] bg-white laptop:max-h-[689px]">
       <DialogHeader>
         <DialogTitle className="flex items-center justify-center gap-2">
           <EditIcon />
@@ -205,7 +205,7 @@ function DeleteProfileModal({
   const [reason, setReason] = useState('')
 
   return (
-    <DialogContent className="h-full max-h-[689px] w-full max-w-[580px] bg-white">
+    <DialogContent className="h-dvh w-full max-w-[580px] bg-white laptop:max-h-[689px]">
       <DialogHeader>
         <DialogTitle className="flex items-center justify-center">
           계정 탈퇴
