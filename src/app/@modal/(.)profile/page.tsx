@@ -13,10 +13,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Image from 'next/image'
 import { DEFAULT_IMAGE } from '@/types/INews'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import EditIcon from '@/assets/icon_edit.svg'
 import { useAuthStore, User } from '@/store/authStore'
 import { useUpdateProfile } from '@/hooks/useUpdateProfile'
+import IconGarbage from '@/assets/icon_garbage.svg'
+import { validateImage } from '@/utils/image'
 
 type EditingProfileProps = {
   user: User
@@ -102,12 +104,35 @@ function BeforeEditingProfile({
 
 function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
   const [userInfo, setUserInfo] = useState<User>(user)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string>(user.image || '')
   const { updateProfile } = useUpdateProfile()
 
   const handleEditProfile = () => {
     setIsEditing(false)
   }
 
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      try {
+        validateImage(file)
+        setImageFile(file)
+        const url = URL.createObjectURL(file)
+        setPreviewUrl(url)
+      } catch (error) {
+        alert(
+          (error as Error)?.message?.toString() ||
+            '이미지 업로드에 실패했습니다.',
+        )
+      }
+    }
+  }
+  // 이미지 삭제 핸들러
+  const handleImageRemove = () => {
+    setImageFile(null)
+    setPreviewUrl(user.image || '')
+  }
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setUserInfo((prev) => ({
@@ -120,12 +145,22 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
     try {
       await updateProfile.mutateAsync({
         nickname: userInfo.nickname,
+        image: imageFile,
       })
       setIsEditing(false)
     } catch (error) {
       console.error('프로필 업데이트 오류:', error)
     }
   }
+
+  useEffect(() => {
+    return () => {
+      // 미리보기 URL 정리
+      if (previewUrl && previewUrl !== user.image) {
+        URL.revokeObjectURL(previewUrl)
+      }
+    }
+  }, [previewUrl, user.image])
 
   return (
     <DialogContent className="h-dvh w-full max-w-[560px] bg-white p-0 laptop:max-h-[689px]">
@@ -159,25 +194,55 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between">
               <Label className="text-sm font-medium">프로필이미지</Label>
               <Label className="text-sm font-medium text-textLight">
                 이미지 미첨부시 랜덤이미지가 적용됩니다.
               </Label>
             </div>
-            <div className="flex items-center gap-2">
-              <Input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                id="profile-image"
-              />
-              <Label
-                htmlFor="profile-image"
-                className="flex h-10 w-full cursor-pointer items-center rounded-md border border-dashed border-gray-300 px-3 text-sm text-gray-500 hover:border-gray-400"
+
+            {/* 이미지 미리보기 및 업로드 영역 */}
+            <div className="relative space-y-4 rounded bg-background p-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-4 top-4 h-6 w-6"
+                onClick={handleImageRemove}
               >
-                이미지를 첨부해주세요
-              </Label>
+                {previewUrl && <IconGarbage className="h-4 w-4" />}
+              </Button>
+              {previewUrl && (
+                <div className="mx-auto h-32 w-32">
+                  <Image
+                    src={previewUrl}
+                    alt="Profile preview"
+                    className="h-full w-full rounded-full object-cover"
+                    width={100}
+                    height={100}
+                  />
+                </div>
+              )}
+
+              <div className="flex items-center gap-2">
+                <Input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id="profile-image"
+                  onChange={handleImageChange}
+                />
+                <Label
+                  htmlFor="profile-image"
+                  className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-300 px-3 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50"
+                >
+                  {previewUrl ? '이미지 변경하기' : '이미지를 첨부해주세요'}
+                </Label>
+              </div>
+
+              {/* 이미지 업로드 제한 안내 */}
+              <p className="text-xs text-gray-500">
+                최대 5MB, jpg/png/gif 파일만 업로드 가능합니다.
+              </p>
             </div>
           </div>
         </div>
@@ -186,9 +251,9 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
       <DialogFooter className="p-6 pt-4">
         <div className="mx-auto flex w-full max-w-[400px] flex-col gap-2">
           <Button
-            className="h-[48px] w-full bg-green hover:bg-[#4ADE80]/90"
+            className="h-[48px] w-full bg-green hover:bg-[#4ADE80]/90 disabled:opacity-50"
             onClick={handleUpdateSubmit}
-            disabled={updateProfile.isPending}
+            disabled={updateProfile.isPending || !userInfo.nickname}
           >
             {updateProfile.isPending ? '적용 중...' : '적용하기'}
           </Button>
@@ -204,6 +269,7 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
     </DialogContent>
   )
 }
+
 export default function ProfileModalPage() {
   const router = useRouter()
   const [isEditing, setIsEditing] = useState(false)

@@ -1,8 +1,18 @@
-import React from 'react'
+'use client'
 
-const page = () => {
-  // TODO : 기본 페이지 구성
-  return <div>계정</div>
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+
+export default function AccountPage() {
+  const router = useRouter()
+
+  useEffect(() => {
+    router.replace('/?auth=mypage')
+  }, [router])
+
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <div>로딩 중...</div>
+    </div>
+  )
 }
-
-export default page

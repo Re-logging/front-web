@@ -21,19 +21,14 @@ export const useUpdateAccount = () => {
   // 계정 정보 수정
   const updateAccount = useMutation({
     mutationFn: async (data: UpdateAccountRequest) => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/account`,
-
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify(data),
+      const response = await fetch(`/api/user/account`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      )
-
+        credentials: 'include',
+        body: JSON.stringify(data),
+      })
       if (!response.ok) {
         throw new Error('계정 수정에 실패했습니다.')
       }
@@ -41,6 +36,7 @@ export const useUpdateAccount = () => {
       return response.json() as Promise<UpdateAccountResponse>
     },
     onSuccess: (updatedUser) => {
+      console.log('updatedUser:🌱🏃‍➡️', updatedUser)
       setAuth(updatedUser)
       queryClient.invalidateQueries({ queryKey: ['user'] })
     },
