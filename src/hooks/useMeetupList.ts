@@ -1,11 +1,6 @@
+import { IMeetupListResponse, ImeetupQueries } from '@/types/IMeetup'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-
-interface ImeetupQueries {
-  currentPage?: number
-  pageSize?: number
-  meetupId?: string
-}
 
 export async function fetchMeetupingArticle(page: number, size: number) {
   const params = new URLSearchParams()
@@ -47,7 +42,7 @@ export const useMeetupQueries = ({
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  const meetupListQuery = useQuery({
+  const meetupListQuery = useQuery<IMeetupListResponse>({
     queryKey: ['meetupList', currentPage, pageSize],
     queryFn: () => fetchMeetupingArticle(currentPage ?? 0, pageSize ?? 15),
   })
@@ -55,6 +50,7 @@ export const useMeetupQueries = ({
   const meetupDetailQuery = useQuery({
     queryKey: ['meetupDetail', meetupId],
     queryFn: () => fetchMeetupDetail(meetupId ?? ''),
+    enabled: !!meetupId,
   })
 
   // 이전/다음 이벤트 네비게이션

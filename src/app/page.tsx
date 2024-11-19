@@ -1,11 +1,11 @@
 'use client'
 
-import EventListGrid from '@/components/EventListGrid'
-import NewsListGrid from '@/components/NewsListGrid'
-import { useState } from 'react'
 import Image from 'next/image'
 import Footer from '@/components/layouts/Footer'
+import { useRouter, useSearchParams } from 'next/navigation'
 import MeetupList from '@/components/MeetupList'
+import EventListGrid from '@/components/EventListGrid'
+import NewsListGrid from '@/components/NewsListGrid'
 
 const images = {
   mobile: {
@@ -26,8 +26,31 @@ const images = {
 } as const
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('우리 동네 플로깅')
-  // max-w-[1440px]
+  const router = useRouter()
+  const searchParms = useSearchParams()
+  const currentTab = searchParms.get('tab') || 'ploggingEvent'
+  const tabList = [
+    { id: 'ploggingEvent', label: '우리 동네 플로깅' },
+    { id: 'meetup', label: '플로깅 모임' },
+    { id: 'news', label: '뉴스' },
+  ]
+
+  const handleTabChange = (tabId: string) => {
+    router.push(`/?tab=${tabId}`)
+  }
+
+  const renderContent = () => {
+    switch (currentTab) {
+      case 'ploggingEvent':
+        return <EventListGrid />
+      case 'news':
+        return <NewsListGrid />
+      case 'meetup':
+        return <MeetupList />
+      default:
+        return <EventListGrid />
+    }
+  }
   return (
     <div className="h-full w-full bg-background">
       <section className="margin-auto hidden w-dvw laptop:block">
@@ -66,44 +89,24 @@ export default function Home() {
           {/* 탭 섹션 */}
           <div className="rounded-lg bg-white p-5 shadow laptop:p-10">
             <div className="mb-4 flex border-b border-gray-200">
-              <button
-                className={`block px-6 py-4 text-gray-600 hover:text-textLight focus:outline-none ${
-                  activeTab === '우리 동네 플로깅'
-                    ? 'border-b-2 border-text font-medium text-blue-500'
-                    : ''
-                }`}
-                onClick={() => setActiveTab('우리 동네 플로깅')}
-              >
-                우리 동네 플로깅
-              </button>
-              <button
-                className={`block px-6 py-4 text-gray-600 hover:text-textLight focus:outline-none ${
-                  activeTab === '플로깅 모임'
-                    ? 'border-b-2 border-text font-medium text-blue-500'
-                    : ''
-                }`}
-                onClick={() => setActiveTab('플로깅 모임')}
-              >
-                플로깅 모임
-              </button>
-              <button
-                className={`block px-6 py-4 text-gray-600 hover:text-textLight focus:outline-none ${
-                  activeTab === '환경 뉴스'
-                    ? 'border-b-2 border-text font-medium text-blue-500'
-                    : ''
-                }`}
-                onClick={() => setActiveTab('환경 뉴스')}
-              >
-                환경 뉴스
-              </button>
+              {tabList.map((tab) => {
+                return (
+                  <button
+                    key={tab.id}
+                    className={`block px-6 py-4 text-gray-600 hover:text-textLight ${
+                      tab.id === currentTab
+                        ? 'border-b-2 border-green font-medium text-text'
+                        : ''
+                    }`}
+                    onClick={() => handleTabChange(tab.id)}
+                  >
+                    {tab.label}
+                  </button>
+                )
+              })}
             </div>
-            {/* 우리동네 플로깅 그리드 */}
-            {activeTab === '우리 동네 플로깅' && <EventListGrid />}
-            {/* 플로깅 모임 그리드 */}
-            {activeTab === '플로깅 모임' && <MeetupList />}
-            {/* 뉴스 그리드 */}
-            {activeTab === '환경 뉴스' && <NewsListGrid />}
-            {/* )} */}
+            {/* 콘텐츠 섹션 */}
+            {renderContent()}
           </div>
         </main>
       </div>

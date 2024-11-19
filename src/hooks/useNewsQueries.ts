@@ -48,6 +48,7 @@ export const useNewsQueries = ({
   const newsDetailQuery = useQuery({
     queryKey: ['newsDetail', articleId],
     queryFn: () => fetchNewsArticle(articleId ?? ''),
+    enabled: !!articleId,
     staleTime: 5 * 60 * 1000, // 데이터가 "신선"하다고 간주되는 시간 (5분)
     gcTime: 30 * 60 * 1000, // 데이터가 캐시에 유지되는 시간 (30분)
   })

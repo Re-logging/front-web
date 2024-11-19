@@ -11,7 +11,7 @@ import { ErrorAlert } from '@/components/status/ErrorAlert'
 import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
 import ContentList from '@/components/ContentList'
 import { useMeetupQueries } from '@/hooks/useMeetupList'
-import { MeetupDetailSectionProps, MeetupDetailType } from '@/types/IMeetup'
+import { IMeetupDetailSectionProps, MeetupDetailType } from '@/types/IMeetup'
 import { DEFAULT_IMAGE } from '@/types/INews'
 
 const MeetupDetailSection = ({
@@ -20,7 +20,7 @@ const MeetupDetailSection = ({
   isError,
   error,
   handleMeetupChange,
-}: MeetupDetailSectionProps) => {
+}: IMeetupDetailSectionProps) => {
   if (isLoading) {
     return (
       <section className="flex flex-[8] flex-col gap-10 md:col-span-6">
@@ -84,39 +84,22 @@ const MeetupDetailSection = ({
             label="참여기간"
             content={`${meetupDetail.startDate} - ${meetupDetail.endDate}`}
           />
-          <LabeledContent
-            label="참여대상"
-            content={`${meetupDetail?.participantTarget}`}
-          />
+
           <LabeledContent
             label="참여장소"
             content={meetupDetail?.location ?? '-'}
           />
-          <LabeledContent
-            label="지원내용"
-            content={meetupDetail?.supportDetails ?? '-'}
-          />
+
           <LabeledContent label="봉사점수" content="0.5시간" />
           <LabeledContent
             label="참여방법"
             content="양재천 ~ 양재천 일대를 걸으며 쓰레기(플로깅)"
-          />
-          <LabeledContent
-            label="연락처"
-            content={meetupDetail?.contactNumber ?? '-'}
-          />
-          <LabeledContent
-            label="연락 방법"
-            content={meetupDetail?.registrationLink ?? '-'}
           />
         </div>
         <div className="prose max-w-none space-y-4 text-sm">
           <span className="border-green- whitespace-nowrap rounded-md border bg-green p-1 text-xs font-semibold text-white">
             상세내용
           </span>
-          <p className="mb-4 text-xs text-text">
-            {meetupDetail?.content ?? '-'}
-          </p>
         </div>
       </div>
       <div className="flex items-center justify-between">
@@ -209,8 +192,8 @@ export default function MeetupDetailPage() {
         {/* 오른쪽 사이드바 */}
         <div className="hidden min-w-0 laptop:block laptop:flex-[4]">
           <ContentList
-            contentData={meetupList?.content}
-            totalPage={meetupList?.totalPages}
+            contentData={meetupList?.ploggingMeetupSimpleResponseList ?? []}
+            totalPage={meetupList?.totalPage ?? 0}
             currentPage={currentPage}
             handlePageChange={handlePageChange}
             cotentListIsLoading={meetupListIsLoading}

@@ -1,11 +1,11 @@
-import { EventContentCard } from '@/types/IEvent'
+import { IEventContentCard } from '@/types/IEvent'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import { MapPin, Clock } from 'lucide-react'
 import { DEFAULT_IMAGE } from '@/types/INews'
 
-export const EventCard = ({ eventData }: { eventData: EventContentCard }) => {
+export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
   const router = useRouter()
 
   const onClickEventDetail = (id: string) => {

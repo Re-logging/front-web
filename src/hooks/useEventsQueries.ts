@@ -1,11 +1,6 @@
+import { IEventsQueries, IPloggingEventContentList } from '@/types/IEvent'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-
-interface IEventsQueries {
-  currentPage?: number
-  pageSize?: number
-  eventId?: string
-}
 
 export async function fetchEventsArticle(page: number, size: number) {
   const params = new URLSearchParams()
@@ -47,14 +42,19 @@ export const useEventsQueries = ({
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  const eventsListQuery = useQuery({
+  const eventsListQuery = useQuery<IPloggingEventContentList>({
     queryKey: ['eventsList', currentPage, pageSize],
     queryFn: () => fetchEventsArticle(currentPage ?? 0, pageSize ?? 15),
+    staleTime: 5 * 60 * 1000, // 데이터가 "신선"하다고 간주되는 시간 (5분)
+    gcTime: 30 * 60 * 1000, // 데이터가 캐시에 유지되는 시간 (30분)
   })
 
   const eventDetailQuery = useQuery({
     queryKey: ['eventDetail', eventId],
     queryFn: () => fetchEventDetail(eventId ?? ''),
+    enabled: !!eventId,
+    staleTime: 5 * 60 * 1000, // 데이터가 "신선"하다고 간주되는 시간 (5분)
+    gcTime: 30 * 60 * 1000, // 데이터가 캐시에 유지되는 시간 (30분)
   })
 
   // 이전/다음 이벤트 네비게이션
