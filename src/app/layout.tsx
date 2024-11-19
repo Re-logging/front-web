@@ -3,6 +3,7 @@ import { CommonLayout } from '@/components/layouts/CommonLayout'
 import ReactQueryProviders from '@/utils/ReactQueryProvider'
 import { MswComponent } from '@/components/msw.component'
 import { Suspense } from 'react'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: '리로깅',
@@ -26,6 +27,7 @@ export default function RootLayout({
             <CommonLayout>
               {children}
               {modal}
+              <Toaster />
             </CommonLayout>
           </ReactQueryProviders>
         </Suspense>

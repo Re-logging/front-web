@@ -36,27 +36,24 @@ export const useUpdateAccount = () => {
       return response.json() as Promise<UpdateAccountResponse>
     },
     onSuccess: (updatedUser) => {
-      console.log('updatedUser:🌱🏃‍➡️', updatedUser)
       setAuth(updatedUser)
       queryClient.invalidateQueries({ queryKey: ['user'] })
+    },
+    onError: (error) => {
+      console.error('계정 수정 오류:', error)
     },
   })
 
   // 계정 삭제
   const deleteAccount = useMutation({
     mutationFn: async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/withdrawal`,
-        {
-          method: 'DELETE',
-          credentials: 'include',
-        },
-      )
-
+      const response = await fetch(`/api/user/account`, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
       if (!response.ok) {
         throw new Error('회원 탈퇴에 실패했습니다.')
       }
-
       return response.json()
     },
     onSuccess: () => {
