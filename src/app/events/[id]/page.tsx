@@ -212,8 +212,8 @@ export default function EventDetailPage() {
         {/* 오른쪽 사이드바 */}
         <div className="hidden min-w-0 laptop:block laptop:flex-[4]">
           <ContentList
-            contentData={eventsList?.content}
-            totalPage={eventsList?.totalPages}
+            contentData={eventsList?.content ?? []}
+            totalPage={eventsList?.totalPages ?? 0}
             currentPage={currentPage}
             handlePageChange={handlePageChange}
             cotentListIsLoading={eventsListIsLoading}

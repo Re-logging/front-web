@@ -2,14 +2,17 @@ import { NewsArticleCard } from '@/types/INews'
 import { ContentsPagination } from './ContentsPagination'
 import NewsCard from './NewsCard'
 import { EventCard } from './EventCard'
-import { EventContentCard } from '@/types/IEvent'
+import { IEventContentCard } from '@/types/IEvent'
 import { LoadingSkeleton } from './status/LoadingSkeleton'
 import { ErrorAlert } from './status/ErrorAlert'
 import { EmptyState } from './status/EmptyStatus'
 import { MeetupCard } from './MeetupCard'
-import { MeetupContentCard } from '@/types/IMeetup'
+import { IMeetupContentCard } from '@/types/IMeetup'
 
-export type ContentType = NewsArticleCard | EventContentCard | MeetupContentCard
+export type ContentType =
+  | NewsArticleCard
+  | IEventContentCard
+  | IMeetupContentCard
 export type EventType = 'news' | 'events' | 'meetup'
 interface IContentList {
   contentData: ContentType[]
@@ -28,9 +31,11 @@ const contentTemplate = (item: ContentType, type: EventType) => {
     case 'news':
       return <NewsCard article={item as NewsArticleCard} key={item.id} />
     case 'events':
-      return <EventCard eventData={item as EventContentCard} key={item.id} />
+      return <EventCard eventData={item as IEventContentCard} key={item.id} />
     case 'meetup':
-      return <MeetupCard meetupData={item as MeetupContentCard} key={item.id} />
+      return (
+        <MeetupCard meetupData={item as IMeetupContentCard} key={item.id} />
+      )
     default:
       return null
   }

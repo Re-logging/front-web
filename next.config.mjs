@@ -29,6 +29,7 @@ const nextConfig = {
       'cdn.hkbs.co.kr',
       'cdn.esgeconomy.com',
       'www.gravatar.com',
+      'relogging.s3.ap-northeast-2.amazonaws.com',
     ], // 허용할 도메인 목록을 지정
     remotePatterns: [
       {
