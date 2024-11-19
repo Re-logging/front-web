@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface UpdateProfileRequest {
   nickname: string
-  image?: string
+  image?: File | null
 }
 
 interface UpdateProfileResponse {
@@ -20,18 +20,18 @@ export const useUpdateProfile = () => {
   // 계정 정보 수정
   const updateProfile = useMutation({
     mutationFn: async (data: UpdateProfileRequest) => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/profile`,
-
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify(data),
-        },
-      )
+      const formData = new FormData()
+      formData.append('nickname', data.nickname)
+      if (data.image instanceof File) {
+        formData.append('image', data.image)
+      } else {
+        formData.append('image', 'null')
+      }
+      const response = await fetch(`/api/user/profile`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: formData,
+      })
 
       if (!response.ok) {
         throw new Error('프로필 수정에 실패했습니다.')
