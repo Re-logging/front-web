@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label'
 import EditIcon from '@/assets/icon_edit.svg'
 import { useAuthStore, User } from '@/store/authStore'
 import { useUpdateAccount } from '@/hooks/useUpdateAccount'
+import { useToast } from '@/hooks/use-toast'
 
 export default function ProfileModalRoute() {
   const router = useRouter()
@@ -120,6 +121,7 @@ function EditAccountModal({
 }) {
   const [userInfo, setUserInfo] = useState<User>(profileInfo)
   const { updateAccount } = useUpdateAccount()
+  const { toast } = useToast()
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -134,8 +136,20 @@ function EditAccountModal({
       await updateAccount.mutateAsync({
         name: userInfo.name,
       })
+      toast({
+        title: '프로필 수정 완료',
+        description: '프로필이 성공적으로 수정되었습니다.',
+        duration: 3000,
+        variant: 'default',
+      })
       onCancel()
     } catch (error) {
+      toast({
+        title: '계정 수정 실패',
+        description: '계정 수정 중 오류가 발생했습니다.',
+        variant: 'destructive',
+        duration: 3000,
+      })
       console.error('프로필 업데이트 오류:', error)
     }
   }
@@ -197,12 +211,23 @@ function DeleteAccountModal({ onCancel }: { onCancel: () => void }) {
   // TODO : 탈퇴 사유 입력 필드 추가해서 api로 전달
   const [reason, setReason] = useState('')
   const { deleteAccount } = useUpdateAccount()
+  const { toast } = useToast()
 
   const handleDeleteSubmit = async () => {
     try {
       await deleteAccount.mutateAsync()
+      toast({
+        title: '계정 삭제 완료',
+        description: '계정 삭제가 완료되었습니다.',
+        variant: 'default',
+      })
       onCancel()
     } catch (error) {
+      toast({
+        title: '계정 삭제 실패',
+        description: '계정 삭제가 실패하였습니다.',
+        variant: 'destructive',
+      })
       console.error('계정 삭제 오류:', error)
     }
   }

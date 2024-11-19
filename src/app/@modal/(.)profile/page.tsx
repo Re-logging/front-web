@@ -19,6 +19,7 @@ import { useAuthStore, User } from '@/store/authStore'
 import { useUpdateProfile } from '@/hooks/useUpdateProfile'
 import IconGarbage from '@/assets/icon_garbage.svg'
 import { validateImage } from '@/utils/image'
+import { useToast } from '@/hooks/use-toast'
 
 type EditingProfileProps = {
   user: User
@@ -107,6 +108,7 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string>(user.image || '')
   const { updateProfile } = useUpdateProfile()
+  const { toast } = useToast()
 
   const handleEditProfile = () => {
     setIsEditing(false)
@@ -147,8 +149,19 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
         nickname: userInfo.nickname,
         image: imageFile,
       })
+      toast({
+        title: '프로필이 수정되었습니다.',
+        description: '프로필이 성공적으로 수정되었습니다.',
+        variant: 'default',
+        duration: 3000,
+      })
       setIsEditing(false)
     } catch (error) {
+      toast({
+        title: '프로필 수정에 실패하였습니다.',
+        variant: 'destructive',
+        duration: 3000,
+      })
       console.error('프로필 업데이트 오류:', error)
     }
   }

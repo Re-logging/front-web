@@ -37,11 +37,15 @@ export const useUpdateProfile = () => {
         throw new Error('프로필 수정에 실패했습니다.')
       }
 
-      return response.json() as Promise<UpdateProfileResponse>
+      const result = await response.json()
+      return result as UpdateProfileResponse // 타입 단언
     },
-    onSuccess: (updatedUser) => {
+    onSuccess: (updatedUser: UpdateProfileResponse) => {
       setAuth(updatedUser)
       queryClient.invalidateQueries({ queryKey: ['user'] })
+    },
+    onError: (error) => {
+      console.error('프로필 수정 오류:', error)
     },
   })
 

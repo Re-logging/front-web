@@ -24,3 +24,24 @@ export async function PUT(request: Request) {
     return Response.json({ error: 'Request failed' }, { status: 500 })
   }
 }
+
+export async function DELETE() {
+  const token = cookies().get('accessToken')
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/withdrawal`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token?.value}`,
+        },
+      },
+    )
+
+    const responseData = await response.json()
+    return Response.json(responseData)
+  } catch (error) {
+    console.error('Error:', error)
+    return Response.json({ error: 'Request failed' }, { status: 500 })
+  }
+}
