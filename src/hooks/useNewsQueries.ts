@@ -73,22 +73,27 @@ export const useNewsQueries = ({
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/newsArticles/${currentId}/${type}`,
         )
       }
-      if (!response?.ok) throw new Error(`Failed to fetch ${type} event`)
+      const data = await response?.json()
+      if (!response?.ok)
+        throw {
+          ...data,
+          type,
+        }
 
-      const nextEvent = await response.json()
       // 응답에서 받은 이벤트 데이터를 바로 캐시에 저장
       // 새로운 데이터를 캐시에 저장
-      queryClient.setQueryData(['newsDetail', nextEvent.id], nextEvent)
+      queryClient.setQueryData(['newsDetail', data.id], data)
 
       queryClient.invalidateQueries({
         queryKey: ['newsDetail'],
       })
 
-      return nextEvent
+      return { data, type }
     },
     onSuccess: (news) => {
       // URL 업데이트
-      router.push(`/news/${news.id}`)
+      console.log('뉴스', news.data.id)
+      router.push(`/news/${news.data.id}`)
     },
   })
 
@@ -108,5 +113,11 @@ export const useNewsQueries = ({
     // 이전/다음 이벤트 네비게이션
     navigate: navigationMutation.mutate,
     isNavigating: navigationMutation.isPending,
+    isNavigatingPrev:
+      navigationMutation.isPending &&
+      navigationMutation.variables?.type === 'prev',
+    isNavigatingNext:
+      navigationMutation.isPending &&
+      navigationMutation.variables?.type === 'next',
   }
 }

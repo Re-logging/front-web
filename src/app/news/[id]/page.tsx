@@ -12,6 +12,8 @@ import { useNewsQueries } from '@/hooks/useNewsQueries'
 import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
 import { ErrorAlert } from '@/components/status/ErrorAlert'
 import ContentList from '@/components/ContentList'
+import { useToast } from '@/hooks/use-toast'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 const EventDetailSection = ({
   newsDetail,
@@ -19,6 +21,8 @@ const EventDetailSection = ({
   isError,
   error,
   onChangeEventDetail,
+  isNavigatingPrev,
+  isNavigatingNext,
 }: any) => {
   // 뉴스 디테일
 
@@ -99,20 +103,28 @@ const EventDetailSection = ({
       {/* 하단 기사 버튼 */}
       <div className="flex items-center justify-between">
         <Button
-          className="bg-solid"
+          className="min-w-[120px] bg-solid"
           onClick={() => {
             onChangeEventDetail('prev')
           }}
         >
-          이전 기사 보기
+          {isNavigatingPrev ? (
+            <LoadingSpinner color="grey" />
+          ) : (
+            '이전 기사 보기'
+          )}
         </Button>
         <Button
-          className="bg-solid"
+          className="min-w-[120px] bg-solid"
           onClick={() => {
             onChangeEventDetail('next')
           }}
         >
-          다음 기사 보기
+          {isNavigatingNext ? (
+            <LoadingSpinner color="grey" />
+          ) : (
+            '다음 기사 보기'
+          )}
         </Button>
       </div>
     </section>
@@ -123,6 +135,7 @@ export default function NewsArticlePage() {
   const articleId = path.split('/').pop()
   const [currentPage, setCurrentPage] = useState(0) // 초기 페이지 1번으로 설정
   const pageSize = 5 // 페이지 당 아이템 수
+  const { toast } = useToast()
 
   const handlePageChange = async (newPage: number) => {
     setCurrentPage(newPage)
@@ -140,6 +153,8 @@ export default function NewsArticlePage() {
     newsListIsLoading,
     // 이전 이벤트, 다음 이벤트
     navigate,
+    isNavigatingNext,
+    isNavigatingPrev,
     // isNavigating,
   } = useNewsQueries({
     currentPage,
@@ -153,12 +168,12 @@ export default function NewsArticlePage() {
       { type, currentId: newsDetail.id },
       {
         onError: (error: Error) => {
-          console.log('error', error)
-          // toast({
-          //   title: '이동 실패',
-          //   description: '이벤트 데이터를 불러오는데 실패했습니다.',
-          //   variant: 'destructive',
-          // })
+          toast({
+            title: '이동 실패',
+            description: `${error.message}`,
+            variant: 'destructive',
+            duration: 1500,
+          })
         },
       },
     )
@@ -175,6 +190,8 @@ export default function NewsArticlePage() {
             isError={newsDetailIsError}
             error={newsDetailIsError}
             onChangeEventDetail={onChangeEventDetail}
+            isNavigatingPrev={isNavigatingPrev}
+            isNavigatingNext={isNavigatingNext}
           />
         </div>
 
