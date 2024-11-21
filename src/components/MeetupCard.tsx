@@ -66,16 +66,6 @@ export const MeetupCard = ({
             </span>
           </div>
 
-          <div className="flex items-center justify-between gap-2 text-text">
-            <div className="flex gap-2">
-              <MapPin className="h-4 w-4" />
-              {/* <span className="text-sm"> {meetupData.location}</span> */}
-            </div>
-            <span className="text-sm text-gray-400">
-              활동시간 {meetupData.activityHours}
-            </span>
-          </div>
-
           {/* 날짜 정보 */}
           <div className="flex items-center gap-2 text-text">
             <Clock className="h-4 w-4" />

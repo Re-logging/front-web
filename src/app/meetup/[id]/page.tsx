@@ -13,6 +13,8 @@ import ContentList from '@/components/ContentList'
 import { useMeetupQueries } from '@/hooks/useMeetupList'
 import { IMeetupDetailSectionProps, MeetupDetailType } from '@/types/IMeetup'
 import { DEFAULT_IMAGE } from '@/types/INews'
+import { useToast } from '@/hooks/use-toast'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 const MeetupDetailSection = ({
   meetupDetail,
@@ -20,6 +22,8 @@ const MeetupDetailSection = ({
   isError,
   error,
   handleMeetupChange,
+  isNavigatingPrev,
+  isNavigatingNext,
 }: IMeetupDetailSectionProps) => {
   if (isLoading) {
     return (
@@ -104,20 +108,28 @@ const MeetupDetailSection = ({
       </div>
       <div className="flex items-center justify-between">
         <Button
-          className="bg-solid"
+          className="min-w-[120px] bg-solid"
           onClick={() => {
             handleMeetupChange('prev')
           }}
         >
-          이전 모임 보기
+          {isNavigatingPrev ? (
+            <LoadingSpinner color="grey" />
+          ) : (
+            '이전 모임 보기'
+          )}
         </Button>
         <Button
-          className="bg-solid"
+          className="min-w-[120px] bg-solid"
           onClick={() => {
             handleMeetupChange('next')
           }}
         >
-          다음 이벤트 보기
+          {isNavigatingNext ? (
+            <LoadingSpinner color="grey" />
+          ) : (
+            '다음 모임 보기'
+          )}
         </Button>
       </div>
     </section>
@@ -130,6 +142,7 @@ export default function MeetupDetailPage() {
   const pageSize = 6 // 페이지 당 아이템 수
   const path = usePathname()
   const meetupId = path.split('/').pop()
+  const { toast } = useToast()
 
   const handlePageChange = async (newPage: number) => {
     setCurrentPage(newPage)
@@ -147,6 +160,8 @@ export default function MeetupDetailPage() {
 
     // 이전 이벤트, 다음 이벤트
     navigate,
+    isNavigatingNext,
+    isNavigatingPrev,
   } = useMeetupQueries({
     currentPage,
     pageSize,
@@ -160,12 +175,12 @@ export default function MeetupDetailPage() {
       { type, currentId: meetupDetail.id },
       {
         onError: (error: Error) => {
-          console.log('error', error)
-          // toast({
-          //   title: '이동 실패',
-          //   description: '이벤트 데이터를 불러오는데 실패했습니다.',
-          //   variant: 'destructive',
-          // })
+          toast({
+            title: '이동 실패',
+            description: `${error.message}`,
+            variant: 'destructive',
+            duration: 1500,
+          })
         },
       },
     )
@@ -183,6 +198,8 @@ export default function MeetupDetailPage() {
             isError={meetupDetailiIsLoading}
             error={meetupDetailError}
             handleMeetupChange={onChangeMeetupDetail}
+            isNavigatingPrev={isNavigatingPrev}
+            isNavigatingNext={isNavigatingNext}
           />
         </div>
 

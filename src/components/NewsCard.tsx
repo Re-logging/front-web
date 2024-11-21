@@ -22,7 +22,7 @@ const NewsCard = ({ article }: { article: NewsArticleCard }) => {
         },
         {
           onSuccess: (article) => {
-            router.push(`/news/${article.id}`)
+            router.push(`/news/${article.data.id}`)
           },
           onError: (error: Error) => {
             console.error('Navigation failed:', error)
