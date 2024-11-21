@@ -88,7 +88,7 @@ export default function Home() {
         <main className="mx-auto max-w-7xl laptop:mt-16">
           {/* 탭 섹션 */}
           <div className="rounded-lg bg-white p-5 shadow laptop:p-10">
-            <div className="mb-4 flex border-b border-gray-200">
+            <div className="mb-4 flex">
               {tabList.map((tab) => {
                 return (
                   <button
