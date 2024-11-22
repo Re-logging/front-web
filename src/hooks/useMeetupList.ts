@@ -65,18 +65,22 @@ export const useMeetupQueries = ({
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingMeetups/${currentId}/${type}`,
       )
+      const data = await response.json()
 
-      if (!response.ok) throw new Error(`Failed to fetch ${type} event`)
+      if (!response.ok)
+        throw {
+          ...data,
+          type,
+        }
 
-      const nextEvent = await response.json()
       // 응답에서 받은 이벤트 데이터를 바로 캐시에 저장
-      queryClient.setQueryData(['meetupDetail', nextEvent.id], nextEvent)
+      queryClient.setQueryData(['meetupDetail', data.id], data)
 
-      return nextEvent
+      return { data, type }
     },
-    onSuccess: (newEvent) => {
+    onSuccess: (result) => {
       // URL 업데이트
-      router.push(`/ploggingMeetups/${newEvent.id}`)
+      router.push(`/ploggingMeetups/${result.data.id}`)
     },
   })
 
@@ -94,5 +98,13 @@ export const useMeetupQueries = ({
 
     navigate: navigationMutation.mutate,
     isNavigating: navigationMutation.isPending,
+    isNavigationError: navigationMutation.isError,
+    isNaviationPending: navigationMutation.isPending,
+    isNavigatingPrev:
+      navigationMutation.isPending &&
+      navigationMutation.variables?.type === 'prev',
+    isNavigatingNext:
+      navigationMutation.isPending &&
+      navigationMutation.variables?.type === 'next',
   }
 }

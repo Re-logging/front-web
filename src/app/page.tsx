@@ -88,12 +88,12 @@ export default function Home() {
         <main className="mx-auto max-w-7xl laptop:mt-16">
           {/* 탭 섹션 */}
           <div className="rounded-lg bg-white p-5 shadow laptop:p-10">
-            <div className="mb-4 flex border-b border-gray-200">
+            <div className="mb-4 flex">
               {tabList.map((tab) => {
                 return (
                   <button
                     key={tab.id}
-                    className={`block px-6 py-4 text-gray-600 hover:text-textLight ${
+                    className={`block whitespace-nowrap px-6 py-4 text-gray-600 hover:text-textLight ${
                       tab.id === currentTab
                         ? 'border-b-2 border-green font-medium text-text'
                         : ''

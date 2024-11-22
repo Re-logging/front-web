@@ -7,6 +7,8 @@ export interface IMeetupDetailSectionProps {
   isError: boolean
   error: Error | null
   handleMeetupChange: (type: MeetupDetailType) => void
+  isNavigatingNext: boolean
+  isNavigatingPrev: boolean
 }
 
 export interface ImeetupQueries {
