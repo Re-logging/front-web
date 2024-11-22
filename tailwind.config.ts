@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        spoqa: ['Spoqa Han Sans Neo', 'sans-serif'],
+      },
       screens: {
         sm: '640px',
         md: '768px',

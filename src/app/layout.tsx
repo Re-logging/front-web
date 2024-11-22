@@ -4,7 +4,7 @@ import ReactQueryProviders from '@/utils/ReactQueryProvider'
 import { MswComponent } from '@/components/msw.component'
 import { Suspense } from 'react'
 import { Toaster } from '@/components/ui/toaster'
-
+import '@/styles/globals.css'
 export const metadata: Metadata = {
   title: '리로깅',
   description:
