@@ -1,4 +1,5 @@
-import { refreshAccessToken } from '@/hooks/useRefreshToken'
+// import { refreshAccessToken } from '@/hooks/useRefreshToken'
+import { clearToken } from '@/app/actions/auth'
 import { cookies } from 'next/headers'
 
 async function refreshToken() {
@@ -6,14 +7,16 @@ async function refreshToken() {
     // 리프레시 토큰 가져오기
     const refreshToken = cookies().get('refreshToken')
 
+    console.log('가져온 리프레쉬 토큰 -----------_>', refreshToken)
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/reissue`,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Cookie: `refreshToken=${refreshToken?.value}`, // 리프레시 토큰 전달
-        },
+        credentials: 'include',
+        // headers: {
+        //   'Content-Type': 'application/json',
+        //   Cookie: `refreshToken=${refreshToken?.value}`, // 리프레시 토큰 전달
+        // },
       },
     )
 
@@ -33,7 +36,8 @@ async function refreshToken() {
 
     return data.accessToken
   } catch (error) {
-    console.error('Token refresh error:', error)
+    clearToken()
+    console.error('리프레쉬 토큰으로 액세스 갱신 실패.', error)
     throw error
   }
 }

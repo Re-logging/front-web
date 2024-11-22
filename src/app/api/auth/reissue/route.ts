@@ -28,7 +28,8 @@ export async function POST() {
     })
 
     return Response.json({ accessToken: data.accessToken })
-  } catch (error) {
+  } catch (error: any) {
+    console.log('토큰 갱신 실패', error)
     return Response.json({ error: 'Refresh failed' }, { status: 500 })
   }
 }

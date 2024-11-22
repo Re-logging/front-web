@@ -7,12 +7,12 @@ interface UpdateAccountRequest {
   name: string
 }
 
-interface UpdateAccountResponse {
-  name: string
-  nickname: string
-  email: string
-  image: string
-}
+// interface UpdateAccountResponse {
+//   name: string
+//   nickname: string
+//   email: string
+//   image: string
+// }
 
 export const useUpdateAccount = () => {
   const queryClient = useQueryClient()
