@@ -5,6 +5,8 @@ import { MswComponent } from '@/components/msw.component'
 import { Suspense } from 'react'
 import { Toaster } from '@/components/ui/toaster'
 import '@/styles/globals.css'
+import { cookies } from 'next/headers'
+
 export const metadata: Metadata = {
   title: '리로깅',
   description:
@@ -18,13 +20,15 @@ export default function RootLayout({
   children: React.ReactNode
   modal: React.ReactNode
 }>) {
+  const hasToken = !!cookies().get('accessToken')
+
   return (
     <html lang="ko">
       <body className="bg-white">
         <Suspense fallback={<div>Loading...</div>}>
           <ReactQueryProviders>
             <MswComponent />
-            <CommonLayout>
+            <CommonLayout hasToken={hasToken}>
               {children}
               {modal}
               <Toaster />

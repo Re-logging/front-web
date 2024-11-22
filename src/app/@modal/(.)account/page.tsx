@@ -139,7 +139,7 @@ function EditAccountModal({
       toast({
         title: '프로필 수정 완료',
         description: '프로필이 성공적으로 수정되었습니다.',
-        duration: 3000,
+        duration: 1500,
         variant: 'default',
       })
       onCancel()
@@ -148,9 +148,9 @@ function EditAccountModal({
         title: '계정 수정 실패',
         description: '계정 수정 중 오류가 발생했습니다.',
         variant: 'destructive',
-        duration: 3000,
+        duration: 1500,
       })
-      console.error('프로필 업데이트 오류:', error)
+      console.error('프로필 업데이트 오류: ->>>>>>>>>>>>>>>>>>>>', error)
     }
   }
 
