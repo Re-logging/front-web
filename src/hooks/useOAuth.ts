@@ -4,6 +4,27 @@ import { OAuthRequest } from '@/types/IAuth'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 
+export const refreshAccessToken = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/reissue`,
+      {
+        method: 'POST',
+        credentials: 'include', // 쿠키 포함
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('토큰 갱신 실패')
+    }
+
+    return response.json()
+  } catch (error) {
+    console.error('토큰 갱신 오류:', error)
+    throw error
+  }
+}
+
 export const useOAuth = () => {
   const router = useRouter()
   const { setAuth, clearAuth } = useAuthStore()
