@@ -107,6 +107,32 @@ export async function DELETE() {
       },
     )
 
+    if (response.status === 401) {
+      try {
+        // 1. 토큰 재발급 시도
+        const newToken = await refreshToken()
+        // 2. 원래 요청 재시도
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/withdrawal`,
+          {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${newToken}`,
+            },
+          },
+        )
+        console.log('토큰 갱신 후 재요청1:', response)
+        if (!response.ok) {
+          console.log('토큰 갱신 후 재요청2', response)
+
+          return Response.redirect(new URL('/?auth=login'))
+        }
+      } catch (error) {
+        console.log('토큰 갱신 후 재요청3', error)
+        return Response.redirect(new URL('/?auth=login'))
+      }
+    }
+
     const responseData = await response.json()
     return Response.json(responseData)
   } catch (error) {

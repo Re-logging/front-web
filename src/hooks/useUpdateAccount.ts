@@ -1,7 +1,6 @@
 import { useAuthStore } from '@/store/authStore'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useRequest } from './useRequest'
 
 interface UpdateAccountRequest {
   name: string
@@ -18,7 +17,6 @@ export const useUpdateAccount = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
   const { setAuth, clearAuth } = useAuthStore()
-  const { authenticatedRequest } = useRequest()
   // 계정 정보 수정
   const updateAccount = useMutation({
     mutationFn: async (data: UpdateAccountRequest) => {
@@ -55,9 +53,16 @@ export const useUpdateAccount = () => {
   // 계정 삭제
   const deleteAccount = useMutation({
     mutationFn: async () => {
-      return authenticatedRequest('/api/user/withdrawal', {
+      const response = await fetch('/api/user/account', {
         method: 'DELETE',
+        credentials: 'include',
       })
+
+      if (!response.ok) {
+        throw new Error('회원 탈퇴에 실패했습니다.')
+      }
+
+      return response.json()
     },
     onSuccess: () => {
       clearAuth()
