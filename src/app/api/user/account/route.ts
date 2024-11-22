@@ -1,25 +1,20 @@
-// import { refreshAccessToken } from '@/hooks/useRefreshToken'
 import { clearToken } from '@/app/actions/auth'
 import { cookies } from 'next/headers'
 
 async function refreshToken() {
   try {
-    // 리프레시 토큰 가져오기
-    const refreshToken = cookies().get('refreshToken')
-
-    console.log('가져온 리프레쉬 토큰 -----------_>', refreshToken)
+    const refreshToken = cookies().get('refreshToken') || null
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/reissue`,
       {
         method: 'POST',
-        credentials: 'include',
-        // headers: {
-        //   'Content-Type': 'application/json',
-        //   Cookie: `refreshToken=${refreshToken?.value}`, // 리프레시 토큰 전달
-        // },
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie: `refreshToken=${refreshToken?.value}`, // 리프레시 토큰 전달 (Next서버라 credentials 옵션이 동작하지 않음.)
+        },
       },
     )
-
+    console.log('이거 확인하기 ', response)
     if (!response.ok) {
       throw new Error('토큰 갱신 실패')
     }
@@ -62,7 +57,7 @@ export async function PUT(request: Request) {
 
     console.log('받아온 상태는 response.status:', response.status)
     // 액세스 토큰 만료
-    if (response.status === 400) {
+    if (response.status === 401) {
       try {
         // 1. 토큰 재발급 시도
         const newToken = await refreshToken()
@@ -99,7 +94,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE() {
-  const token = cookies().get('accessToken')
+  const token = cookies().get('accessToken') || null
   console.log('계정 삭제 토큰 token:', token)
   try {
     const response = await fetch(
