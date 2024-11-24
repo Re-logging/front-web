@@ -42,8 +42,10 @@ export const useUpdateAccount = () => {
       return response.json()
     },
     onSuccess: (updatedUser) => {
-      setAuth(updatedUser)
-      queryClient.invalidateQueries({ queryKey: ['user'] })
+      if (updatedUser) {
+        setAuth(updatedUser)
+        queryClient.invalidateQueries({ queryKey: ['user'] })
+      }
     },
     onError: (error) => {
       console.error('계정 수정 오류:', error)
