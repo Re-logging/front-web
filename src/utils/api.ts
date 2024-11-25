@@ -1,35 +1,38 @@
-// import { useRouter } from 'next/navigation'
+import { clearToken } from '@/app/actions/auth'
+import { cookies } from 'next/headers'
 
-// const api = {
-//   fetch: async (url: string, options: RequestInit = {}) => {
-//     try {
-//       const response = await fetch(url, {
-//         ...options,
-//         credentials: 'include',
-//       })
+export async function refreshToken() {
+  try {
+    const refreshToken = cookies().get('refreshToken') || null
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/reissue`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie: `refreshToken=${refreshToken?.value}`, // 리프레시 토큰 전달 (Next서버라 credentials 옵션이 동작하지 않음.)
+        },
+      },
+    )
 
-//       // 액세스 토큰 만료
-//       if (response.status === 401) {
-//         try {
-//           // 토큰 재발급 시도
-//           await fetch('/api/auth/reissue', {
-//             method: 'POST',
-//             credentials: 'include',
-//           })
+    if (!response.ok) {
+      throw new Error('토큰 갱신 실패')
+    }
 
-//           // 원래 요청 재시도
-//           return fetch(url, options)
-//         } catch (error) {
-//           // 재발급 실패시 로그아웃 처리
-//           const router = useRouter()
-//           router.replace('/?auth=login')
-//           //   window.location.href = '/?auth=login'
-//         }
-//       }
+    const data = await response.json()
 
-//       return response
-//     } catch (error) {
-//       throw error
-//     }
-//   },
-// }
+    // 새 액세스 토큰 저장
+    cookies().set('accessToken', data.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+    })
+
+    return data.accessToken
+  } catch (error) {
+    clearToken()
+    console.error('리프레쉬 토큰으로 액세스 갱신 실패.', error)
+    throw error
+  }
+}

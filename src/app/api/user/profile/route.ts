@@ -1,5 +1,5 @@
+import { refreshToken } from '@/utils/api'
 import { cookies } from 'next/headers'
-import { refreshToken } from '../account/route'
 
 export async function PUT(request: Request) {
   const token = cookies().get('accessToken')
