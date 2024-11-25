@@ -27,22 +27,24 @@ export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
       className="flex aspect-[378/175] min-h-[200px] w-full cursor-pointer flex-col overflow-hidden p-4 transition-shadow duration-300 hover:shadow-lg laptop:min-h-[200px] laptop:max-w-[378px]"
       onClick={() => onClickEventDetail(eventData.id)}
     >
-      {/* <CardContent className="p-6"> */}
       {/* 상단 정보 */}
       <div className="flex h-full w-full flex-col gap-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs text-orange">{eventData.region}</span>
+          <span className="line-clamp-1 text-xs text-orange">
+            {eventData.region}
+          </span>
         </div>
         <div className="flex items-center gap-4 md:flex-row">
           {/* 제목 - 모바일에서는 전체 너비, 데스크톱에서는 60% */}
-          <h3 className="line-clamp-2 w-full text-lg font-bold text-text md:flex-[6]">
+          <h3 className="line-clamp-1 w-full text-lg font-bold text-text md:flex-[6]">
             {eventData.title}
           </h3>
           {/* 이미지 - 모바일에서는 전체 너비, 데스크톱에서는 40% */}
 
           <div className="relative h-[100px] w-full rounded-lg md:flex-[4]">
             <Image
-              src={eventData.imagePath ?? DEFAULT_IMAGE}
+              id={eventData.image?.id.toString()}
+              src={eventData.image?.url ?? DEFAULT_IMAGE}
               alt={eventData.caption || eventData.title}
               fill
               sizes="w-100 h-100"
@@ -53,26 +55,25 @@ export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
         <div>
           {/* 위치 정보 */}
           <div className="flex items-center justify-between gap-2 text-text">
-            <div className="flex gap-2">
+            <div className="flex w-4/5 gap-2">
               <MapPin className="h-4 w-4" />
-              <span className="text-sm">{eventData.location}</span>
+              <span className="line-clamp-1 text-sm">{eventData.location}</span>
             </div>
-            <span className="text-sm text-gray-400">
+            <div className="w-1/5 text-sm text-gray-400">
               조회수 {eventData.hits}
-            </span>
+            </div>
           </div>
 
           {/* 날짜 정보 */}
           <div className="flex items-center gap-2 text-text">
             <Clock className="h-4 w-4" />
-            <p className="text-sm">
+            <p className="line-clamp-1 text-sm">
               {formatDate(eventData.startDate)} ~{' '}
               {formatDate(eventData.endDate)}
             </p>
           </div>
         </div>
       </div>
-      {/* </CardContent> */}
     </Card>
   )
 }

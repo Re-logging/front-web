@@ -4,6 +4,17 @@ export interface IEventsQueries {
   eventId?: string
 }
 
+export interface IEventContentCarouselProps {
+  imageList: IEventContentCardImage[]
+}
+
+export interface IEventContentCardImage {
+  id: number
+  url?: string | null
+  caption?: string
+  orderIndex?: number
+}
+
 // 개별 플로깅 이벤트 타입 정의
 export interface IEventContentCard {
   id: string
@@ -11,7 +22,7 @@ export interface IEventContentCard {
   location: string
   region: string
   hits: number
-  imagePath: string
+  image?: IEventContentCardImage
   startDate: string
   endDate: string
   caption: string
