@@ -1,7 +1,7 @@
 import { clearToken } from '@/app/actions/auth'
 import { cookies } from 'next/headers'
 
-async function refreshToken() {
+export async function refreshToken() {
   try {
     const refreshToken = cookies().get('refreshToken') || null
     const response = await fetch(
@@ -14,7 +14,7 @@ async function refreshToken() {
         },
       },
     )
-    console.log('이거 확인하기 ', response)
+
     if (!response.ok) {
       throw new Error('토큰 갱신 실패')
     }

@@ -146,8 +146,8 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
   const handleUpdateSubmit = async () => {
     try {
       await updateProfile.mutateAsync({
-        nickname: userInfo.nickname,
-        image: imageFile,
+        request: { nickname: userInfo.nickname },
+        image: imageFile || null,
       })
       toast({
         title: '프로필이 수정되었습니다.',
