@@ -11,6 +11,46 @@ import LabeledContent from '@/components/LabeledContent'
 import { ErrorAlert } from '@/components/status/ErrorAlert'
 import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
 import ContentList from '@/components/ContentList'
+import { DEFAULT_IMAGE } from '@/types/INews'
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import { Card, CardContent } from '@/components/ui/card'
+import { IEventContentCarouselProps } from '@/types/IEvent'
+
+function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
+  return (
+    <Carousel className="mx-auto w-4/5">
+      <CarouselContent>
+        {imageList.map((image: any) => (
+          <CarouselItem key={image.id}>
+            <div className="p-1">
+              <Card>
+                <CardContent className="flex aspect-square items-center justify-center p-6">
+                  <Image
+                    src={image.url ?? DEFAULT_IMAGE}
+                    alt="Plogging eventDetail main image"
+                    width={1920}
+                    height={1080}
+                    quality={100}
+                    className="h-auto w-full rounded-lg"
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  )
+}
 
 const EventDetailSection = ({
   eventDetail,
@@ -65,14 +105,23 @@ const EventDetailSection = ({
           </div>
         </header>
       </div>
-      <div>
-        <Image
-          src="https://picsum.photos/200/200"
-          alt="Plogging eventDetail main image"
-          width={100}
-          height={100}
-          className="h-auto w-full rounded-lg"
-        />
+      <div className="relative w-full">
+        {eventDetail?.imageList.length <= 1 ? (
+          <Image
+            src={
+              eventDetail?.imageList.length > 0
+                ? eventDetail?.imageList[0]?.url
+                : DEFAULT_IMAGE
+            }
+            alt={eventDetail?.imageList[0]?.caption ?? '플로깅 이미지'}
+            width={1920}
+            height={1080}
+            quality={80}
+            className="h-auto w-full rounded-lg"
+          />
+        ) : (
+          <ImageListCarousel imageList={eventDetail.imageList} />
+        )}
       </div>
       {/* 이벤트 상세 정보 */}
       <div className="rounded-lg bg-background p-6">
@@ -83,10 +132,6 @@ const EventDetailSection = ({
             content={`${eventDetail.startDate} - ${eventDetail.endDate}`}
           />
           <LabeledContent
-            label="참여대상"
-            content={`${eventDetail?.participationTarget}`}
-          />
-          <LabeledContent
             label="참여장소"
             content={eventDetail?.location ?? '-'}
           />
@@ -94,18 +139,9 @@ const EventDetailSection = ({
             label="지원내용"
             content={eventDetail?.participationTarget ?? '-'}
           />
-          <LabeledContent label="봉사점수" content="0.5시간" />
-          <LabeledContent
-            label="참여방법"
-            content="양재천 ~ 양재천 일대를 걸으며 쓰레기(플로깅)"
-          />
           <LabeledContent
             label="담당자명"
-            content={eventDetail?.organizerName ?? '-'}
-          />
-          <LabeledContent
-            label="전화번호"
-            content={eventDetail?.phoneNumber ?? '-'}
+            content={eventDetail?.managerName ?? '-'}
           />
           <LabeledContent
             label="전화번호"

@@ -22,7 +22,6 @@ export function CommonLayout({
   children: React.ReactNode
   hasToken: boolean
 }>) {
-
   return (
     <>
       <nav className="flex h-full max-h-[60px] w-full items-center justify-between bg-white p-5 laptop:h-16">
