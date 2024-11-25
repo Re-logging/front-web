@@ -2,10 +2,11 @@ import { useAuthStore } from '@/store/authStore'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface UpdateProfileRequest {
-  nickname: string
+  request: {
+    nickname: string | null
+  }
   image?: File | null
 }
-
 interface UpdateProfileResponse {
   name: string
   nickname: string
@@ -21,12 +22,10 @@ export const useUpdateProfile = () => {
   const updateProfile = useMutation({
     mutationFn: async (data: UpdateProfileRequest) => {
       const formData = new FormData()
-      formData.append('nickname', data.nickname)
-      if (data.image instanceof File) {
-        formData.append('image', data.image)
-      } else {
-        formData.append('image', 'null')
-      }
+
+      formData.append('request', JSON.stringify(data.request))
+      formData.append('image', data.image || 'null')
+
       const response = await fetch(`/api/user/profile`, {
         method: 'PUT',
         credentials: 'include',
