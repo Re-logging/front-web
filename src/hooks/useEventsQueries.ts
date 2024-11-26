@@ -70,17 +70,20 @@ export const useEventsQueries = ({
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingEvents/${currentId}/${type}`,
       )
 
-      if (!response.ok) throw new Error(`Failed to fetch ${type} event`)
-
       const nextEvent = await response.json()
+      if (!response.ok)
+        throw {
+          ...nextEvent,
+          type,
+        }
       // 응답에서 받은 이벤트 데이터를 바로 캐시에 저장
       queryClient.setQueryData(['eventDetail', nextEvent.id], nextEvent)
 
-      return nextEvent
+      return { nextEvent, type }
     },
-    onSuccess: (newEvent) => {
+    onSuccess: (result) => {
       // URL 업데이트
-      router.push(`/events/${newEvent.id}`)
+      router.push(`/events/${result.nextEvent.id}`)
     },
   })
 
@@ -98,5 +101,13 @@ export const useEventsQueries = ({
 
     navigate: navigationMutation.mutate,
     isNavigating: navigationMutation.isPending,
+    isNavigationError: navigationMutation.isError,
+    isNaviationPending: navigationMutation.isPending,
+    isNavigatingPrev:
+      navigationMutation.isPending &&
+      navigationMutation.variables?.type === 'prev',
+    isNavigatingNext:
+      navigationMutation.isPending &&
+      navigationMutation.variables?.type === 'next',
   }
 }

@@ -45,7 +45,7 @@ export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
             <Image
               id={eventData.image?.id.toString()}
               src={eventData.image?.url ?? DEFAULT_IMAGE}
-              alt={eventData.caption || eventData.title}
+              alt={eventData.caption ?? '플로깅 이미지'}
               fill
               sizes="w-100 h-100"
               className="rounded-lg object-cover"
@@ -68,8 +68,8 @@ export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
           <div className="flex items-center gap-2 text-text">
             <Clock className="h-4 w-4" />
             <p className="line-clamp-1 text-sm">
-              {formatDate(eventData.startDate)} ~{' '}
-              {formatDate(eventData.endDate)}
+              {formatDate(eventData.startDate ?? '-')} ~
+              {formatDate(eventData.endDate ?? '-')}
             </p>
           </div>
         </div>

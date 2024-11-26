@@ -21,7 +21,12 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { Card, CardContent } from '@/components/ui/card'
-import { IEventContentCarouselProps } from '@/types/IEvent'
+import {
+  IEventContentCarouselProps,
+  IEventDetailSectionProps,
+} from '@/types/IEvent'
+import { useToast } from '@/hooks/use-toast'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
   return (
@@ -58,10 +63,12 @@ const EventDetailSection = ({
   isError,
   error,
   onChangeEventDetail,
-}: any) => {
+  isNavigatingPrev,
+  isNavigatingNext,
+}: IEventDetailSectionProps) => {
   if (isLoading) {
     return (
-      <section className="flex flex-[8] flex-col gap-10 md:col-span-6">
+      <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
         <LoadingSkeleton />
       </section>
     )
@@ -95,7 +102,9 @@ const EventDetailSection = ({
           <div className="flex justify-between">
             <div className="flex items-center">
               <MapPin className="h-4 w-4" />
-              <p className="text-sm font-bold text-text">양재도서관</p>
+              <p className="text-sm font-bold text-text">
+                {eventDetail?.location}
+              </p>
             </div>
             <div>
               <p className="text-sm text-textLight">
@@ -136,10 +145,6 @@ const EventDetailSection = ({
             content={eventDetail?.location ?? '-'}
           />
           <LabeledContent
-            label="지원내용"
-            content={eventDetail?.participationTarget ?? '-'}
-          />
-          <LabeledContent
             label="담당자명"
             content={eventDetail?.managerName ?? '-'}
           />
@@ -152,27 +157,35 @@ const EventDetailSection = ({
           <span className="border-green- whitespace-nowrap rounded-md border bg-green p-1 text-xs font-semibold text-white">
             상세내용
           </span>
-          <p className="mb-4 text-xs text-text">
+          <p className="mb-4 whitespace-pre-wrap text-xs text-text">
             {eventDetail?.content ?? '-'}
           </p>
         </div>
       </div>
       <div className="flex items-center justify-between">
         <Button
-          className="bg-solid"
+          className="min-w-[120px] bg-solid"
           onClick={() => {
             onChangeEventDetail('prev')
           }}
         >
-          이전 이벤트 보기
+          {isNavigatingPrev ? (
+            <LoadingSpinner color="grey" />
+          ) : (
+            '이전 이벤트 보기'
+          )}
         </Button>
         <Button
-          className="bg-solid"
+          className="min-w-[120px] bg-solid"
           onClick={() => {
             onChangeEventDetail('next')
           }}
         >
-          다음 이벤트 보기
+          {isNavigatingNext ? (
+            <LoadingSpinner color="grey" />
+          ) : (
+            '다음 이벤트 보기'
+          )}
         </Button>
       </div>
     </section>
@@ -185,6 +198,7 @@ export default function EventDetailPage() {
   const pageSize = 6 // 페이지 당 아이템 수
   const path = usePathname()
   const eventId = path.split('/').pop()
+  const { toast } = useToast()
 
   const handlePageChange = async (newPage: number) => {
     setCurrentPage(newPage)
@@ -195,7 +209,7 @@ export default function EventDetailPage() {
     eventDetail,
     eventDetailIsError,
     eventDetailIsLoading,
-
+    eventDetailError,
     //이벤트 페이지네이션
     eventsList,
     eventListIsError,
@@ -203,6 +217,8 @@ export default function EventDetailPage() {
 
     // 이전 이벤트, 다음 이벤트
     navigate,
+    isNavigatingPrev,
+    isNavigatingNext,
   } = useEventsQueries({
     currentPage,
     pageSize,
@@ -216,12 +232,13 @@ export default function EventDetailPage() {
       { type, currentId: eventDetail.id },
       {
         onError: (error: Error) => {
-          console.log('error', error)
-          // toast({
-          //   title: '이동 실패',
-          //   description: '이벤트 데이터를 불러오는데 실패했습니다.',
-          //   variant: 'destructive',
-          // })
+          console.log('errosaddsaㅇㅇㅇr', error.message)
+          toast({
+            title: '이동 실패',
+            description: `${error.message}`,
+            variant: 'destructive',
+            duration: 1500,
+          })
         },
       },
     )
@@ -232,13 +249,15 @@ export default function EventDetailPage() {
       {/* // 이벤트 이미지 밎 상세 정보 */}
       <div className="flex w-full gap-6">
         {/* 왼쪽 뉴스 디테일 */}
-        <div className="min-w-0 laptop:flex-[8]">
+        <div className="w-full min-w-0 laptop:flex-[8]">
           <EventDetailSection
             eventDetail={eventDetail}
             isLoading={eventDetailIsLoading}
             isError={eventDetailIsError}
-            error={eventDetailIsError}
+            error={eventDetailError}
             onChangeEventDetail={onChangeEventDetail}
+            isNavigatingPrev={isNavigatingPrev}
+            isNavigatingNext={isNavigatingNext}
           />
         </div>
 
