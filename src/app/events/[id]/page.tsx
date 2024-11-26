@@ -61,7 +61,7 @@ const EventDetailSection = ({
 }: any) => {
   if (isLoading) {
     return (
-      <section className="flex flex-[8] flex-col gap-10 md:col-span-6">
+      <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
         <LoadingSkeleton />
       </section>
     )
@@ -95,7 +95,9 @@ const EventDetailSection = ({
           <div className="flex justify-between">
             <div className="flex items-center">
               <MapPin className="h-4 w-4" />
-              <p className="text-sm font-bold text-text">양재도서관</p>
+              <p className="text-sm font-bold text-text">
+                {eventDetail?.location}
+              </p>
             </div>
             <div>
               <p className="text-sm text-textLight">
@@ -136,10 +138,6 @@ const EventDetailSection = ({
             content={eventDetail?.location ?? '-'}
           />
           <LabeledContent
-            label="지원내용"
-            content={eventDetail?.participationTarget ?? '-'}
-          />
-          <LabeledContent
             label="담당자명"
             content={eventDetail?.managerName ?? '-'}
           />
@@ -152,7 +150,7 @@ const EventDetailSection = ({
           <span className="border-green- whitespace-nowrap rounded-md border bg-green p-1 text-xs font-semibold text-white">
             상세내용
           </span>
-          <p className="mb-4 text-xs text-text">
+          <p className="mb-4 whitespace-pre-wrap text-xs text-text">
             {eventDetail?.content ?? '-'}
           </p>
         </div>
@@ -232,7 +230,7 @@ export default function EventDetailPage() {
       {/* // 이벤트 이미지 밎 상세 정보 */}
       <div className="flex w-full gap-6">
         {/* 왼쪽 뉴스 디테일 */}
-        <div className="min-w-0 laptop:flex-[8]">
+        <div className="w-full min-w-0 laptop:flex-[8]">
           <EventDetailSection
             eventDetail={eventDetail}
             isLoading={eventDetailIsLoading}
