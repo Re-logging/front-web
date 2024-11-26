@@ -4,6 +4,18 @@ export interface IEventsQueries {
   eventId?: string
 }
 
+export type EventDetailType = 'prev' | 'next'
+
+export interface IEventDetailSectionProps {
+  eventDetail: IEventContentCard | null // null 포함하여 데이터가 없을 경우 대비
+  isLoading: boolean
+  isError: boolean
+  error: Error | null
+  onChangeEventDetail: (type: EventDetailType) => void
+  isNavigatingNext: boolean
+  isNavigatingPrev: boolean
+}
+
 export interface IEventContentCarouselProps {
   imageList: IEventContentCardImage[]
 }
@@ -15,17 +27,28 @@ export interface IEventContentCardImage {
   orderIndex?: number
 }
 
+export interface IEventImageType {
+  id: number
+  url: string
+  caption: string
+  orderIndex: number
+}
+
 // 개별 플로깅 이벤트 타입 정의
 export interface IEventContentCard {
   id: string
-  title: string
-  location: string
-  region: string
-  hits: number
-  image?: IEventContentCardImage
-  startDate: string
-  endDate: string
-  caption: string
+  title?: string
+  location?: string
+  region?: string
+  hits?: number
+  imageList: IEventImageType[]
+  image?: IEventImageType
+  startDate?: string
+  endDate?: string
+  caption?: string
+  managerName?: string
+  phoneNumber?: string
+  content?: string
 }
 
 export interface IPageable {
