@@ -15,6 +15,7 @@ import { IMeetupDetailSectionProps, MeetupDetailType } from '@/types/IMeetup'
 import { DEFAULT_IMAGE } from '@/types/INews'
 import { useToast } from '@/hooks/use-toast'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import dayjs from 'dayjs'
 
 const MeetupDetailSection = ({
   meetupDetail,
@@ -86,7 +87,7 @@ const MeetupDetailSection = ({
         <div className="mb-4 grid grid-cols-1 gap-4 rounded-lg text-sm laptop:grid-cols-2">
           <LabeledContent
             label="참여기간"
-            content={`${meetupDetail.startDate} - ${meetupDetail.endDate}`}
+            content={`${dayjs(meetupDetail.startDate).format('YYYY-MM-DD HH:mm')} ~ ${dayjs(meetupDetail.endDate).format('YYYY-MM-DD HH:mm')}`}
           />
 
           <LabeledContent
