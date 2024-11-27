@@ -32,6 +32,10 @@ import { useForm } from 'react-hook-form'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import dayjs from 'dayjs'
+import { useState } from 'react'
+import Image from 'next/image'
+import IconGarbage from '@/assets/icon_garbage.svg'
+import { useCreateMeetupQueries } from '@/hooks/useMeetupList'
 
 const MeetupFormSchema = z
   .object({
@@ -39,6 +43,7 @@ const MeetupFormSchema = z
     content: z.string().min(1, '모임 소개를 입력해주세요'),
     location: z.string().min(1, '활동 장소를 입력해주세요'),
     region: z.string().min(1, '지역을 선택해주세요'),
+    supportDetails: z.string().min(1, '지원 내용을 입력해주세요'),
     startDate: z.date({
       required_error: '시작일을 선택해주세요',
     }),
@@ -46,8 +51,7 @@ const MeetupFormSchema = z
       required_error: '종료일을 선택해주세요',
     }),
     participantTarget: z.string().min(1, '모임원 자격을 입력해주세요'),
-    supportDetails: z.string().min(1, '특이사항을 입력해주세요'),
-    activityHours: z.string().min(1, '모임 시간을 입력해주세요'),
+    activityHours: z.string().min(1, '활동 시간을 입력해주세요'),
     contactPerson: z.string().min(1, '담당자 이름을 입력해주세요'),
     contactNumber: z
       .string({
@@ -62,13 +66,18 @@ const MeetupFormSchema = z
         required_error: '지원 링크를 입력해주세요',
       })
       .url('올바른 URL 형식이 아닙니다'),
+    image: z.any().optional(),
   })
   .refine(
     (data) => {
-      return dayjs(data.endDate).isAfter(data.startDate)
+      return (
+        dayjs(data.endDate)
+          .startOf('day')
+          .diff(dayjs(data.startDate).startOf('day')) >= 0
+      )
     },
     {
-      message: '종료일은 시작일 이후여야 합니다',
+      message: '종료일은 시작일과 같거나 이후여야 합니다',
       path: ['endDate'],
     },
   )
@@ -85,15 +94,59 @@ export default function MeetupFormModal() {
       startDate: undefined,
       endDate: undefined,
       participantTarget: '',
-      supportDetails: '',
       activityHours: '',
       contactPerson: '',
       contactNumber: '',
       registrationLink: '',
+      supportDetails: '',
+      image: undefined,
     },
   })
 
-  const onSubmit = async (data: z.infer<typeof MeetupFormSchema>) => {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const { createMeetup } = useCreateMeetupQueries()
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // 파일 크기 체크 (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: '파일 크기 초과',
+        description: '5MB 이하의 파일만 업로드 가능합니다.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    // 파일 형식 체크
+    if (!file.type.match(/^image\/(jpeg|png|gif)$/)) {
+      toast({
+        title: '잘못된 파일 형식',
+        description: 'jpg, png, gif 파일만 업로드 가능합니다.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result as string)
+    }
+    reader.readAsDataURL(file)
+    setImageFile(file)
+  }
+
+  const handleImageRemove = () => {
+    setPreviewUrl(null)
+    setImageFile(null)
+  }
+
+  const handleSubmit = async (data: z.infer<typeof MeetupFormSchema>) => {
+    console.log('Form submitted with data:', data) // 폼 제출 확인용 로그
+
     try {
       const formData = new FormData()
 
@@ -106,29 +159,46 @@ export default function MeetupFormModal() {
 
       // FormData에 데이터 추가
       Object.entries(formattedData).forEach(([key, value]) => {
-        formData.append(key, value)
+        if (key !== 'image') {
+          formData.append(key, value)
+        }
       })
 
-      const response = await fetch('/api/ploggingMeetups', {
-        method: 'POST',
-        body: formData,
+      if (imageFile) {
+        formData.append('image', imageFile)
+      }
+
+      await createMeetup.mutateAsync({
+        request: {
+          title: data.title,
+          content: data.content,
+          location: data.location,
+          region: data.region,
+          supportDetails: data.supportDetails,
+          startDate: data.startDate.toISOString(),
+          endDate: data.endDate.toISOString(),
+          participantTarget: data.participantTarget,
+          activityHours: data.activityHours,
+          contactPerson: data.contactPerson,
+          contactNumber: data.contactNumber,
+          registrationLink: data.registrationLink,
+        },
+        image: imageFile || null,
       })
-
-      if (!response.ok) throw new Error('모임 등록에 실패했습니다')
-
-      router.back()
       toast({
-        title: '모임이 등록되었습니다',
+        title: '플로깅 모임이 등록되었습니다',
         variant: 'default',
         duration: 1500,
       })
-    } catch (error: any) {
+      router.back()
+    } catch (error) {
       toast({
         title: '오류가 발생했습니다',
-        description: `${error?.message}`,
+        description: '모임 등록에 실패했습니다.',
         variant: 'destructive',
         duration: 1500,
       })
+      console.error('Error:', error)
     }
   }
 
@@ -147,7 +217,10 @@ export default function MeetupFormModal() {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-6"
+          >
             <div className="px-6 pb-4">
               <div className="w-full space-y-6">
                 {/* 모임 이름 필드 */}
@@ -200,6 +273,25 @@ export default function MeetupFormModal() {
                       </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="예: 서울시 강남구" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* 지원 내용 필드 */}
+                <FormField
+                  control={form.control}
+                  name="supportDetails"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2">
+                      <FormLabel>
+                        지원 내용 <span className="text-green">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="예: 지원 내용을 적어주세요."
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -326,14 +418,14 @@ export default function MeetupFormModal() {
                     </FormItem>
                   )}
                 />
-                {/*       모임시간 필드 */}
+                {/*       활동시간 필드 */}
                 <FormField
                   control={form.control}
                   name="activityHours"
                   render={({ field }) => (
                     <FormItem className="space-y-2">
                       <FormLabel>
-                        모임시간
+                        활동시간
                         <span className="text-green">*</span>
                       </FormLabel>
                       <FormControl>
@@ -406,6 +498,61 @@ export default function MeetupFormModal() {
                     </FormItem>
                   )}
                 />
+                {/* 이미지 업로드 섹션 */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm font-medium">첨부 이미지</Label>
+                    <Label className="text-sm font-medium text-textLight">
+                      이미지 미첨부시 랜덤이미지가 적용됩니다.
+                    </Label>
+                  </div>
+
+                  <div className="relative space-y-4 rounded bg-background p-4">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-4 top-4 h-6 w-6"
+                      onClick={handleImageRemove}
+                    >
+                      {previewUrl && <IconGarbage className="h-4 w-4" />}
+                    </Button>
+
+                    {previewUrl && (
+                      <div className="mx-auto h-32 w-32">
+                        <Image
+                          src={previewUrl}
+                          alt="Meetup image preview"
+                          className="h-full w-full rounded object-cover"
+                          width={128}
+                          height={128}
+                        />
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="file"
+                        accept="image/jpeg,image/png,image/gif"
+                        className="hidden"
+                        id="meetup-image"
+                        onChange={handleImageChange}
+                      />
+                      <Label
+                        htmlFor="meetup-image"
+                        className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-300 px-3 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50"
+                      >
+                        {previewUrl
+                          ? '이미지 변경하기'
+                          : '이미지를 첨부해주세요'}
+                      </Label>
+                    </div>
+
+                    <p className="text-xs text-gray-500">
+                      최대 5MB, jpg/png/gif 파일만 업로드 가능합니다.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 

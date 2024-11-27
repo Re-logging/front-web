@@ -108,3 +108,63 @@ export const useMeetupQueries = ({
       navigationMutation.variables?.type === 'next',
   }
 }
+
+interface IMeetupFormData {
+  title: string
+  content: string
+  location: string
+  region: string
+  startDate?: string
+  endDate?: string
+  participantTarget: string
+  activityHours: string
+  contactPerson: string
+  contactNumber: string
+  registrationLink: string
+  supportDetails: string
+  image?: File
+}
+
+interface IMeetupFormRequest {
+  request: IMeetupFormData
+  image?: File | null
+}
+
+export const useCreateMeetupQueries = () => {
+  const queryClient = useQueryClient()
+  const router = useRouter()
+
+  const createMeetupMutation = useMutation({
+    mutationFn: async (data: IMeetupFormRequest) => {
+      const formData = new FormData()
+
+      formData.append('request', JSON.stringify(data.request))
+      formData.append('image', data.image || 'null')
+
+      const response = await fetch(`/api/ploggingMeetups`, {
+        credentials: 'include',
+        method: 'POST',
+        body: formData,
+      })
+      if (!response.ok) throw new Error('모임 등록 실패')
+
+      return response.json()
+    },
+    onSuccess: () => {
+      console.log('모임 등록 성공')
+      queryClient.invalidateQueries({ queryKey: ['meetups'] })
+      router.back()
+    },
+    onError: (error) => {
+      console.error('모임 등록 실패111', error)
+      throw new Error('모임 등록 실패')
+    },
+  })
+
+  return {
+    createMeetup: createMeetupMutation,
+    isCreatingMeetup: createMeetupMutation.isPending,
+    isCreateMeetupError: createMeetupMutation.isError,
+    createMeetupError: createMeetupMutation.error,
+  }
+}
