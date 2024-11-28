@@ -249,7 +249,7 @@ export default function MeetupFormModal() {
                   render={({ field }) => (
                     <FormItem className="space-y-2">
                       <FormLabel>
-                        모임소개 및 활동목적
+                        모임 소개 및 활동 목적
                         <span className="text-green">*</span>
                       </FormLabel>
                       <FormControl>
@@ -319,7 +319,7 @@ export default function MeetupFormModal() {
                 {/* 날짜 선택 필드 */}
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">
-                    활동기간 <span className="text-green">*</span>
+                    활동 기간 <span className="text-green">*</span>
                   </Label>
                   <div className="flex gap-4">
                     <FormField
@@ -425,7 +425,7 @@ export default function MeetupFormModal() {
                   render={({ field }) => (
                     <FormItem className="space-y-2">
                       <FormLabel>
-                        활동시간
+                        활동 시간
                         <span className="text-green">*</span>
                       </FormLabel>
                       <FormControl>
@@ -485,7 +485,7 @@ export default function MeetupFormModal() {
                   render={({ field }) => (
                     <FormItem className="space-y-2">
                       <FormLabel>
-                        지원링크
+                        지원 링크
                         <span className="text-green">*</span>
                       </FormLabel>
                       <FormControl>

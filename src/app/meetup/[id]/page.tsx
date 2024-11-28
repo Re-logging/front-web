@@ -53,16 +53,11 @@ const MeetupDetailSection = ({
             <span className="text-sm font-bold text-orange">
               {meetupDetail?.region}
             </span>
-            <span className="text-sm font-bold text-textLight">일회성</span>
-            <span className="text-sm font-bold text-textLight">
-              봉사시간 부여
-            </span>
           </div>
           <h1 className="text-3xl font-bold">{meetupDetail?.title}</h1>
           <div className="flex justify-between">
             <div className="flex items-center">
               <MapPin className="h-4 w-4" />
-              <p className="text-sm font-bold text-text">양재도서관</p>
             </div>
             <div>
               <p className="text-sm text-textLight">
@@ -86,25 +81,50 @@ const MeetupDetailSection = ({
         {/* 상세 내용 제외 */}
         <div className="mb-4 grid grid-cols-1 gap-4 rounded-lg text-sm laptop:grid-cols-2">
           <LabeledContent
-            label="참여기간"
+            label="활동 기간"
             content={`${dayjs(meetupDetail.startDate).format('YYYY-MM-DD HH:mm')} ~ ${dayjs(meetupDetail.endDate).format('YYYY-MM-DD HH:mm')}`}
           />
-
           <LabeledContent
-            label="참여장소"
+            label="모임 이름"
+            content={meetupDetail?.title ?? '-'}
+          />
+          <LabeledContent label="지역" content={meetupDetail?.region ?? '-'} />
+          <LabeledContent
+            label="지원 내용"
+            content={meetupDetail?.supportDetails ?? '-'}
+          />
+          <LabeledContent
+            label="활동 장소"
             content={meetupDetail?.location ?? '-'}
           />
-
-          <LabeledContent label="봉사점수" content="0.5시간" />
           <LabeledContent
-            label="참여방법"
-            content="양재천 ~ 양재천 일대를 걸으며 쓰레기(플로깅)"
+            label="모임원 자격"
+            content={meetupDetail?.participantTarget ?? '-'}
+          />
+          <LabeledContent
+            label="활동 시간"
+            content={meetupDetail?.activityHours ?? '-'}
+          />
+          <LabeledContent
+            label="담당자"
+            content={meetupDetail?.contactPerson ?? '-'}
+          />{' '}
+          <LabeledContent
+            label="연락처"
+            content={meetupDetail?.contactNumber ?? '-'}
+          />{' '}
+          <LabeledContent
+            label="지원링크"
+            content={meetupDetail?.registrationLink ?? '-'}
           />
         </div>
         <div className="prose max-w-none space-y-4 text-sm">
           <span className="border-green- whitespace-nowrap rounded-md border bg-green p-1 text-xs font-semibold text-white">
-            상세내용
+            모임 소개 및 활동 목적
           </span>
+          <p className="mb-4 whitespace-pre-wrap text-xs text-text">
+            {meetupDetail?.content ?? '-'}
+          </p>
         </div>
       </div>
       <div className="flex items-center justify-between">
