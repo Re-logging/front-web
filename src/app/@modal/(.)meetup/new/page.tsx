@@ -209,7 +209,7 @@ export default function MeetupFormModal() {
         if (!open) router.back()
       }}
     >
-      <DialogContent className="h-dvh w-full overflow-y-auto bg-white p-0 laptop:max-h-[689px] laptop:max-w-[800px]">
+      <DialogContent className="mx-auto flex h-[100dvh] max-w-[800px] flex-col overflow-hidden overflow-y-auto bg-white p-0 laptop:h-auto laptop:max-h-[689px]">
         <DialogHeader className="w-full items-center p-6 pb-2">
           <DialogTitle className="text-lg font-semibold">
             플로깅 모임 만들기
@@ -221,14 +221,14 @@ export default function MeetupFormModal() {
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
           >
-            <div className="px-6 pb-4">
+            <div className="w-full max-w-full px-6 pb-4">
               <div className="w-full space-y-6">
                 {/* 모임 이름 필드 */}
                 <FormField
                   control={form.control}
                   name="title"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
                         모임 이름 <span className="text-green">*</span>
                       </FormLabel>
@@ -247,9 +247,9 @@ export default function MeetupFormModal() {
                   control={form.control}
                   name="content"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
-                        모임소개 및 활동목적
+                        모임 소개 및 활동 목적
                         <span className="text-green">*</span>
                       </FormLabel>
                       <FormControl>
@@ -267,7 +267,7 @@ export default function MeetupFormModal() {
                   control={form.control}
                   name="region"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
                         지역 <span className="text-green">*</span>
                       </FormLabel>
@@ -283,7 +283,7 @@ export default function MeetupFormModal() {
                   control={form.control}
                   name="supportDetails"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
                         지원 내용 <span className="text-green">*</span>
                       </FormLabel>
@@ -302,7 +302,7 @@ export default function MeetupFormModal() {
                   control={form.control}
                   name="location"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
                         활동 장소 <span className="text-green">*</span>
                       </FormLabel>
@@ -319,9 +319,9 @@ export default function MeetupFormModal() {
                 {/* 날짜 선택 필드 */}
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">
-                    활동기간 <span className="text-green">*</span>
+                    활동 기간 <span className="text-green">*</span>
                   </Label>
-                  <div className="flex gap-4">
+                  <div className="flex flex-col items-center gap-4 laptop:flex-row">
                     <FormField
                       control={form.control}
                       name="startDate"
@@ -403,7 +403,7 @@ export default function MeetupFormModal() {
                   control={form.control}
                   name="participantTarget"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
                         모임원 자격
                         <span className="text-green">*</span>
@@ -423,9 +423,9 @@ export default function MeetupFormModal() {
                   control={form.control}
                   name="activityHours"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
-                        활동시간
+                        활동 시간
                         <span className="text-green">*</span>
                       </FormLabel>
                       <FormControl>
@@ -443,7 +443,7 @@ export default function MeetupFormModal() {
                   control={form.control}
                   name="contactPerson"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
                         담당자
                         <span className="text-green">*</span>
@@ -463,7 +463,7 @@ export default function MeetupFormModal() {
                   control={form.control}
                   name="contactNumber"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
                         연락처
                         <span className="text-green">*</span>
@@ -483,9 +483,9 @@ export default function MeetupFormModal() {
                   control={form.control}
                   name="registrationLink"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="w-full space-y-2">
                       <FormLabel>
-                        지원링크
+                        지원 링크
                         <span className="text-green">*</span>
                       </FormLabel>
                       <FormControl>
@@ -499,7 +499,7 @@ export default function MeetupFormModal() {
                   )}
                 />
                 {/* 이미지 업로드 섹션 */}
-                <div className="space-y-2">
+                <div className="w-full space-y-2">
                   <div className="flex items-center justify-between">
                     <Label className="text-sm font-medium">첨부 이미지</Label>
                     <Label className="text-sm font-medium text-textLight">
@@ -555,9 +555,8 @@ export default function MeetupFormModal() {
                 </div>
               </div>
             </div>
-
             <DialogFooter className="p-6 pt-4">
-              <div className="mx-auto flex w-full flex-col items-end gap-4 laptop:flex-row">
+              <div className="mx-auto flex w-full flex-col-reverse items-end gap-4 laptop:flex-row">
                 <Button
                   type="button"
                   variant="secondary"

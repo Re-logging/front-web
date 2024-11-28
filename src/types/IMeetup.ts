@@ -2,7 +2,7 @@ export type MeetupDetailType = 'prev' | 'next'
 
 // MeetupDetailSection의 props 타입 정의
 export interface IMeetupDetailSectionProps {
-  meetupDetail: IMeetupContentCard | null // null 포함하여 데이터가 없을 경우 대비
+  meetupDetail: IMeetupContentCard | null
   isLoading: boolean
   isError: boolean
   error: Error | null
@@ -19,13 +19,20 @@ export interface ImeetupQueries {
 export interface IMeetupContentCard {
   id: number
   title: string
-  region: string
+  content: string
   location: string
+  region: string
   startDate: string
   endDate: string
-  imageUrl: string
+  participantTarget: string
+  supportDetails: string
   activityHours: string
+  contactPerson: string
+  contactNumber: string
+  registrationLink: string
+  imageUrl: string
   hits: number
+  commentList: any[]
 }
 
 // 컨텐츠 배열 타입 정의
