@@ -4,22 +4,13 @@ import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import { MapPin, Clock } from 'lucide-react'
 import { DEFAULT_IMAGE } from '@/types/INews'
+import dayjs from 'dayjs'
 
 export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
   const router = useRouter()
 
   const onClickEventDetail = (id: string) => {
     router.push(`/events/${id}`)
-  }
-
-  // 날짜 포맷팅 함수
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
   }
 
   return (
@@ -68,8 +59,8 @@ export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
           <div className="flex items-center gap-2 text-text">
             <Clock className="h-4 w-4" />
             <p className="line-clamp-1 text-sm">
-              {formatDate(eventData.startDate ?? '-')} ~
-              {formatDate(eventData.endDate ?? '-')}
+              {dayjs(eventData.startDate).format('YYYY-MM-DD')} ~{' '}
+              {dayjs(eventData.endDate).format('YYYY-MM-DD')}
             </p>
           </div>
         </div>

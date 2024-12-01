@@ -7,7 +7,7 @@ export interface IEventsQueries {
 export type EventDetailType = 'prev' | 'next'
 
 export interface IEventDetailSectionProps {
-  eventDetail: IEventContentCard | null // null 포함하여 데이터가 없을 경우 대비
+  eventDetail: IEventContentCard | undefined
   isLoading: boolean
   isError: boolean
   error: Error | null
@@ -49,6 +49,9 @@ export interface IEventContentCard {
   managerName?: string
   phoneNumber?: string
   content?: string
+  status?: number | undefined
+  message?: string | undefined
+  url?: string | undefined
 }
 
 export interface IPageable {
