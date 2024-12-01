@@ -52,9 +52,9 @@ export function ContentsPagination({
         {getPageNumbers().map((pageNum) => (
           <PaginationItem key={pageNum}>
             <PaginationLink
-              className={`${
+              className={` ${
                 currentPage === pageNum
-                  ? 'bg-green text-white'
+                  ? 'bg-green text-white [&>svg]:stroke-[0]'
                   : 'text-textLight'
               }`}
               isActive={currentPage === pageNum}

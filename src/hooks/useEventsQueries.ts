@@ -51,10 +51,26 @@ export const useEventsQueries = ({
 
   const eventDetailQuery = useQuery({
     queryKey: ['eventDetail', eventId],
-    queryFn: () => fetchEventDetail(eventId ?? ''),
+    queryFn: async () => {
+      try {
+        const response = await fetchEventDetail(eventId ?? '')
+        if (!response) {
+          throw new Error('이벤트를 찾을 수 없습니다.')
+        }
+        return response
+      } catch (error: unknown) {
+        // 에러 객체 강화
+        throw {
+          message:
+            error instanceof Error
+              ? error.message
+              : '이벤트를 불러오는데 실패했습니다.',
+          status: (error as any)?.status || 404,
+        }
+      }
+    },
     enabled: !!eventId,
-    staleTime: 5 * 60 * 1000, // 데이터가 "신선"하다고 간주되는 시간 (5분)
-    gcTime: 30 * 60 * 1000, // 데이터가 캐시에 유지되는 시간 (30분)
+    retry: false, // 404 에러의 경우 재시도하지 않음
   })
 
   // 이전/다음 이벤트 네비게이션

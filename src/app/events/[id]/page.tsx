@@ -31,9 +31,9 @@ import LoadingSpinner from '@/components/LoadingSpinner'
 function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
   return (
     <Carousel className="mx-auto w-4/5">
-      <CarouselContent>
-        {imageList.map((image: any) => (
-          <CarouselItem key={image.id}>
+      <CarouselContent className="max-h-dvh">
+        {imageList?.map((image: any) => (
+          <CarouselItem key={image.id} className="overflow-auto">
             <div className="p-1">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center p-6">
@@ -74,12 +74,14 @@ const EventDetailSection = ({
     )
   }
 
-  if (isError || !eventDetail) {
+  if (isError || error || eventDetail?.status === 404 || !eventDetail) {
+    const errorMessage =
+      eventDetail?.message || '데이터를 불러오는데 실패했습니다.'
+    console.error('Event Detail Error:', { isError, error, eventDetail })
+
     return (
       <section className="flex flex-[8] flex-col gap-10 md:col-span-6">
-        <ErrorAlert
-          error={error?.message || '데이터를 불러오는데 실패했습니다'}
-        />
+        <ErrorAlert error={errorMessage} />
       </section>
     )
   }
@@ -115,7 +117,7 @@ const EventDetailSection = ({
         </header>
       </div>
       <div className="relative w-full">
-        {eventDetail?.imageList.length <= 1 ? (
+        {eventDetail?.imageList?.length <= 1 ? (
           <Image
             src={
               eventDetail?.imageList.length > 0
@@ -143,6 +145,11 @@ const EventDetailSection = ({
           <LabeledContent
             label="참여장소"
             content={eventDetail?.location ?? '-'}
+          />
+          <LabeledContent
+            label="참여방법"
+            type="link"
+            content={eventDetail?.url ?? '-'}
           />
           <LabeledContent
             label="담당자명"
@@ -232,7 +239,6 @@ export default function EventDetailPage() {
       { type, currentId: eventDetail.id },
       {
         onError: (error: Error) => {
-          console.log('errosaddsaㅇㅇㅇr', error.message)
           toast({
             title: '이동 실패',
             description: `${error.message}`,
