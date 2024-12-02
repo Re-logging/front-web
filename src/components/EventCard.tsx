@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import { MapPin, Clock } from 'lucide-react'
-import { DEFAULT_IMAGE } from '@/types/INews'
+import { getRandomDefaultImage } from '@/constans/images'
 import dayjs from 'dayjs'
 
 export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
@@ -35,7 +35,7 @@ export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
           <div className="relative h-[100px] w-full rounded-lg md:flex-[4]">
             <Image
               id={eventData.image?.id.toString()}
-              src={eventData.image?.url ?? DEFAULT_IMAGE}
+              src={eventData.image?.url ?? getRandomDefaultImage()}
               alt={eventData.caption ?? '플로깅 이미지'}
               fill
               sizes="w-100 h-100"

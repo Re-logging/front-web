@@ -1,5 +1,5 @@
-import { DEFAULT_IMAGE, NewsArticleCard } from '@/types/INews'
-
+import { NewsArticleCard } from '@/types/INews'
+import { getRandomDefaultImage } from '@/constans/images'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -57,7 +57,7 @@ const NewsCard = ({ article }: { article: NewsArticleCard }) => {
         </div>
         <div className="relative flex-[4]">
           <Image
-            src={article.imagePath ?? DEFAULT_IMAGE}
+            src={article.imagePath ?? getRandomDefaultImage()}
             alt={article?.title}
             fill
             sizes="w-100 h-100"

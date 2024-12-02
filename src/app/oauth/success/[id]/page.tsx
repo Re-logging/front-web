@@ -1,13 +1,14 @@
 // app/oauth/success/[provider]/page.tsx
 'use client'
 
+import LoadingScreen from '@/components/layouts/LoadingScreen'
 import { useOAuth } from '@/hooks/useOAuth'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 type SocialType = 'KAKAO' | 'GOOGLE'
 
-export default function OAuthSuccessPage() {
+export default function LoadingPage() {
   const router = useRouter()
   const params = useParams()
   const searchParams = useSearchParams()
@@ -46,15 +47,5 @@ export default function OAuthSuccessPage() {
     redirectUri,
   ])
 
-  // 로딩 상태 표시를 위한 UI 추가
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="text-center">
-        <h2 className="text-xl font-semibold">로그인 처리 중...</h2>
-        <p className="mt-2 text-gray-600">잠시만 기다려주세요.</p>
-        {/* 로딩 스피너 추가 */}
-        <div className="mt-4 h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900"></div>
-      </div>
-    </div>
-  )
+  return <LoadingScreen />
 }

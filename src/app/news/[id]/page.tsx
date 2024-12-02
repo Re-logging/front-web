@@ -1,7 +1,7 @@
 'use client'
 
 import HomeButton from '@/components/HomeButton'
-import { DEFAULT_IMAGE } from '@/types/INews'
+import { getRandomDefaultImage } from '@/constans/images'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -65,7 +65,7 @@ const EventDetailSection = ({
       </div>
       <div className="mb-2">
         <Image
-          src={newsDetail?.imagePath ?? DEFAULT_IMAGE}
+          src={newsDetail?.imagePath ?? getRandomDefaultImage()}
           alt="Article main image"
           width={200}
           height={200}

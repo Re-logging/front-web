@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useRouter } from 'next/navigation'
@@ -13,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Image from 'next/image'
-import { DEFAULT_IMAGE } from '@/types/INews'
+import { getRandomDefaultImage } from '@/constans/images'
 import { useEffect, useState } from 'react'
 import EditIcon from '@/assets/icon_edit.svg'
 import { useAuthStore, User } from '@/store/authStore'
@@ -73,7 +72,7 @@ function BeforeEditingProfile({
             <div className="mt-2 flex justify-center">
               <div className="relative h-32 w-32 rounded-md bg-gray-100">
                 <Image
-                  src={user?.image ?? DEFAULT_IMAGE}
+                  src={user?.image ?? getRandomDefaultImage()}
                   alt="Profile"
                   fill
                   className="rounded-md object-cover"

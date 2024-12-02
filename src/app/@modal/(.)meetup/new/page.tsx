@@ -431,7 +431,7 @@ export default function MeetupFormModal() {
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="숫자로 적어주세요. 예: 2"
+                          placeholder="1회 당 모임 시간을 입력해주세요. 예: 2시간"
                         />
                       </FormControl>
                       <FormMessage />
