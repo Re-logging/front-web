@@ -36,7 +36,7 @@ export default function Home() {
   ]
 
   const handleTabChange = (tabId: string) => {
-    router.push(`/?tab=${tabId}`)
+    router.replace(`/?tab=${tabId}`, { scroll: false })
   }
 
   const renderContent = () => {
@@ -93,7 +93,7 @@ export default function Home() {
                 return (
                   <button
                     key={tab.id}
-                    className={`block whitespace-nowrap px-6 py-4 text-gray-600 hover:text-textLight ${
+                    className={`block whitespace-nowrap px-6 pb-1 pt-4 text-gray-600 hover:text-textLight ${
                       tab.id === currentTab
                         ? 'border-b-2 border-green font-medium text-text'
                         : ''
