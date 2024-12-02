@@ -25,7 +25,6 @@ export function MyPageModal() {
     closeModal()
   }
 
-  console.log
   return (
     // <div className="">
     <CommonModal
@@ -37,17 +36,17 @@ export function MyPageModal() {
       title={`${user?.name} 님`}
       closeButtonLabel="로그아웃"
       className="flex h-dvh w-full flex-col justify-center bg-white laptop:max-h-[280px] laptop:max-w-[368px]"
-      buttonClassName="bg-white border-none  justify-end text-base"
+      buttonClassName="border-none  justify-end text-base text-textStrong bg-white"
     >
       <Button
         onClick={() => handleLocationClick('profile')}
-        className="bg-hover flex justify-start rounded-md bg-white px-3 py-2 text-base font-medium text-textStrong"
+        className="bg-hover flex justify-start rounded-md px-3 py-2 text-base font-medium text-textStrong"
       >
         <ProfileIcon /> 프로필 관리 및 수정
       </Button>
       <Button
         onClick={() => handleLocationClick('account')}
-        className="flex justify-start rounded-md bg-white px-3 py-2 text-base font-medium text-textStrong"
+        className="bg-hover flex justify-start rounded-md px-3 py-2 text-base font-medium text-textStrong"
       >
         <SettingIcon /> 계정 관리 및 수정
       </Button>

@@ -48,7 +48,7 @@ const EventDetailSection = ({
     <section className="flex flex-[8] flex-col gap-10 md:col-span-6">
       {/* 상단 제목  */}
       <div className="flex w-full flex-col gap-10">
-        <HomeButton />
+        <HomeButton returnPath="/?tab=news" />
         <header className="mb-6">
           {/* 뉴스 헤드라인 */}
           <h1 className="mb-2 text-2xl font-bold">{newsDetail?.title}</h1>

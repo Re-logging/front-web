@@ -89,7 +89,7 @@ const EventDetailSection = ({
     <section className="flex flex-[8] flex-col gap-10 pb-10 md:col-span-6">
       {/* 이벤트 상단 제목 */}
       <div className="flex w-full flex-col gap-10">
-        <HomeButton />
+        <HomeButton returnPath="/?tab=ploggingEvent" />
         <header className="flex flex-col gap-2">
           <div className="flex w-full gap-2">
             <span className="text-sm font-bold text-orange">

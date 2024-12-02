@@ -60,11 +60,7 @@ export function CommonModal({
           <DialogFooter>
             {footer}
             {showCloseButton && (
-              <Button
-                variant="outline"
-                onClick={handleClose}
-                className={buttonClassName}
-              >
+              <Button onClick={handleClose} className={buttonClassName}>
                 {closeButtonLabel}
               </Button>
             )}
