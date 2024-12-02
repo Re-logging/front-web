@@ -11,7 +11,7 @@ import LabeledContent from '@/components/LabeledContent'
 import { ErrorAlert } from '@/components/status/ErrorAlert'
 import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
 import ContentList from '@/components/ContentList'
-import { DEFAULT_IMAGE } from '@/types/INews'
+import { getRandomDefaultImage } from '@/constans/images'
 
 import {
   Carousel,
@@ -38,7 +38,7 @@ function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center p-6">
                   <Image
-                    src={image.url ?? DEFAULT_IMAGE}
+                    src={image.url ?? getRandomDefaultImage()}
                     alt="Plogging eventDetail main image"
                     width={1920}
                     height={1080}
@@ -122,7 +122,7 @@ const EventDetailSection = ({
             src={
               eventDetail?.imageList.length > 0
                 ? eventDetail?.imageList[0]?.url
-                : DEFAULT_IMAGE
+                : getRandomDefaultImage()
             }
             alt={eventDetail?.imageList[0]?.caption ?? '플로깅 이미지'}
             width={1920}

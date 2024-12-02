@@ -12,7 +12,7 @@ import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
 import ContentList from '@/components/ContentList'
 import { useMeetupQueries } from '@/hooks/useMeetupList'
 import { IMeetupDetailSectionProps, MeetupDetailType } from '@/types/IMeetup'
-import { DEFAULT_IMAGE } from '@/types/INews'
+import { getRandomDefaultImage } from '@/constans/images'
 import { useToast } from '@/hooks/use-toast'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import dayjs from 'dayjs'
@@ -69,7 +69,7 @@ const MeetupDetailSection = ({
       </div>
       <div>
         <Image
-          src={meetupDetail?.imageUrl ?? DEFAULT_IMAGE}
+          src={meetupDetail?.imageUrl ?? getRandomDefaultImage()}
           alt="Plogging meetupDetail main image"
           width={100}
           height={100}

@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import { MapPin, Clock } from 'lucide-react'
-import { DEFAULT_IMAGE } from '@/types/INews'
+import { getRandomDefaultImage } from '@/constans/images'
 import { IMeetupContentCard } from '@/types/IMeetup'
 
 export const MeetupCard = ({
@@ -46,7 +46,7 @@ export const MeetupCard = ({
 
           <div className="relative h-[100px] w-full rounded-lg md:flex-[4]">
             <Image
-              src={meetupData.imageUrl ?? DEFAULT_IMAGE}
+              src={meetupData.imageUrl ?? getRandomDefaultImage()}
               alt={meetupData.title}
               fill
               sizes="w-100 h-100"
