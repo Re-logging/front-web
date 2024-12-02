@@ -2,9 +2,10 @@ import { IEventContentCard } from '@/types/IEvent'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
-import { MapPin, Clock } from 'lucide-react'
 import { getRandomDefaultImage } from '@/constans/images'
 import dayjs from 'dayjs'
+import IconTime from '@/assets/icon_time.svg'
+import IconLocation from '@/assets/icon_location.svg'
 
 export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
   const router = useRouter()
@@ -45,23 +46,27 @@ export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
         </div>
         <div>
           {/* 위치 정보 */}
-          <div className="flex items-center justify-between gap-2 text-text">
-            <div className="flex w-4/5 gap-2">
-              <MapPin className="h-4 w-4" />
+          <div className="flex items-center gap-2 text-text">
+            <div className="flex w-4/5 items-center gap-2">
+              <IconLocation className="min-w-[12px]" />
               <span className="line-clamp-1 text-sm">{eventData.location}</span>
-            </div>
-            <div className="w-1/5 text-sm text-gray-400">
-              조회수 {eventData.hits}
             </div>
           </div>
 
           {/* 날짜 정보 */}
-          <div className="flex items-center gap-2 text-text">
-            <Clock className="h-4 w-4" />
-            <p className="line-clamp-1 text-sm">
-              {dayjs(eventData.startDate).format('YYYY-MM-DD')} ~{' '}
-              {dayjs(eventData.endDate).format('YYYY-MM-DD')}
-            </p>
+          <div className="flex items-center justify-between">
+            <div className="flex flex-row items-center gap-2">
+              <IconTime className="min-w-[12px]" />
+              <span className="line-clamp-1 text-sm">
+                {dayjs(eventData.startDate).format('YYYY-MM-DD')} ~{' '}
+                {dayjs(eventData.endDate).format('YYYY-MM-DD')}
+              </span>
+            </div>
+            <div className="">
+              <span className="w-1/5 text-sm text-gray-400">
+                조회수 {eventData.hits}
+              </span>
+            </div>
           </div>
         </div>
       </div>
