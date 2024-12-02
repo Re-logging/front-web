@@ -6,6 +6,7 @@ import { Suspense } from 'react'
 import { Toaster } from '@/components/ui/toaster'
 import '@/styles/globals.css'
 import { cookies } from 'next/headers'
+import LoadingScreen from '@/components/layouts/LoadingScreen'
 
 export const metadata: Metadata = {
   title: '리로깅',
@@ -25,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="bg-white">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<LoadingScreen />}>
           <ReactQueryProviders>
             <MswComponent />
             <CommonLayout hasToken={hasToken}>
