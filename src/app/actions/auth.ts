@@ -15,3 +15,8 @@ export async function setToken(token: string) {
 export async function clearToken() {
   cookies().delete('accessToken')
 }
+
+export async function clearAllToken() {
+  cookies().delete('accessToken')
+  cookies().delete('refreshToken')
+}

@@ -30,7 +30,6 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { CalendarIcon } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import Image from 'next/image'
@@ -326,17 +325,11 @@ export default function MeetupFormModal() {
                       control={form.control}
                       name="startDate"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="h-full max-h-[40px] w-full max-w-[240px]">
                           <Popover>
                             <PopoverTrigger asChild>
                               <FormControl>
-                                <Button
-                                  variant="outline"
-                                  className={cn(
-                                    'w-[240px] pl-3 text-left font-normal',
-                                    !field.value && 'text-muted-foreground',
-                                  )}
-                                >
+                                <Button className="h-9 max-h-[40px] w-full bg-background text-sm text-textLight hover:bg-solid">
                                   {field.value
                                     ? dayjs(field.value).format('YYYY-MM-DD')
                                     : '시작일'}
@@ -363,17 +356,11 @@ export default function MeetupFormModal() {
                       control={form.control}
                       name="endDate"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="h-full max-h-[40px] w-full max-w-[240px]">
                           <Popover>
                             <PopoverTrigger asChild>
                               <FormControl>
-                                <Button
-                                  variant="outline"
-                                  className={cn(
-                                    'w-[240px] pl-3 text-left font-normal',
-                                    !field.value && 'text-muted-foreground',
-                                  )}
-                                >
+                                <Button className="w-full bg-background text-sm text-textLight hover:bg-solid">
                                   {field.value
                                     ? dayjs(field.value).format('YYYY-MM-DD')
                                     : '종료일'}

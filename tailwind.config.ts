@@ -33,6 +33,8 @@ const config: Config = {
         background: '#F6F6F6',
         green: '#1EE494',
         orange: '#FC8A15',
+        hoverGray: '#E8E8E8',
+
         // background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

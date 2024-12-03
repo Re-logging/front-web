@@ -22,6 +22,8 @@ export default function MeetupList() {
   } = useMeetupQueries({ currentPage, pageSize })
 
   const handlePageChange = async (newPage: number) => {
+    if (newPage < 0) return
+    if (meetupList?.totalPage && newPage >= meetupList.totalPage) return
     setCurrentPage(newPage)
   }
 

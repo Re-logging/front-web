@@ -1,13 +1,10 @@
-'use client'
-
 import type { Metadata } from 'next'
 import '@/styles/globals.css'
 import Link from 'next/link'
 import Image from 'next/image'
-import LoginButton from '@/components/LoginButton'
-import MyPageButton from '@/components/MyPageButton'
 import { LoginModal } from '@/components/modal/LoginModal'
 import { MyPageModal } from '@/components/modal/MyPageModal'
+import { AuthButtons } from '../AuthButtons'
 
 export const metadata: Metadata = {
   title: 'Relogging',
@@ -37,7 +34,7 @@ export function CommonLayout({
           </Link>
         </div>
         {/* 데스크탑 로그인 버튼 */}
-        <div>{!hasToken ? <LoginButton /> : <MyPageButton />}</div>
+        <AuthButtons initHasToken={hasToken} />
         {/* 모바일 햄버거 메뉴 */}
         {/* <div className="laptop:hidden">
               <MobileNav />

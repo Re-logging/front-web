@@ -138,6 +138,8 @@ export default function NewsArticlePage() {
   const { toast } = useToast()
 
   const handlePageChange = async (newPage: number) => {
+    if (newPage < 0) return
+    if (newsList?.totalPage && newPage >= newsList.totalPage) return
     setCurrentPage(newPage)
   }
 
