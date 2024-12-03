@@ -28,10 +28,12 @@ const OauthButton = ({ oauthType, className, authUrl }: IOauthType) => {
     <>
       <Link
         href={authUrl}
-        className={`flex w-full items-center justify-center gap-2 rounded-md bg-background p-3 shadow-md hover:shadow-lg active:translate-y-0.5 active:shadow-sm desktop:max-h-[48px] ${className}`}
+        className={`hover:bg-hoverGray flex w-full max-w-[400px] items-center justify-center gap-2 rounded-md bg-background p-3 active:translate-y-0.5 active:shadow-sm laptop:max-h-[48px] ${className}`}
       >
         {providerConfig[oauthType].icon}
-        <span className="text-sm">{providerConfig[oauthType].text}</span>
+        <span className="text-sm font-normal">
+          {providerConfig[oauthType].text}
+        </span>
       </Link>
     </>
   )
