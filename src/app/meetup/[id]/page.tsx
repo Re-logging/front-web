@@ -166,6 +166,8 @@ export default function MeetupDetailPage() {
   const { toast } = useToast()
 
   const handlePageChange = async (newPage: number) => {
+    if (newPage < 0) return
+    if (meetupList?.totalPage && newPage >= meetupList.totalPage) return
     setCurrentPage(newPage)
   }
 

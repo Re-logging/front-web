@@ -208,6 +208,8 @@ export default function EventDetailPage() {
   const { toast } = useToast()
 
   const handlePageChange = async (newPage: number) => {
+    if (newPage < 0) return
+    if (eventsList?.totalPages && newPage >= eventsList.totalPages) return
     setCurrentPage(newPage)
   }
 

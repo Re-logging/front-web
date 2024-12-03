@@ -1,4 +1,4 @@
-import { clearToken } from '@/app/actions/auth'
+import { clearAllToken } from '@/app/actions/auth'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -53,7 +53,7 @@ export const useAuthStore = create<AuthStore>()(
 
       clearAuth: async () => {
         try {
-          await clearToken()
+          await clearAllToken()
           set({
             user: null,
             isAuthenticated: false,

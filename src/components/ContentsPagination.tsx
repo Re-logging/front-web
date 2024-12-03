@@ -40,14 +40,12 @@ export function ContentsPagination({
   return (
     <Pagination>
       <PaginationContent>
-        {currentPage > 0 && (
-          <PaginationItem>
-            <PaginationPrevious
-              className="text-textLight"
-              onClick={() => onPageChange(currentPage - 1)}
-            />
-          </PaginationItem>
-        )}
+        <PaginationItem>
+          <PaginationPrevious
+            className="text-textLight"
+            onClick={() => onPageChange(currentPage - 1)}
+          />
+        </PaginationItem>
 
         {getPageNumbers().map((pageNum) => (
           <PaginationItem key={pageNum}>
@@ -55,7 +53,7 @@ export function ContentsPagination({
               className={` ${
                 currentPage === pageNum
                   ? 'bg-green text-white [&>svg]:stroke-[0]'
-                  : 'text-textLight'
+                  : 'h text-textLight hover:text-textLight'
               }`}
               isActive={currentPage === pageNum}
               onClick={() => onPageChange(pageNum)}
@@ -65,14 +63,12 @@ export function ContentsPagination({
           </PaginationItem>
         ))}
 
-        {currentPage < totalPage - 1 && (
-          <PaginationItem>
-            <PaginationNext
-              className="text-textLight"
-              onClick={() => onPageChange(currentPage + 1)}
-            />
-          </PaginationItem>
-        )}
+        <PaginationItem>
+          <PaginationNext
+            className="text-textLight"
+            onClick={() => onPageChange(currentPage + 1)}
+          />
+        </PaginationItem>
       </PaginationContent>
     </Pagination>
   )
