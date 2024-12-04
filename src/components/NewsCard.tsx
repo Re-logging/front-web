@@ -60,6 +60,7 @@ const NewsCard = ({ article }: { article: NewsArticleCard }) => {
             src={article.imagePath ?? getRandomDefaultImage()}
             alt={article?.title}
             fill
+            priority
             sizes="w-100 h-100"
             className="rounded-lg"
           />

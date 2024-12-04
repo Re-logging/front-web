@@ -71,9 +71,10 @@ const MeetupDetailSection = ({
         <Image
           src={meetupDetail?.imageUrl ?? getRandomDefaultImage()}
           alt="Plogging meetupDetail main image"
-          width={100}
-          height={100}
-          className="h-auto w-full rounded-lg"
+          width={1920}
+          height={1080}
+          priority
+          className="h-auto max-h-[568px] w-full rounded-lg object-cover"
         />
       </div>
       {/* 이벤트 상세 정보 */}

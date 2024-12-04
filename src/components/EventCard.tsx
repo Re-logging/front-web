@@ -39,6 +39,7 @@ export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
               src={eventData.image?.url ?? getRandomDefaultImage()}
               alt={eventData.caption ?? '플로깅 이미지'}
               fill
+              priority
               sizes="w-100 h-100"
               className="rounded-lg object-cover"
             />
