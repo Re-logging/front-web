@@ -13,7 +13,6 @@ export default function MeetupList() {
   const pageSize = 15 // 페이지 당 아이템 수
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab')
-
   const {
     meetupList,
     meetupListIsLoading,
@@ -28,6 +27,7 @@ export default function MeetupList() {
   }
 
   if (meetupListIsLoading) return <LoadingSkeleton />
+
   if (meetupListError || !meetupList || meetupListIsError) {
     return (
       <ErrorAlert
@@ -35,6 +35,7 @@ export default function MeetupList() {
       />
     )
   }
+
   if (meetupList.ploggingMeetupSimpleResponseList.length === 0) {
     return (
       <EmptyState
@@ -43,6 +44,7 @@ export default function MeetupList() {
       />
     )
   }
+
   return (
     <>
       <div className="mb-4 mt-4 flex justify-between">

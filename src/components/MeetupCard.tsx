@@ -41,6 +41,7 @@ export const MeetupCard = ({
               src={meetupData.imageUrl ?? getRandomDefaultImage()}
               alt={meetupData.title}
               fill
+              priority
               sizes="w-100 h-100"
               className="rounded-lg object-cover"
             />

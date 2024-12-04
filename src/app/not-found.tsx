@@ -1,5 +1,6 @@
-import { Button } from '@/components/ui/button'
 import IconSad from '@/assets/icon_sad.svg'
+import DirectionButton from '@/components/ui/DircetionButton'
+
 export default function NotFound() {
   return (
     <main className="flex h-dvh w-dvw items-center justify-center">
@@ -17,12 +18,18 @@ export default function NotFound() {
           </p>
         </div>
         <div className="gap- flex flex-col gap-4">
-          <Button className="h-[48px] w-[240px] bg-green text-base text-white">
+          <DirectionButton
+            to="/"
+            className={'h-[48px] w-[240px] bg-green text-base text-white'}
+          >
             이전 페이지로 돌아가기
-          </Button>
-          <Button className="h-[48px] w-[240px] bg-solid text-base text-white">
+          </DirectionButton>
+          <DirectionButton
+            to="/"
+            className={'h-[48px] w-[240px] bg-green text-base text-white'}
+          >
             홈으로 가기
-          </Button>
+          </DirectionButton>
         </div>
       </div>
     </main>

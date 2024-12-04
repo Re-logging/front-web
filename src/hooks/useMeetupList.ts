@@ -80,7 +80,7 @@ export const useMeetupQueries = ({
     },
     onSuccess: (result) => {
       // URL 업데이트
-      router.push(`/ploggingMeetups/${result.data.id}`)
+      router.push(`/meetup/${result.data.id}`)
     },
   })
 

@@ -67,9 +67,10 @@ const EventDetailSection = ({
         <Image
           src={newsDetail?.imagePath ?? getRandomDefaultImage()}
           alt="Article main image"
-          width={200}
-          height={200}
-          className="h-auto w-full rounded-lg"
+          width={1920}
+          height={1080}
+          priority
+          className="h-auto max-h-[568px] w-full rounded-lg"
         />
         {/* 뉴스 썸네일 설명 */}
         <p className="mt-2 text-sm text-textLight">
