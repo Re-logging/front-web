@@ -62,7 +62,7 @@ export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
                 {dayjs(eventData.endDate).format('YYYY-MM-DD')}
               </span>
             </div>
-            <div className="">
+            <div>
               <span className="w-1/5 text-sm text-gray-400">
                 조회수 {eventData.hits}
               </span>

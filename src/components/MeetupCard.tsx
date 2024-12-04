@@ -1,9 +1,11 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
-import { MapPin, Clock } from 'lucide-react'
 import { getRandomDefaultImage } from '@/constans/images'
 import { IMeetupContentCard } from '@/types/IMeetup'
+import IconTime from '@/assets/icon_time.svg'
+import IconLocation from '@/assets/icon_location.svg'
+import dayjs from 'dayjs'
 
 export const MeetupCard = ({
   meetupData,
@@ -14,16 +16,6 @@ export const MeetupCard = ({
 
   const onClickMeeupDetail = (id: string) => {
     router.push(`/meetup/${id}`)
-  }
-
-  // 날짜 포맷팅 함수
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
   }
 
   return (
@@ -58,21 +50,28 @@ export const MeetupCard = ({
           {/* 위치 정보 */}
           <div className="flex items-center justify-between gap-2 text-text">
             <div className="flex gap-2">
-              <MapPin className="h-4 w-4" />
+              <IconLocation className="min-w-[12px]" />
               <span className="text-sm"> {meetupData.location}</span>
             </div>
-            <span className="text-sm text-gray-400">
+            {/* <span className="text-sm text-gray-400">
               조회수 {meetupData.hits}
-            </span>
+            </span> */}
           </div>
 
           {/* 날짜 정보 */}
-          <div className="flex items-center gap-2 text-text">
-            <Clock className="h-4 w-4" />
-            <p className="text-sm">
-              {formatDate(meetupData.startDate)} ~
-              {formatDate(meetupData.endDate)}
-            </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-text">
+              <IconTime className="min-w-[12px]" />
+              <p className="text-sm">
+                {dayjs(meetupData.startDate).format('YYYY-MM-DD')} ~
+                {dayjs(meetupData.endDate).format('YYYY-MM-DD')}
+              </p>
+            </div>
+            <div>
+              <span className="text-sm text-gray-400">
+                조회수 {meetupData.hits}
+              </span>
+            </div>
           </div>
         </div>
       </div>

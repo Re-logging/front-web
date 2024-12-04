@@ -2,7 +2,6 @@
 
 import HomeButton from '@/components/HomeButton'
 import { Button } from '@/components/ui/button'
-import { MapPin } from 'lucide-react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -12,7 +11,7 @@ import { ErrorAlert } from '@/components/status/ErrorAlert'
 import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
 import ContentList from '@/components/ContentList'
 import { getRandomDefaultImage } from '@/constans/images'
-
+import LocationIcon from '@/assets/icon_location.svg'
 import {
   Carousel,
   CarouselContent,
@@ -95,15 +94,11 @@ const EventDetailSection = ({
             <span className="text-sm font-bold text-orange">
               {eventDetail?.region}
             </span>
-            <span className="text-sm font-bold text-textLight">일회성</span>
-            <span className="text-sm font-bold text-textLight">
-              봉사시간 부여
-            </span>
           </div>
           <h1 className="text-3xl font-bold">{eventDetail?.title}</h1>
           <div className="flex justify-between">
             <div className="flex items-center">
-              <MapPin className="h-4 w-4" />
+              <LocationIcon className="h-4 w-4" />
               <p className="text-sm font-bold text-text">
                 {eventDetail?.location}
               </p>

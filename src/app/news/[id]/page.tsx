@@ -58,7 +58,7 @@ const EventDetailSection = ({
               {newsDetail?.author}
             </p>
             <p className="text-sm text-gray-500">
-              조회수 {newsDetail?.hits} {newsDetail?.publishedAt} 발행
+              조회수 {newsDetail?.hits} | {newsDetail?.publishedAt} 발행
             </p>
           </div>
         </header>
@@ -72,7 +72,9 @@ const EventDetailSection = ({
           className="h-auto w-full rounded-lg"
         />
         {/* 뉴스 썸네일 설명 */}
-        <p className="mt-2 text-sm text-gray-500">{newsDetail?.imageCaption}</p>
+        <p className="mt-2 text-sm text-textLight">
+          {newsDetail?.imageCaption}
+        </p>
       </div>
       <div className="flex flex-col gap-4 rounded-lg bg-background p-5">
         <div className="w-full rounded-lg">
@@ -93,9 +95,15 @@ const EventDetailSection = ({
           <div>
             <Button
               asChild
-              className="w-full border bg-background text-textLight"
+              className="hover:bg-hoverGray w-full border bg-background text-textLight"
             >
-              <Link href={`${newsDetail?.source}`}>기사 전문 보기</Link>
+              <Link
+                href={`${newsDetail?.source}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                기사 전문 보기
+              </Link>
             </Button>
           </div>
         </div>
