@@ -25,8 +25,8 @@ export function LoginModal() {
             </DialogTitle>
           </div>
         </DialogHeader>
-        <div className="margin-auto flex w-full flex-col items-start space-y-4 p-6 pt-2 desktop:max-w-[400px]">
-          <span className="margin-auto text-xs laptop:mx-0">소셜로그인</span>
+        <div className="margin-auto flex w-full max-w-[400px] flex-col items-center space-y-4 p-6 pt-2">
+          <p className="flex self-start text-xs laptop:mx-0">소셜로그인</p>
           <GoogleOauthButton />
           <KakaoOauthButton />
         </div>
