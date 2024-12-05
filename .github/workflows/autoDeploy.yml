@@ -1,37 +1,36 @@
-name: CI/CD and Branch Sync & Production Build Test and Deploy to Vercel
+name: Production Build Test and Deploy to Vercel
 
 on:
   push:
     branches: [main]
 
 jobs:
-  # 1. 빌드 및 테스트 작업
-  build-and-test:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
+
       - name: Install dependencies
         run: npm ci
+
       - name: Production Build Test
         run: npm run build:production
 
-  # 2. Vercel 배포 작업
-  deploy:
-    needs: build-and-test # 빌드/테스트 성공 후 실행
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create output directory
-        if: success()
+      - name: Create output directory and copy files
+        if: success() # 이전 단계가 성공했을 때만 실행
         run: |
           chmod +x ./build.sh
           ./build.sh
-      - name: Push to Vercel repository
-        if: success()
+
+      - name: Pushes to another repository
+        if: success() # 이전 단계가 성공했을 때만 실행
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_INFORMATION }}
@@ -40,32 +39,5 @@ jobs:
           destination-github-username: asroq1
           destination-repository-name: vercel-relogging-web
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
-          commit-message: 'Deploy to production - ${{ github.sha }}'
+          commit-message: 'Update from source repository - ${{ github.sha }}'
           target-branch: main
-
-  # 3. develop 브랜치 동기화 작업
-  sync-develop:
-    needs: deploy # 배포 성공 후 실행
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: develop
-      - name: Sync develop with main
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git fetch origin main
-          if ! git merge origin/main --no-ff -m "chore: sync develop with main"; then
-            git merge --abort
-            gh pr create \
-              --base develop \
-              --head main \
-              --title "chore: Sync develop with main" \
-              --body "Conflict detected during sync. Manual resolution needed."
-          else
-            git push origin develop
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
