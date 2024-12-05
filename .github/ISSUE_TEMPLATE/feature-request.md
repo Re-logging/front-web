@@ -4,7 +4,6 @@ about: 기능 요청 이슈
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 ## 어떤 기능인가요?
