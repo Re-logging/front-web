@@ -13,9 +13,9 @@ export default function LabeledContent({
 }: LabeledContentProps) {
   return (
     <div className="flex items-center gap-2">
-      <span className="border-green- whitespace-nowrap rounded-md border bg-green p-1 text-xs font-semibold text-white">
+      <p className="flex min-h-[22px] min-w-[53px] items-center justify-center whitespace-nowrap rounded-sm border bg-green p-1 text-xs font-medium text-white">
         {label ?? '-'}
-      </span>
+      </p>
       {type === 'link' ? (
         <Link
           rel="noopener noreferrer"
@@ -29,7 +29,7 @@ export default function LabeledContent({
           웹사이트 바로가기
         </Link>
       ) : (
-        <span className="text-xs text-text">{content ?? '-'}</span>
+        <p className="text-xs text-text">{content ?? '-'}</p>
       )}
     </div>
   )

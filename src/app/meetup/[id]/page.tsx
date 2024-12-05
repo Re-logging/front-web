@@ -89,7 +89,10 @@ const MeetupDetailSection = ({
             label="모임 이름"
             content={meetupDetail?.title ?? '-'}
           />
-          <LabeledContent label="지역" content={meetupDetail?.region ?? '-'} />
+          <LabeledContent
+            label="활동지역"
+            content={meetupDetail?.region ?? '-'}
+          />
           <LabeledContent
             label="지원 내용"
             content={meetupDetail?.supportDetails ?? '-'}
@@ -99,7 +102,7 @@ const MeetupDetailSection = ({
             content={meetupDetail?.location ?? '-'}
           />
           <LabeledContent
-            label="모임원 자격"
+            label="자격사항"
             content={meetupDetail?.participantTarget ?? '-'}
           />
           <LabeledContent
@@ -120,10 +123,10 @@ const MeetupDetailSection = ({
           />
         </div>
         <div className="prose max-w-none space-y-4 text-sm">
-          <span className="border-green- whitespace-nowrap rounded-md border bg-green p-1 text-xs font-semibold text-white">
-            모임 소개 및 활동 목적
-          </span>
-          <p className="mb-4 whitespace-pre-wrap text-xs text-text">
+          <p className="flex min-h-[22px] w-[53px] items-center justify-center whitespace-nowrap rounded-sm border bg-green p-1 text-xs font-medium text-white">
+            모임소개
+          </p>
+          <p className="mb-4 whitespace-pre-wrap p-1 text-xs text-text">
             {meetupDetail?.content ?? '-'}
           </p>
         </div>

@@ -8,7 +8,7 @@ export async function setToken(token: string) {
     secure: process.env.NODE_ENV === 'production', // 배포 환경에서 HTTPS만 허용
     sameSite: 'lax', //  CSRF 공격 방지
     path: '/', // 모든 경로에서 접근 가능
-    maxAge: 60, // 1분 // TODO: 나중에 수정해야함
+    maxAge: 10800, //3시간
   })
 }
 

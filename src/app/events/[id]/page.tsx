@@ -156,9 +156,9 @@ const EventDetailSection = ({
           />
         </div>
         <div className="prose max-w-none space-y-4 text-sm">
-          <span className="border-green- whitespace-nowrap rounded-md border bg-green p-1 text-xs font-semibold text-white">
+          <p className="flex min-h-[22px] w-[53px] items-center justify-center whitespace-nowrap rounded-sm border bg-green p-1 text-xs font-medium text-white">
             상세내용
-          </span>
+          </p>
           <p className="mb-4 whitespace-pre-wrap text-xs text-text">
             {eventDetail?.content ?? '-'}
           </p>
