@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  poweredByHeader: false,
+  eslint: {
+    dirs: ['src'], // ESLint 검사 디렉토리 지정
+    ignoreDuringBuilds: false, // 빌드 중 ESLint 오류 무시하지 않음
+  },
+  typescript: {
+    ignoreBuildErrors: false, // TypeScript 오류 무시하지 않음
+  },
   async headers() {
     return [
       {
