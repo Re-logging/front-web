@@ -3,7 +3,7 @@
 import HomeButton from '@/components/HomeButton'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { useEventsQueries } from '@/hooks/useEventsQueries'
 import LabeledContent from '@/components/LabeledContent'
@@ -26,6 +26,7 @@ import {
 } from '@/types/IEvent'
 import { useToast } from '@/hooks/use-toast'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import CommentSection from '@/components/CommentSection'
 
 function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
   return (
@@ -64,7 +65,10 @@ const EventDetailSection = ({
   onChangeEventDetail,
   isNavigatingPrev,
   isNavigatingNext,
+  refetchEventDetail,
 }: IEventDetailSectionProps) => {
+  const params = useParams()
+  
   if (isLoading) {
     return (
       <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
@@ -164,6 +168,12 @@ const EventDetailSection = ({
           </p>
         </div>
       </div>
+      <CommentSection
+        eventId={params.id as string}
+        eventDetail={eventDetail}
+        refetchEventDetail={refetchEventDetail}
+        contentType="ploggingEvents"
+      />
       <div className="flex items-center justify-between">
         <Button
           className="min-w-[120px] bg-solid"
@@ -223,6 +233,8 @@ export default function EventDetailPage() {
     navigate,
     isNavigatingPrev,
     isNavigatingNext,
+
+    refetchEventDetail,
   } = useEventsQueries({
     currentPage,
     pageSize,
@@ -261,6 +273,7 @@ export default function EventDetailPage() {
             onChangeEventDetail={onChangeEventDetail}
             isNavigatingPrev={isNavigatingPrev}
             isNavigatingNext={isNavigatingNext}
+            refetchEventDetail={refetchEventDetail}
           />
         </div>
 

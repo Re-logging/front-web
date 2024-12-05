@@ -9,6 +9,7 @@ export interface IMeetupDetailSectionProps {
   handleMeetupChange: (type: MeetupDetailType) => void
   isNavigatingNext: boolean
   isNavigatingPrev: boolean
+  refetchMeetupDetail: () => void
 }
 
 export interface ImeetupQueries {

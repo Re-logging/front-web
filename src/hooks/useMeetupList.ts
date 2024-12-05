@@ -106,6 +106,7 @@ export const useMeetupQueries = ({
     isNavigatingNext:
       navigationMutation.isPending &&
       navigationMutation.variables?.type === 'next',
+    refetchMeetupDetail: meetupDetailQuery.refetch,
   }
 }
 
