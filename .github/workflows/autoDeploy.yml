@@ -29,7 +29,7 @@ jobs:
         with:
           source-directory: 'output'
           destination-github-username: asroq1
-          destination-repository-name: vercel-relogging-test
+          destination-repository-name: vercel-relogging-web
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: 'Update from source repository - ${{ github.sha }}'
           target-branch: main
