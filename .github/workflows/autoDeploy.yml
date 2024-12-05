@@ -1,11 +1,11 @@
-name: git push into another repo to deploy to vercel
+name: Production Build Test and Deploy to Vercel
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,12 +17,20 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Production Build Test
+        run: npm run build:production
+
       - name: Create output directory and copy files
+        if: success() # 이전 단계가 성공했을 때만 실행
         run: |
           chmod +x ./build.sh
           ./build.sh
 
       - name: Pushes to another repository
+        if: success() # 이전 단계가 성공했을 때만 실행
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_INFORMATION }}
