@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Image from 'next/image'
-import { getRandomDefaultImage } from '@/constans/images'
 import { useEffect, useState } from 'react'
 import EditIcon from '@/assets/icon_edit.svg'
 import { useAuthStore, User } from '@/store/authStore'
@@ -20,6 +19,7 @@ import { useUpdateProfile } from '@/hooks/useUpdateProfile'
 import IconGarbage from '@/assets/icon_garbage.svg'
 import { validateImage } from '@/utils/image'
 import { useToast } from '@/hooks/use-toast'
+import DEFAULT_PROFILE_IMAGE from '../../../../public/defaultProfile.jpg'
 
 type EditingProfileProps = {
   user: User
@@ -70,12 +70,12 @@ function BeforeEditingProfile({
               </Label>
             </div>
             <div className="mt-2 flex justify-center">
-              <div className="relative h-32 w-32 rounded-md bg-gray-100">
+              <div className="relative h-32 w-32 border-x-solid">
                 <Image
-                  src={user?.image ?? getRandomDefaultImage()}
+                  src={user?.image ?? DEFAULT_PROFILE_IMAGE}
                   alt="Profile"
                   fill
-                  className="rounded-md object-cover"
+                  className="rounded-full object-cover"
                 />
               </div>
             </div>
