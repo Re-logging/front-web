@@ -31,7 +31,7 @@ export async function PUT(request: Request) {
           {
             method: 'PUT',
             headers: {
-              Authorization: `Bearer ${newToken?.value}`,
+              Authorization: `Bearer ${newToken}`,
             },
             body: formData,
           },

@@ -58,9 +58,8 @@ export default function Home() {
           {...images.desktop}
           alt="로고 이미지"
           priority
-          quality={100}
           sizes="(min-width: 1200px) 100vw"
-          className="h-auto w-full"
+          className="h-auto max-h-[548px] w-full object-cover"
         />
       </section>
       <section className="hidden tablet:block laptop:hidden">
@@ -68,9 +67,8 @@ export default function Home() {
           {...images.tablet}
           alt="로고 이미지"
           priority
-          quality={100}
           sizes="(min-width: 600px) and (max-width: 1199px) 100vw"
-          className="h-auto w-full"
+          className="h-auto max-h-[548px] w-full object-cover"
         />
       </section>
       <section className="block tablet:hidden">
@@ -78,9 +76,8 @@ export default function Home() {
           {...images.mobile}
           alt="로고 이미지"
           priority
-          quality={100}
-          sizes="(max-width: 599px) 100vw"
-          className="h-auto w-full"
+          sizes="(max-width: 599px) 100vw  max-h-[700px]"
+          className="h-auto max-h-[548px] w-full object-cover"
         />
       </section>
       {/* 메인 콘텐츠 */}
