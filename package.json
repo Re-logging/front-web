@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "build:strict": "tsc --noEmit && next build",
+    "build:production": "NODE_ENV=production npm run build:strict",
+    "vercel-build": "npm run build:production",
+    "build": "npm run type-check && npm run lint && next build",
     "type-check": "tsc --noEmit",
+    "lint": "next lint --max-warnings=0",
+    "start": "next start",
+    "lint:fix": "next lint --fix",
     "mock": "npx tsx watch ./src/mocks/http.ts",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx}'"
   },
