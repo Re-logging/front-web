@@ -68,7 +68,7 @@ function BeforeEditingProfile({
               <Label className="whitespace-nowrap text-sm font-medium">
                 프로필이미지
               </Label>
-              <Label className="textLight whitespace-nowrap text-textLight">
+              <Label className="whitespace-nowrap text-xs font-light text-textLight">
                 이미지 미첨부시 랜덤이미지가 적용됩니다.
               </Label>
             </div>
@@ -212,9 +212,9 @@ function AfterEditingProfile({ setIsEditing, user }: EditingProfileProps) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="whitespace-nowrap text-sm font-medium">
-                프로필이미지2
+                프로필이미지
               </Label>
-              <Label className="whitespace-nowrap text-sm font-medium text-textLight">
+              <Label className="whitespace-nowrap text-xs font-light text-textLight">
                 이미지 미첨부시 랜덤이미지가 적용됩니다.
               </Label>
             </div>
