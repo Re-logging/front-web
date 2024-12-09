@@ -5,14 +5,14 @@ export default function NotFound() {
   return (
     <main className="flex h-dvh w-dvw items-center justify-center">
       <div className="flex h-dvh max-h-[432px] w-dvw flex-col items-center justify-evenly bg-background">
-        <div className="flex flex-col items-center gap-6">
-          <h1 className="flex items-center gap-4 text-5xl font-bold">
+        <div className="flex w-4/5 flex-col items-center gap-6">
+          <h1 className="flex items-center gap-4 text-xl font-bold laptop:text-5xl">
             <span>
               <IconSad />
             </span>
             원하시는 페이지를 찾을 수 없어요.
           </h1>
-          <p className="text-base text-textLight">
+          <p className="text-sm text-textLight laptop:text-base">
             찾으시려던 페이지가 이동되었거나 삭제되었을 수 있어요. 불편을 드려
             죄송합니다.
           </p>
