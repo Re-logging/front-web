@@ -4,7 +4,7 @@ import HomeButton from '@/components/HomeButton'
 import { Button } from '@/components/ui/button'
 import { MapPin } from 'lucide-react'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { useState } from 'react'
 import LabeledContent from '@/components/LabeledContent'
 import { ErrorAlert } from '@/components/status/ErrorAlert'
@@ -16,6 +16,7 @@ import { getRandomDefaultImage } from '@/constans/images'
 import { useToast } from '@/hooks/use-toast'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import dayjs from 'dayjs'
+import CommentSection from '@/components/CommentSection'
 
 const MeetupDetailSection = ({
   meetupDetail,
@@ -25,7 +26,10 @@ const MeetupDetailSection = ({
   handleMeetupChange,
   isNavigatingPrev,
   isNavigatingNext,
+  refetchMeetupDetail,
 }: IMeetupDetailSectionProps) => {
+  const params = useParams()
+
   if (isLoading) {
     return (
       <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
@@ -131,6 +135,12 @@ const MeetupDetailSection = ({
           </p>
         </div>
       </div>
+      <CommentSection
+        eventId={params.id as string}
+        eventDetail={meetupDetail}
+        refetchEventDetail={refetchMeetupDetail}
+        contentType="ploggingMeetups"
+      />
       <div className="flex items-center justify-between">
         <Button
           className="min-w-[120px] bg-solid"
@@ -189,6 +199,7 @@ export default function MeetupDetailPage() {
     navigate,
     isNavigatingNext,
     isNavigatingPrev,
+    refetchMeetupDetail,
   } = useMeetupQueries({
     currentPage,
     pageSize,
@@ -227,6 +238,7 @@ export default function MeetupDetailPage() {
             handleMeetupChange={onChangeMeetupDetail}
             isNavigatingPrev={isNavigatingPrev}
             isNavigatingNext={isNavigatingNext}
+            refetchMeetupDetail={refetchMeetupDetail}
           />
         </div>
 
