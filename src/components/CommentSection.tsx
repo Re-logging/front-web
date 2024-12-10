@@ -243,8 +243,8 @@ const CommentItem = ({
   }
   const { user } = useAuthStore() // 로그인한 유저 정보 가져오기
 
-  const isAuthor = comment.userEmail === user?.email // 작성자가 본인인지 여부를 나타내는 속성
-  // const isAuthor = true
+  const isAuthor = comment.authorId === user?.userId
+
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(comment.content)
 
