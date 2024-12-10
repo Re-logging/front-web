@@ -7,11 +7,28 @@ import dayjs from 'dayjs'
 import IconTime from '@/assets/icon_time.svg'
 import IconLocation from '@/assets/icon_location.svg'
 
-export const EventCard = ({ eventData }: { eventData: IEventContentCard }) => {
+interface IEventCardProps {
+  eventData: IEventContentCard
+  styleType: 'grid' | 'side'
+  currentPage: number
+}
+
+export const EventCard = ({
+  eventData,
+  styleType,
+  currentPage,
+}: IEventCardProps) => {
   const router = useRouter()
 
   const onClickEventDetail = (id: string) => {
-    router.push(`/events/${id}`)
+    switch (styleType) {
+      case 'side':
+        router.push(`/events/${id}?index=${currentPage}`)
+        break
+
+      default:
+        router.push(`/events/${id}`)
+    }
   }
 
   return (
