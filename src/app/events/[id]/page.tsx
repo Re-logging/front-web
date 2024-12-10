@@ -68,7 +68,7 @@ const EventDetailSection = ({
   refetchEventDetail,
 }: IEventDetailSectionProps) => {
   const params = useParams()
-  
+
   if (isLoading) {
     return (
       <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
@@ -115,24 +115,25 @@ const EventDetailSection = ({
           </div>
         </header>
       </div>
-      <div className="relative w-full">
-        {eventDetail?.imageList?.length <= 1 ? (
-          <Image
-            src={
-              eventDetail?.imageList.length > 0
-                ? eventDetail?.imageList[0]?.url
-                : getRandomDefaultImage()
-            }
-            alt={eventDetail?.imageList[0]?.caption ?? '플로깅 이미지'}
-            width={1920}
-            height={1080}
-            quality={80}
-            className="h-auto w-full rounded-lg"
-          />
-        ) : (
-          <ImageListCarousel imageList={eventDetail.imageList} />
-        )}
-      </div>
+      {/* // 이미지  */}
+      {eventDetail.imageList.length > 0 && (
+        <div className="relative w-full">
+          {eventDetail?.imageList?.length === 1 ? (
+            <Image
+              src={eventDetail?.imageList[0]?.url}
+              alt={
+                eventDetail?.imageList[0]?.caption ?? '플로깅 모임 설명 이미지'
+              }
+              width={1920}
+              height={1080}
+              quality={80}
+              className="h-auto w-full rounded-lg"
+            />
+          ) : (
+            <ImageListCarousel imageList={eventDetail.imageList} />
+          )}
+        </div>
+      )}
       {/* 이벤트 상세 정보 */}
       <div className="rounded-lg bg-background p-6">
         {/* 상세 내용 제외 */}
