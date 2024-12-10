@@ -12,7 +12,7 @@ const CommentSection = ({
   eventId,
   eventDetail,
   refetchEventDetail,
-  contentType
+  contentType,
 }: {
   eventId: string
   eventDetail: any
@@ -185,7 +185,7 @@ const CommentContainer = ({
   return (
     eventDetail.commentList.length > 0 &&
     eventDetail.commentList.map((comment: any) => (
-      <section className="p-4 ">
+      <section className="p-4" key={comment.id}>
         <CommentItem
           comment={comment}
           eventId={eventDetail.id}
@@ -208,6 +208,7 @@ const CommentContainer = ({
             {comment.replies.length > 0 &&
               comment.replies.map((reply: any) => (
                 <CommentItem
+                  key={reply.id}
                   comment={reply}
                   eventId={eventDetail.id}
                   contentType={contentType}
