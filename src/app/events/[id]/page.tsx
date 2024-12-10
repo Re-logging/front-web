@@ -8,10 +8,12 @@ export async function generateMetadata({
   params: { id: string }
 }): Promise<Metadata> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingEvents/list?${params.id}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingEvents/${params.id}`,
   )
-  const eventDetail = await response.json()
 
+  const eventDetail = await response.json()
+  // 서버 사이드 로깅
+  console.log('[Server] News Detail:', JSON.stringify(eventDetail, null, 2))
   return {
     title: `${eventDetail.title} | 리로깅`,
     description: eventDetail.content,
@@ -20,7 +22,7 @@ export async function generateMetadata({
       description: eventDetail.content,
       images: [
         {
-          url: eventDetail.imageList,
+          url: eventDetail.imageList[0],
           width: 1200,
           height: 630,
           alt: '플로깅 이벤트 이미지',
@@ -31,7 +33,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: eventDetail.title,
       description: eventDetail.content,
-      images: [eventDetail.imageList],
+      images: [eventDetail.imageList[0]],
     },
   }
 }
