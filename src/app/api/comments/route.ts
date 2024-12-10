@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   try {
     console.log('token', token?.value)
     const response = await fetch(
-      `https://test.re-logging.com/api/ploggingEvents/${eventId}/comments${commentId ? `/${commentId}/replies` : ''}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingEvents/${eventId}/comments${commentId ? `/${commentId}/replies` : ''}`,
       {
         method: 'POST',
         headers: {
@@ -41,7 +41,7 @@ export async function DELETE(request: Request) {
 
   try {
     const response = await fetch(
-      `https://test.re-logging.com/api/ploggingEvents/${eventId}/comments/${commentId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingEvents/${eventId}/comments/${commentId}`,
       {
         method: 'DELETE',
         headers: {
@@ -73,7 +73,7 @@ export async function PUT(request: Request) {
 
   try {
     const response = await fetch(
-      `https://test.re-logging.com/api/ploggingEvents/${eventId}/comments/${commentId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingEvents/${eventId}/comments/${commentId}`,
       {
         method: 'PUT',
         headers: {

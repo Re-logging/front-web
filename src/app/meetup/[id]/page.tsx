@@ -12,7 +12,6 @@ import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
 import ContentList from '@/components/ContentList'
 import { useMeetupQueries } from '@/hooks/useMeetupList'
 import { IMeetupDetailSectionProps, MeetupDetailType } from '@/types/IMeetup'
-import { getRandomDefaultImage } from '@/constans/images'
 import { useToast } from '@/hooks/use-toast'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import dayjs from 'dayjs'
@@ -72,14 +71,16 @@ const MeetupDetailSection = ({
         </header>
       </div>
       <div>
-        <Image
-          src={meetupDetail?.imageUrl ?? getRandomDefaultImage()}
-          alt="Plogging meetupDetail main image"
-          width={1920}
-          height={1080}
-          priority
-          className="h-auto max-h-[568px] w-full rounded-lg object-cover"
-        />
+        {meetupDetail?.imageUrl && (
+          <Image
+            src={meetupDetail?.imageUrl}
+            alt="플로깅 모임 설명 이미지"
+            width={1920}
+            height={1080}
+            priority
+            className="h-auto max-h-[568px] w-full rounded-lg object-cover"
+          />
+        )}
       </div>
       {/* 이벤트 상세 정보 */}
       <div className="rounded-lg bg-background p-6">
