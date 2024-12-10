@@ -182,49 +182,48 @@ const CommentContainer = ({
       [commentId]: !prev[commentId],
     }))
   }
-  return (
-    eventDetail.commentList.length > 0 &&
-    eventDetail.commentList.map((comment: any) => (
-      <section className="p-4" key={comment.id}>
-        <CommentItem
-          comment={comment}
-          eventId={eventDetail.id}
-          contentType={contentType}
-        />
-        <details
-          className="mt-4 [&>summary]:list-none"
-          open={replyListRepresents[comment.id]}
+  if (eventDetail.commentList.length === 0)
+    return <p className="text-sm text-textLight">아직 남겨진 댓글이 없어요!</p>
+  return eventDetail.commentList.map((comment: any) => (
+    <section className="p-4" key={comment.id}>
+      <CommentItem
+        comment={comment}
+        eventId={eventDetail.id}
+        contentType={contentType}
+      />
+      <details
+        className="mt-4 [&>summary]:list-none"
+        open={replyListRepresents[comment.id]}
+      >
+        <summary
+          onClick={(e) => {
+            e.preventDefault()
+            toggleReplyList(comment.id)
+          }}
+          className={`cursor-pointer hover:underline ${replyListRepresents[comment.id] ? 'text-gray-900' : 'text-green'}`}
         >
-          <summary
-            onClick={(e) => {
-              e.preventDefault()
-              toggleReplyList(comment.id)
-            }}
-            className={`cursor-pointer hover:underline ${replyListRepresents[comment.id] ? 'text-gray-900' : 'text-green'}`}
-          >
-            {`답글${replyListRepresents[comment.id] ? '보기' : '달기'}(${replyCount})`}
-          </summary>
-          <div className="ml-10 mt-4 flex flex-col gap-1">
-            {comment.replies.length > 0 &&
-              comment.replies.map((reply: any) => (
-                <CommentItem
-                  key={reply.id}
-                  comment={reply}
-                  eventId={eventDetail.id}
-                  contentType={contentType}
-                />
-              ))}
-            <CommentInput
-              eventId={eventDetail?.id ?? ''}
-              refetchEventDetail={refetchEventDetail}
-              commentId={comment.id}
-              contentType={contentType}
-            />
-          </div>
-        </details>
-      </section>
-    ))
-  )
+          {`답글${replyListRepresents[comment.id] ? '보기' : '달기'}(${replyCount})`}
+        </summary>
+        <div className="ml-10 mt-4 flex flex-col gap-1">
+          {comment.replies.length > 0 &&
+            comment.replies.map((reply: any) => (
+              <CommentItem
+                key={reply.id}
+                comment={reply}
+                eventId={eventDetail.id}
+                contentType={contentType}
+              />
+            ))}
+          <CommentInput
+            eventId={eventDetail?.id ?? ''}
+            refetchEventDetail={refetchEventDetail}
+            commentId={comment.id}
+            contentType={contentType}
+          />
+        </div>
+      </details>
+    </section>
+  ))
 }
 
 const CommentItem = ({
@@ -243,8 +242,8 @@ const CommentItem = ({
   }
   const { user } = useAuthStore() // 로그인한 유저 정보 가져오기
 
-  const isAuthor = comment.userEmail === user?.email // 작성자가 본인인지 여부를 나타내는 속성
-  // const isAuthor = true
+  const isAuthor = comment.authorId === user?.userId
+
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(comment.content)
 
