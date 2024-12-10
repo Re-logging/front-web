@@ -6,6 +6,15 @@ export async function POST(request: Request) {
   const formData = await request.formData()
 
   try {
+    if (!token) {
+      return Response.json(
+        {
+          message: '로그인이 필요한 서비스입니다.',
+          redirect: '/?auth=login',
+        },
+        { status: 302 },
+      )
+    }
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingMeetups`,
       {
