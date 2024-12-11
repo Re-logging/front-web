@@ -261,7 +261,9 @@ const CommentItem = ({
     setEditedContent(comment.content) // 원래 내용으로 복구
   }
 
-  const handleReportSubmit = (reason: string) => {
+  const handleReportSubmit = (
+    // reason: string
+  ) => {
     // reportComment(reason)
     setIsReportModalOpen(false)
   }
