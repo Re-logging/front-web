@@ -1,7 +1,6 @@
 'use client'
 
 import HomeButton from '@/components/HomeButton'
-import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { useParams, usePathname } from 'next/navigation'
 import { useEventsQueries } from '@/hooks/useEventsQueries'
@@ -22,8 +21,6 @@ import {
   IEventContentCarouselProps,
   IEventDetailSectionProps,
 } from '@/types/IEvent'
-import { useToast } from '@/hooks/use-toast'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import CommentSection from '@/components/CommentSection'
 import EventSidebar from './EventSidebar'
 
@@ -61,9 +58,6 @@ const EventDetailSection = ({
   isLoading,
   isError,
   error,
-  onChangeEventDetail,
-  isNavigatingPrev,
-  isNavigatingNext,
   refetchEventDetail,
 }: IEventDetailSectionProps) => {
   const params = useParams()
@@ -174,7 +168,7 @@ const EventDetailSection = ({
         refetchEventDetail={refetchEventDetail}
         contentType="ploggingEvents"
       />
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <Button
           className="min-w-[120px] bg-solid"
           onClick={() => {
@@ -199,7 +193,7 @@ const EventDetailSection = ({
             '다음 이벤트 보기'
           )}
         </Button>
-      </div>
+      </div> */}
     </section>
   )
 }
@@ -207,7 +201,7 @@ const EventDetailSection = ({
 export default function EventDetailPage() {
   const path = usePathname()
   const eventId = path.split('/').pop() ?? ''
-  const { toast } = useToast()
+  // const { toast } = useToast()
   const {
     // 이벤트 디테일
     eventDetail,
@@ -217,7 +211,7 @@ export default function EventDetailPage() {
     //이벤트 페이지네이션
 
     // 이전 이벤트, 다음 이벤트
-    navigate,
+    // navigate,
     isNavigatingPrev,
     isNavigatingNext,
 
@@ -226,23 +220,23 @@ export default function EventDetailPage() {
     eventId,
   })
 
-  const onChangeEventDetail = (type: 'prev' | 'next') => {
-    if (!eventDetail?.id) return
+  // const onChangeEventDetail = (type: 'prev' | 'next') => {
+  //   if (!eventDetail?.id) return
 
-    navigate(
-      { type, currentId: eventDetail.id },
-      {
-        onError: (error: Error) => {
-          toast({
-            title: '이동 실패',
-            description: `${error.message}`,
-            variant: 'destructive',
-            duration: 1500,
-          })
-        },
-      },
-    )
-  }
+  //   navigate(
+  //     { type, currentId: eventDetail.id },
+  //     {
+  //       onError: (error: Error) => {
+  //         toast({
+  //           title: '이동 실패',
+  //           description: `${error.message}`,
+  //           variant: 'destructive',
+  //           duration: 1500,
+  //         })
+  //       },
+  //     },
+  //   )
+  // }
 
   return (
     <article className="m-auto mt-16 flex max-h-[1355px] w-full max-w-7xl gap-6 bg-white p-5">
@@ -255,7 +249,7 @@ export default function EventDetailPage() {
             isLoading={eventDetailIsLoading}
             isError={eventDetailIsError}
             error={eventDetailError}
-            onChangeEventDetail={onChangeEventDetail}
+            // onChangeEventDetail={onChangeEventDetail}
             isNavigatingPrev={isNavigatingPrev}
             isNavigatingNext={isNavigatingNext}
             refetchEventDetail={refetchEventDetail}

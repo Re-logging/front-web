@@ -11,7 +11,7 @@ export interface IEventDetailSectionProps {
   isLoading: boolean
   isError: boolean
   error: Error | null
-  onChangeEventDetail: (type: EventDetailType) => void
+  // onChangeEventDetail: (type: EventDetailType) => void
   isNavigatingNext: boolean
   isNavigatingPrev: boolean
   refetchEventDetail: () => void

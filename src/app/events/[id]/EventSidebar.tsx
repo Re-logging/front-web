@@ -31,10 +31,6 @@ export default function EventSidebar() {
     // router.push(`${params.toString()}`)
   }
 
-  console.log(
-    'e으아아아아아아 ㅇ ㅏㅁㅇ ㅏㅁㄴㅇ ㅏㅁㄴㅇ ㅏㅁㄴㅇ ㅏ',
-    currentPage,
-  )
   return (
     <ContentList
       contentData={eventsList?.content ?? []}
