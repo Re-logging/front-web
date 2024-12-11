@@ -262,7 +262,7 @@ const CommentItem = ({
   }
 
   const handleReportSubmit = (reason: string) => {
-    reportComment(reason)
+    // reportComment(reason)
     setIsReportModalOpen(false)
   }
 
