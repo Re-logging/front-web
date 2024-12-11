@@ -22,7 +22,7 @@ import {
   IEventDetailSectionProps,
 } from '@/types/IEvent'
 import CommentSection from '@/components/CommentSection'
-import EventSidebar from './EventSidebar'
+import EventSidebar from './_EventSidebar'
 
 function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
   return (
@@ -109,7 +109,7 @@ const EventDetailSection = ({
         </header>
       </div>
       {/* // 이미지  */}
-      {eventDetail.imageList.length > 0 && (
+      {eventDetail?.imageList?.length > 0 && (
         <div className="relative w-full">
           {eventDetail?.imageList?.length === 1 ? (
             <Image
