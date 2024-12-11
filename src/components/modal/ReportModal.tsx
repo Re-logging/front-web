@@ -39,7 +39,7 @@ const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => {
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
           >
-            <CloseIcon size={24} />
+            <CloseIcon width={24} height={24} />
           </button>
         </div>
 
