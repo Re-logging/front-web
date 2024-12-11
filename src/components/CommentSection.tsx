@@ -5,6 +5,7 @@ import IcMoreIcon from '@/assets/icon_more.svg'
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/store/authStore'
+import ReportModal from './modal/ReportModal'
 
 type ContentType = 'ploggingEvents' | 'ploggingMeetups'
 
@@ -236,6 +237,7 @@ const CommentItem = ({
   contentType: ContentType
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false)
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen)
@@ -243,6 +245,7 @@ const CommentItem = ({
   const { user } = useAuthStore() // 로그인한 유저 정보 가져오기
 
   const isAuthor = comment.authorId === user?.userId
+  // const isAuthor = false
 
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(comment.content)
@@ -256,6 +259,13 @@ const CommentItem = ({
   const handleEditCancel = () => {
     setIsEditing(false)
     setEditedContent(comment.content) // 원래 내용으로 복구
+  }
+
+  const handleReportSubmit = (
+    // reason: string
+  ) => {
+    // reportComment(reason)
+    setIsReportModalOpen(false)
   }
 
   const handleEditSubmit = async () => {
@@ -337,7 +347,10 @@ const CommentItem = ({
                     </button>
                   </>
                 ) : (
-                  <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <button
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsReportModalOpen(true)}
+                  >
                     신고
                   </button>
                 )}
@@ -372,6 +385,11 @@ const CommentItem = ({
       ) : (
         <p className="p-2">{comment?.content}</p>
       )}
+      <ReportModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        onSubmit={handleReportSubmit}
+      />
     </>
   )
 }
