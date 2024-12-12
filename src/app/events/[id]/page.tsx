@@ -1,15 +1,12 @@
 'use client'
 
 import HomeButton from '@/components/HomeButton'
-import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { useParams, usePathname } from 'next/navigation'
-import { useState } from 'react'
 import { useEventsQueries } from '@/hooks/useEventsQueries'
 import LabeledContent from '@/components/LabeledContent'
 import { ErrorAlert } from '@/components/status/ErrorAlert'
 import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
-import ContentList from '@/components/ContentList'
 import { getRandomDefaultImage } from '@/constans/images'
 import LocationIcon from '@/assets/icon_location.svg'
 import {
@@ -24,9 +21,8 @@ import {
   IEventContentCarouselProps,
   IEventDetailSectionProps,
 } from '@/types/IEvent'
-import { useToast } from '@/hooks/use-toast'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import CommentSection from '@/components/CommentSection'
+import EventSidebar from './_EventSidebar'
 
 function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
   return (
@@ -62,9 +58,6 @@ const EventDetailSection = ({
   isLoading,
   isError,
   error,
-  onChangeEventDetail,
-  isNavigatingPrev,
-  isNavigatingNext,
   refetchEventDetail,
 }: IEventDetailSectionProps) => {
   const params = useParams()
@@ -116,7 +109,7 @@ const EventDetailSection = ({
         </header>
       </div>
       {/* // 이미지  */}
-      {eventDetail.imageList.length > 0 && (
+      {eventDetail?.imageList?.length > 0 && (
         <div className="relative w-full">
           {eventDetail?.imageList?.length === 1 ? (
             <Image
@@ -175,7 +168,7 @@ const EventDetailSection = ({
         refetchEventDetail={refetchEventDetail}
         contentType="ploggingEvents"
       />
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <Button
           className="min-w-[120px] bg-solid"
           onClick={() => {
@@ -200,25 +193,15 @@ const EventDetailSection = ({
             '다음 이벤트 보기'
           )}
         </Button>
-      </div>
+      </div> */}
     </section>
   )
 }
 
 export default function EventDetailPage() {
-  const [currentPage, setCurrentPage] = useState(0) // 초기 페이지 1번으로 설정
-
-  const pageSize = 6 // 페이지 당 아이템 수
   const path = usePathname()
   const eventId = path.split('/').pop() ?? ''
-  const { toast } = useToast()
-
-  const handlePageChange = async (newPage: number) => {
-    if (newPage < 0) return
-    if (eventsList?.totalPages && newPage >= eventsList.totalPages) return
-    setCurrentPage(newPage)
-  }
-
+  // const { toast } = useToast()
   const {
     // 이벤트 디테일
     eventDetail,
@@ -226,39 +209,34 @@ export default function EventDetailPage() {
     eventDetailIsLoading,
     eventDetailError,
     //이벤트 페이지네이션
-    eventsList,
-    eventListIsError,
-    eventsListIsLoading,
 
     // 이전 이벤트, 다음 이벤트
-    navigate,
+    // navigate,
     isNavigatingPrev,
     isNavigatingNext,
 
     refetchEventDetail,
   } = useEventsQueries({
-    currentPage,
-    pageSize,
     eventId,
   })
 
-  const onChangeEventDetail = (type: 'prev' | 'next') => {
-    if (!eventDetail?.id) return
+  // const onChangeEventDetail = (type: 'prev' | 'next') => {
+  //   if (!eventDetail?.id) return
 
-    navigate(
-      { type, currentId: eventDetail.id },
-      {
-        onError: (error: Error) => {
-          toast({
-            title: '이동 실패',
-            description: `${error.message}`,
-            variant: 'destructive',
-            duration: 1500,
-          })
-        },
-      },
-    )
-  }
+  //   navigate(
+  //     { type, currentId: eventDetail.id },
+  //     {
+  //       onError: (error: Error) => {
+  //         toast({
+  //           title: '이동 실패',
+  //           description: `${error.message}`,
+  //           variant: 'destructive',
+  //           duration: 1500,
+  //         })
+  //       },
+  //     },
+  //   )
+  // }
 
   return (
     <article className="m-auto mt-16 flex max-h-[1355px] w-full max-w-7xl gap-6 bg-white p-5">
@@ -271,7 +249,7 @@ export default function EventDetailPage() {
             isLoading={eventDetailIsLoading}
             isError={eventDetailIsError}
             error={eventDetailError}
-            onChangeEventDetail={onChangeEventDetail}
+            // onChangeEventDetail={onChangeEventDetail}
             isNavigatingPrev={isNavigatingPrev}
             isNavigatingNext={isNavigatingNext}
             refetchEventDetail={refetchEventDetail}
@@ -283,16 +261,7 @@ export default function EventDetailPage() {
 
         {/* 오른쪽 사이드바 */}
         <div className="hidden min-w-0 laptop:block laptop:flex-[4]">
-          <ContentList
-            contentData={eventsList?.content ?? []}
-            totalPage={eventsList?.totalPages ?? 0}
-            currentPage={currentPage}
-            handlePageChange={handlePageChange}
-            cotentListIsLoading={eventsListIsLoading}
-            contentListIsError={eventListIsError}
-            eventType={'events'}
-            styleType={'side'}
-          />
+          <EventSidebar />
         </div>
       </div>
     </article>

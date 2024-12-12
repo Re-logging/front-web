@@ -3,25 +3,26 @@
 import HomeButton from '@/components/HomeButton'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+// import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import GptIcon from '@/assets/icon_gpt.svg'
 import { useNewsQueries } from '@/hooks/useNewsQueries'
 import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
 import { ErrorAlert } from '@/components/status/ErrorAlert'
-import ContentList from '@/components/ContentList'
+// import ContentList from '@/components/ContentList'
 import { useToast } from '@/hooks/use-toast'
-import LoadingSpinner from '@/components/LoadingSpinner'
+// import LoadingSpinner from '@/components/LoadingSpinner'
+import EventSidebar from './_EventSidebar'
 
 const EventDetailSection = ({
   newsDetail,
   isLoading,
   isError,
   error,
-  onChangeEventDetail,
-  isNavigatingPrev,
-  isNavigatingNext,
+  // onChangeEventDetail,
+  // isNavigatingPrev,
+  // isNavigatingNext,
 }: any) => {
   // 뉴스 디테일
 
@@ -112,7 +113,7 @@ const EventDetailSection = ({
         </div>
       </div>
       {/* 하단 기사 버튼 */}
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <Button
           className="min-w-[120px] bg-solid"
           onClick={() => {
@@ -137,22 +138,22 @@ const EventDetailSection = ({
             '다음 기사 보기'
           )}
         </Button>
-      </div>
+      </div> */}
     </section>
   )
 }
 export default function NewsArticlePage() {
   const path = usePathname()
   const articleId = path.split('/').pop()
-  const [currentPage, setCurrentPage] = useState(0) // 초기 페이지 1번으로 설정
+  // const [currentPage, setCurrentPage] = useState(0) // 초기 페이지 1번으로 설정
   const pageSize = 5 // 페이지 당 아이템 수
   const { toast } = useToast()
 
-  const handlePageChange = async (newPage: number) => {
-    if (newPage < 0) return
-    if (newsList?.totalPage && newPage >= newsList.totalPage) return
-    setCurrentPage(newPage)
-  }
+  // const handlePageChange = async (newPage: number) => {
+  //   if (newPage < 0) return
+  //   if (newsList?.totalPage && newPage >= newsList.totalPage) return
+  //   setCurrentPage(newPage)
+  // }
 
   const {
     // 이벤트 디테일
@@ -161,16 +162,15 @@ export default function NewsArticlePage() {
     newsDetailIsLoading,
 
     //이벤트 페이지네이션
-    newsList,
-    newsListIsError,
-    newsListIsLoading,
+    // newsList,
+
     // 이전 이벤트, 다음 이벤트
     navigate,
     isNavigatingNext,
     isNavigatingPrev,
     // isNavigating,
   } = useNewsQueries({
-    currentPage,
+    // currentPage,
     pageSize,
     articleId: articleId ?? '',
   })
@@ -213,7 +213,7 @@ export default function NewsArticlePage() {
 
         {/* 오른쪽 사이드바 */}
         <div className="hidden min-w-0 laptop:block laptop:flex-[4]">
-          <ContentList
+          {/* <ContentList
             contentData={newsList?.newsArticleSimpleResponseList}
             totalPage={newsList?.totalPage}
             currentPage={currentPage}
@@ -222,7 +222,8 @@ export default function NewsArticlePage() {
             contentListIsError={newsListIsError}
             eventType={'news'}
             styleType={'side'}
-          />
+          /> */}
+          <EventSidebar />
         </div>
       </div>
     </article>
