@@ -35,7 +35,14 @@ const contentTemplate = (
 ) => {
   switch (eventType) {
     case 'news':
-      return <NewsCard article={item as NewsArticleCard} key={item.id} />
+      return (
+        <NewsCard
+          article={item as NewsArticleCard}
+          key={item.id}
+          styleType={styleType}
+          currentPage={currentPage}
+        />
+      )
     case 'events':
       return (
         <EventCard
@@ -47,7 +54,12 @@ const contentTemplate = (
       )
     case 'meetup':
       return (
-        <MeetupCard meetupData={item as IMeetupContentCard} key={item.id} />
+        <MeetupCard
+          meetupData={item as IMeetupContentCard}
+          key={item.id}
+          styleType={styleType}
+          currentPage={currentPage}
+        />
       )
     default:
       return null

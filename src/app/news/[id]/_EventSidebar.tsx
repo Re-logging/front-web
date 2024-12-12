@@ -1,5 +1,5 @@
 import ContentList from '@/components/ContentList'
-import { useEventsQueries } from '@/hooks/useEventsQueries'
+import { useNewsQueries } from '@/hooks/useNewsQueries'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 export default function EventSidebar() {
@@ -12,34 +12,34 @@ export default function EventSidebar() {
 
   const {
     //이벤트 페이지네이션
-    eventsList,
-    eventListIsError,
-    eventsListIsLoading,
-  } = useEventsQueries({
+    newsList,
+    newsListIsError,
+    newsListIsLoading,
+  } = useNewsQueries({
     currentPage,
     pageSize,
+    // articleId: articleId ?? '',
   })
 
   const handlePageChange = async (newPage: number) => {
     if (newPage < 0) return
-    if (eventsList?.totalPages && newPage >= eventsList.totalPages) return
-
+    if (newsList?.totalPage && newPage >= newsList.totalPage) return
     const params = new URLSearchParams()
     params.append('index', newPage.toString())
     router.replace(`${pathname}?${params.toString()}`)
-    // setCurrentPage(newPage)
-    // router.push(`${params.toString()}`)
   }
+
+  //
 
   return (
     <ContentList
-      contentData={eventsList?.content ?? []}
-      totalPage={eventsList?.totalPages ?? 0}
+      contentData={newsList?.newsArticleSimpleResponseList}
+      totalPage={newsList?.totalPage}
       currentPage={currentPage}
       handlePageChange={handlePageChange}
-      cotentListIsLoading={eventsListIsLoading}
-      contentListIsError={eventListIsError}
-      eventType={'events'}
+      cotentListIsLoading={newsListIsLoading}
+      contentListIsError={newsListIsError}
+      eventType={'news'}
       styleType={'side'}
     />
   )
