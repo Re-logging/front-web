@@ -26,11 +26,15 @@ export const EventCard = ({
   const onClickEventDetail = (id: string) => {
     switch (styleType) {
       case 'side':
-        router.push(`/events/${id}?index=${currentPage}`)
+        router.push(`/events/${id}?index=${currentPage}`, {
+          scroll: false,
+        })
         break
 
       default:
-        router.push(`/events/${id}`)
+        router.push(`/events/${id}`, {
+          scroll: false,
+        })
     }
   }
 

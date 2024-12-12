@@ -1,30 +1,29 @@
 'use client'
 
 import HomeButton from '@/components/HomeButton'
-import { Button } from '@/components/ui/button'
+// import { Button } from '@/components/ui/button'
 import { MapPin } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, usePathname } from 'next/navigation'
-import { useState } from 'react'
 import LabeledContent from '@/components/LabeledContent'
 import { ErrorAlert } from '@/components/status/ErrorAlert'
 import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
-import ContentList from '@/components/ContentList'
 import { useMeetupQueries } from '@/hooks/useMeetupList'
 import { IMeetupDetailSectionProps, MeetupDetailType } from '@/types/IMeetup'
 import { useToast } from '@/hooks/use-toast'
-import LoadingSpinner from '@/components/LoadingSpinner'
+// import LoadingSpinner from '@/components/LoadingSpinner'
 import dayjs from 'dayjs'
 import CommentSection from '@/components/CommentSection'
+import EventSidebar from './_EventSidebar'
 
 const MeetupDetailSection = ({
   meetupDetail,
   isLoading,
   isError,
   error,
-  handleMeetupChange,
-  isNavigatingPrev,
-  isNavigatingNext,
+  // handleMeetupChange,
+  // isNavigatingPrev,
+  // isNavigatingNext,
   refetchMeetupDetail,
 }: IMeetupDetailSectionProps) => {
   const params = useParams()
@@ -142,7 +141,7 @@ const MeetupDetailSection = ({
         refetchEventDetail={refetchMeetupDetail}
         contentType="ploggingMeetups"
       />
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <Button
           className="min-w-[120px] bg-solid"
           onClick={() => {
@@ -167,24 +166,24 @@ const MeetupDetailSection = ({
             '다음 모임 보기'
           )}
         </Button>
-      </div>
+      </div> */}
     </section>
   )
 }
 
 export default function MeetupDetailPage() {
-  const [currentPage, setCurrentPage] = useState(0) // 초기 페이지 1번으로 설정
+  // const [currentPage, setCurrentPage] = useState(0) // 초기 페이지 1번으로 설정
 
-  const pageSize = 6 // 페이지 당 아이템 수
+  const pageSize = 5 // 페이지 당 아이템 수
   const path = usePathname()
   const meetupId = path.split('/').pop() || ''
   const { toast } = useToast()
 
-  const handlePageChange = async (newPage: number) => {
-    if (newPage < 0) return
-    if (meetupList?.totalPage && newPage >= meetupList.totalPage) return
-    setCurrentPage(newPage)
-  }
+  // const handlePageChange = async (newPage: number) => {
+  //   if (newPage < 0) return
+  //   if (meetupList?.totalPage && newPage >= meetupList.totalPage) return
+  //   setCurrentPage(newPage)
+  // }
 
   const {
     // 이벤트 디테일
@@ -192,9 +191,9 @@ export default function MeetupDetailPage() {
     meetupDetailiIsLoading,
     meetupDetailError,
     //이벤트 페이지네이션
-    meetupList,
-    meetupListIsError,
-    meetupListIsLoading,
+    // meetupList,
+    // meetupListIsError,
+    // meetupListIsLoading,
 
     // 이전 이벤트, 다음 이벤트
     navigate,
@@ -202,7 +201,7 @@ export default function MeetupDetailPage() {
     isNavigatingPrev,
     refetchMeetupDetail,
   } = useMeetupQueries({
-    currentPage,
+    // currentPage,
     pageSize,
     meetupId,
   })
@@ -248,16 +247,7 @@ export default function MeetupDetailPage() {
 
         {/* 오른쪽 사이드바 */}
         <div className="hidden min-w-0 laptop:block laptop:flex-[4]">
-          <ContentList
-            contentData={meetupList?.ploggingMeetupSimpleResponseList ?? []}
-            totalPage={meetupList?.totalPage ?? 0}
-            currentPage={currentPage}
-            handlePageChange={handlePageChange}
-            cotentListIsLoading={meetupListIsLoading}
-            contentListIsError={meetupListIsError}
-            eventType={'meetup'}
-            styleType={'side'}
-          />
+          <EventSidebar />
         </div>
       </div>
     </article>
