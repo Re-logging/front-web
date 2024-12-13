@@ -123,6 +123,8 @@ const MeetupDetailSection = ({
           />{' '}
           <LabeledContent
             label="지원링크"
+            linkLabel="링크 바로가기"
+            type="link"
             content={meetupDetail?.registrationLink ?? '-'}
           />
         </div>

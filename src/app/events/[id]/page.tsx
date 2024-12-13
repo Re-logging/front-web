@@ -23,6 +23,7 @@ import {
 } from '@/types/IEvent'
 import CommentSection from '@/components/CommentSection'
 import EventSidebar from './_EventSidebar'
+import { linkifyContent } from '@/utils/linkifyContent'
 
 function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
   return (
@@ -141,6 +142,7 @@ const EventDetailSection = ({
           />
           <LabeledContent
             label="참여방법"
+            linkLabel="웹사이트 바로가기"
             type="link"
             content={eventDetail?.url ?? '-'}
           />
@@ -158,7 +160,7 @@ const EventDetailSection = ({
             상세내용
           </p>
           <p className="mb-4 whitespace-pre-wrap text-xs text-text">
-            {eventDetail?.content ?? '-'}
+            {linkifyContent(eventDetail?.content) ?? '-'}
           </p>
         </div>
       </div>
