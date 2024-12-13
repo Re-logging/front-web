@@ -239,7 +239,7 @@ export default function EventDetailPage() {
   // }
 
   return (
-    <article className="m-auto mt-16 flex max-h-[1355px] w-full max-w-7xl gap-6 bg-white p-5">
+    <article className="m-auto mt-16 flex h-auto w-full max-w-7xl gap-6 bg-white p-5">
       {/* // 이벤트 이미지 밎 상세 정보 */}
       <div className="flex w-full gap-6">
         {/* 왼쪽 뉴스 디테일 */}
