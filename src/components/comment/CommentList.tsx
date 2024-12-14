@@ -32,6 +32,7 @@ const CommentList = ({
   return eventDetail?.commentList?.map((comment: any) => (
     <section className="p-4" key={comment.id}>
       <CommentItem
+        isDeleted={comment.isDeleted}
         comment={comment}
         eventId={eventDetail?.id ?? ''}
         contentType={contentType}
@@ -54,6 +55,7 @@ const CommentList = ({
           {comment.replies.length > 0 &&
             comment.replies.map((reply: any) => (
               <CommentItem
+                isDeleted={reply.isDeleted}
                 key={reply.id}
                 comment={reply}
                 eventId={eventDetail?.id ?? ''}
@@ -76,11 +78,13 @@ const CommentList = ({
 export default CommentList
 
 const CommentItem = ({
+  isDeleted,
   comment,
   eventId,
   contentType,
   refetchEventDetail,
 }: {
+  isDeleted: boolean
   comment: any
   eventId: string
   contentType: ContentType
@@ -201,23 +205,23 @@ const CommentItem = ({
           />
           <p className="text-xl">{comment?.authorName}</p>
         </section>
-        {!isEditing && (
+        {!isEditing && !isDeleted && (
           <div className="relative">
             <button onClick={toggleDropdown}>
               <IcMoreIcon />
             </button>
             {isDropdownOpen && (
-              <div className="absolute rounded border bg-white shadow-md">
+              <div className="absolute w-[60px] rounded border bg-white shadow-md">
                 {isAuthor ? (
                   <>
                     <button
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block placeholder:w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={handleEditClick}
                     >
                       수정
                     </button>
                     <button
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={handleDeleteComment}
                     >
                       삭제
@@ -225,7 +229,7 @@ const CommentItem = ({
                   </>
                 ) : (
                   <button
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="flex-1 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     onClick={() => setIsReportModalOpen(true)}
                   >
                     신고
