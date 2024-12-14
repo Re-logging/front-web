@@ -1,8 +1,8 @@
 import Image from 'next/image'
-import CommentInput from './comment/CommentInput'
-import CommentList from './comment/CommentList'
+import CommentInput from './CommentInput'
+import CommentList from './CommentList'
 
-export type ContentType = 'ploggingEvents' | 'ploggingMeetups'
+type ContentType = 'ploggingEvents' | 'ploggingMeetups'
 
 const CommentSection = ({
   eventId,
