@@ -7,12 +7,10 @@ import CommentInput from './CommentInput'
 import { ContentType } from '../CommentSection'
 
 const CommentList = ({
-  replyCount,
   eventDetail,
   refetchEventDetail,
   contentType,
 }: {
-  replyCount: number
   eventDetail: any
   refetchEventDetail: () => void
   contentType: ContentType
@@ -49,7 +47,7 @@ const CommentList = ({
           }}
           className={`cursor-pointer hover:underline ${replyListRepresents[comment.id] ? 'text-gray-900' : 'text-green'}`}
         >
-          {`답글${replyListRepresents[comment.id] ? '보기' : '달기'}(${replyCount})`}
+          {`답글${replyListRepresents[comment.id] ? '보기' : '달기'}(${comment.replies.length})`}
         </summary>
         <div className="ml-10 mt-4 flex flex-col gap-1">
           {comment.replies.length > 0 &&
@@ -135,6 +133,7 @@ const CommentItem = ({
         throw new Error('신고에 실패했습니다.')
       }
       setIsReportModalOpen(false)
+      alert('신고가 접수되었습니다.')
     } catch (error) {
       console.error('신고 오류:', error)
     }
