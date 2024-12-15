@@ -132,10 +132,13 @@ const CommentItem = ({
       if (!response.ok) {
         throw new Error('신고에 실패했습니다.')
       }
-      setIsReportModalOpen(false)
       alert('신고가 접수되었습니다.')
+      setIsReportModalOpen(false)
     } catch (error) {
       console.error('신고 오류:', error)
+      alert(
+        '신고가 정상적으로 접수되지 않았습니다. \n문제가 반복해서 발생할 경우 관리자에게 문의해주세요.',
+      )
     }
   }
 
