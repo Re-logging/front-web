@@ -4,7 +4,7 @@ import Image from 'next/image'
 import ReportModal from '../modal/ReportModal'
 import IcMoreIcon from '@/assets/icon_more.svg'
 import CommentInput from './CommentInput'
-import { ContentType } from '../CommentSection'
+import { ContentType } from './CommentSection'
 
 const CommentList = ({
   eventDetail,

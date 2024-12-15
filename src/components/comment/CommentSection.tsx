@@ -2,7 +2,7 @@ import Image from 'next/image'
 import CommentInput from './CommentInput'
 import CommentList from './CommentList'
 
-type ContentType = 'ploggingEvents' | 'ploggingMeetups'
+export type ContentType = 'ploggingEvents' | 'ploggingMeetups'
 
 const CommentSection = ({
   eventId,

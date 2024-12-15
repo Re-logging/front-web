@@ -3,7 +3,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { ContentType } from '../CommentSection'
+import { ContentType } from './CommentSection'
 
 const CommentInput = ({
   eventId,
