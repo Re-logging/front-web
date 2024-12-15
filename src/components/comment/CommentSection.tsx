@@ -2,7 +2,7 @@ import Image from 'next/image'
 import CommentInput from './CommentInput'
 import CommentList from './CommentList'
 
-type ContentType = 'ploggingEvents' | 'ploggingMeetups'
+export type ContentType = 'ploggingEvents' | 'ploggingMeetups'
 
 const CommentSection = ({
   eventId,
@@ -15,6 +15,7 @@ const CommentSection = ({
   refetchEventDetail: () => void
   contentType: ContentType
 }) => {
+  console.log('✅ event detailconut', eventDetail)
   return (
     <article>
       <h2 className="text-2xl font-semibold">댓글</h2>
@@ -35,7 +36,6 @@ const CommentSection = ({
       />
       <div className="my-8 border border-gray-300" />
       <CommentList
-        replyCount={eventDetail?.commentCount ?? 0}
         eventDetail={eventDetail}
         refetchEventDetail={refetchEventDetail}
         contentType={contentType}
