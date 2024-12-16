@@ -24,6 +24,8 @@ const styles: ILinkStyles = {
 
 type LinkElement = string | JSX.Element
 
+// 컨텐츠 안의 URL, 이메일, 전화번호를 링크로 변환하는 함수
+
 export function linkifyContent(content: string | undefined): LinkElement[] {
   let elements: LinkElement[] = [content || '']
 

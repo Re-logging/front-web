@@ -29,7 +29,7 @@ const EventDetailSection = ({
   if (isLoading) {
     return (
       <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
-        <LoadingSkeleton />
+        <LoadingSkeleton columns={1} rows={1} />
       </section>
     )
   }
