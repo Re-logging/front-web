@@ -1,7 +1,7 @@
 'use client'
 
 import HomeButton from '@/components/HomeButton'
-import { Button } from '@/components/ui/button'
+// import { Button } from '@/components/ui/button'
 import { MapPin } from 'lucide-react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -14,7 +14,7 @@ import { useMeetupQueries } from '@/hooks/useMeetupList'
 import { IMeetupDetailSectionProps } from '@/types/IMeetup'
 import { getRandomDefaultImage } from '@/constans/images'
 // import { useToast } from '@/hooks/use-toast'
-import LoadingSpinner from '@/components/LoadingSpinner'
+// import LoadingSpinner from '@/components/LoadingSpinner'
 import dayjs from 'dayjs'
 
 const MeetupDetailSection = ({
@@ -131,7 +131,7 @@ const MeetupDetailSection = ({
           </p>
         </div>
       </div>
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <Button
           className="min-w-[120px] bg-solid"
           onClick={() => {
@@ -156,7 +156,7 @@ const MeetupDetailSection = ({
             '다음 모임 보기'
           )}
         </Button>
-      </div>
+      </div> */}
     </section>
   )
 }
