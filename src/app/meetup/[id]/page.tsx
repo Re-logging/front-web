@@ -31,7 +31,7 @@ const MeetupDetailSection = ({
   if (isLoading) {
     return (
       <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
-        <LoadingSkeleton />
+        <LoadingSkeleton columns={1} rows={1} />
       </section>
     )
   }
@@ -123,6 +123,8 @@ const MeetupDetailSection = ({
           />{' '}
           <LabeledContent
             label="지원링크"
+            linkLabel="링크 바로가기"
+            type="link"
             content={meetupDetail?.registrationLink ?? '-'}
           />
         </div>
@@ -225,7 +227,7 @@ export default function MeetupDetailPage() {
   }
 
   return (
-    <article className="m-auto mt-16 flex max-h-[1355px] w-full max-w-7xl gap-6 bg-white p-5">
+    <article className="m-auto mt-16 flex h-auto w-full max-w-7xl gap-6 bg-white p-5">
       {/* // 이벤트 이미지 밎 상세 정보 */}
       <div className="flex w-full gap-6">
         {/* 왼쪽 뉴스 디테일 */}

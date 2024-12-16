@@ -23,6 +23,7 @@ import {
 } from '@/types/IEvent'
 import CommentSection from '@/components/comment/CommentSection'
 import EventSidebar from './_EventSidebar'
+import { linkifyContent } from '@/utils/linkifyContent'
 
 function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
   return (
@@ -65,7 +66,7 @@ const EventDetailSection = ({
   if (isLoading) {
     return (
       <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
-        <LoadingSkeleton />
+        <LoadingSkeleton columns={1} rows={1} />
       </section>
     )
   }
@@ -141,6 +142,7 @@ const EventDetailSection = ({
           />
           <LabeledContent
             label="참여방법"
+            linkLabel="웹사이트 바로가기"
             type="link"
             content={eventDetail?.url ?? '-'}
           />
@@ -158,7 +160,7 @@ const EventDetailSection = ({
             상세내용
           </p>
           <p className="mb-4 whitespace-pre-wrap text-xs text-text">
-            {eventDetail?.content ?? '-'}
+            {linkifyContent(eventDetail?.content) ?? '-'}
           </p>
         </div>
       </div>
@@ -239,7 +241,7 @@ export default function EventDetailPage() {
   // }
 
   return (
-    <article className="m-auto mt-16 flex max-h-[1355px] w-full max-w-7xl gap-6 bg-white p-5">
+    <article className="m-auto mt-16 flex h-auto w-full max-w-7xl gap-6 bg-white p-5">
       {/* // 이벤트 이미지 밎 상세 정보 */}
       <div className="flex w-full gap-6">
         {/* 왼쪽 뉴스 디테일 */}

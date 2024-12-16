@@ -29,7 +29,7 @@ const EventDetailSection = ({
   if (isLoading) {
     return (
       <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
-        <LoadingSkeleton />
+        <LoadingSkeleton columns={1} rows={1} />
       </section>
     )
   }
@@ -193,7 +193,7 @@ export default function NewsArticlePage() {
   }
 
   return (
-    <article className="m-auto mt-16 flex max-h-[1355px] w-full max-w-7xl gap-6 bg-white p-5">
+    <article className="m-auto mt-16 flex h-auto w-full max-w-7xl gap-6 bg-white p-5">
       <div className="flex w-full gap-6">
         {/* 왼쪽 섹션 (7/10) */}
         <div className="w-full min-w-0 laptop:flex-[8]">

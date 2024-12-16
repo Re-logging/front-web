@@ -93,7 +93,7 @@ const ContentList = ({
   }
 
   if (cotentListIsLoading) {
-    return <LoadingSkeleton />
+    return <LoadingSkeleton columns={1} rows={5} />
   }
 
   if (contentListIsError) {
