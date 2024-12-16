@@ -7,7 +7,7 @@ import CloseIcon from '@/assets/icon_close.svg'
 interface ReportModalProps {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (reason: string) => void
+  onSubmit: (reason: string) => Promise<any>
 }
 
 const ReportModal = ({ isOpen, onClose, onSubmit }: ReportModalProps) => {

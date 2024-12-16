@@ -1,174 +1,16 @@
-'use client'
-
-import Image from 'next/image'
-import IcMoreIcon from '@/assets/icon_more.svg'
 import { useState } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/store/authStore'
-import ReportModal from './modal/ReportModal'
-
-type ContentType = 'ploggingEvents' | 'ploggingMeetups'
-
-const CommentSection = ({
-  eventId,
-  eventDetail,
-  refetchEventDetail,
-  contentType,
-}: {
-  eventId: string
-  eventDetail: any
-  refetchEventDetail: () => void
-  contentType: ContentType
-}) => {
-  return (
-    <article>
-      <h2 className="text-2xl font-semibold">댓글</h2>
-      <div className="mt-2 flex items-center gap-2 p-2">
-        <Image
-          src={eventDetail?.user?.profileImage ?? '/default_avatar.svg'}
-          alt="profile"
-          width={24}
-          height={24}
-        />
-        <p className="text-xl">{eventDetail?.user?.nickname}</p>
-        <p className="text-green">본인</p>
-      </div>
-      <CommentInput
-        eventId={eventId}
-        refetchEventDetail={refetchEventDetail}
-        contentType={contentType}
-      />
-      <div className="my-8 border border-gray-300" />
-      <CommentList
-        eventDetail={eventDetail}
-        refetchEventDetail={refetchEventDetail}
-        contentType={contentType}
-      />
-    </article>
-  )
-}
-
-export default CommentSection
-
-const CommentInput = ({
-  eventId,
-  commentId,
-  refetchEventDetail,
-  contentType,
-}: {
-  eventId: string
-  commentId?: string
-  refetchEventDetail: () => void
-  contentType: ContentType
-}) => {
-  const queryClient = useQueryClient()
-  const [isFocus, setIsFocus] = useState(false)
-  const [comment, setComment] = useState('')
-  const isExceeded = comment.length >= 250
-
-  const { mutate: createComment } = useMutation({
-    mutationFn: async () => {
-      const response = await fetch(
-        `/api/${contentType}/comments?eventId=${eventId}${commentId ? `&commentId=${commentId}` : ''}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ content: comment }),
-        },
-      )
-      refetchEventDetail()
-      if (!response.ok) {
-        throw new Error('Failed to create comment')
-      }
-
-      return response.json()
-    },
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comments', eventId] })
-      setComment('')
-    },
-
-    onError: () => {
-      console.log('error')
-      alert('댓글 작성에 실패했습니다.')
-    },
-  })
-
-  const handleSubmit = () => {
-    createComment()
-  }
-
-  return (
-    <div
-      tabIndex={0} // 포커스를 받을 수 있도록 tabIndex 추가
-      className="outline-none" // 포커스 테두리 제거
-      onFocusCapture={() => setIsFocus(true)}
-      onBlurCapture={(e) => {
-        if (e.currentTarget.contains(e.relatedTarget as Node)) return
-        setIsFocus(false)
-      }}
-    >
-      <textarea
-        placeholder="댓글을 입력하세요"
-        className={`w-full resize-none rounded-xl border border-gray-300 p-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isFocus ? 'h-20 border-green' : 'h-12'}`}
-        value={comment}
-        onChange={(e) =>
-          e.target.value.length <= 250 && setComment(e.target.value)
-        }
-      />
-      {isFocus && (
-        <section className="flex items-center justify-between gap-2">
-          <p
-            className={`transition-colors ${isExceeded ? 'text-red-500' : 'text-gray-500'}`}
-          >
-            {comment.length}/250
-          </p>
-          <button
-            type="submit"
-            className="mt-1 rounded-md bg-green px-6 py-2 text-white"
-            onClick={handleSubmit}
-          >
-            등록
-          </button>
-        </section>
-      )}
-    </div>
-  )
-}
+import Image from 'next/image'
+import ReportModal from '../modal/ReportModal'
+import IcMoreIcon from '@/assets/icon_more.svg'
+import CommentInput from './CommentInput'
+import { ContentType } from './CommentSection'
 
 const CommentList = ({
   eventDetail,
   refetchEventDetail,
   contentType,
 }: {
-  eventDetail: any
-  refetchEventDetail: () => void
-  contentType: ContentType
-}) => {
-  return (
-    <div>
-      <CommentContainer
-        replyListRepresent={true}
-        replyCount={eventDetail?.commentCount ?? 0}
-        eventDetail={eventDetail}
-        refetchEventDetail={refetchEventDetail}
-        contentType={contentType}
-      />
-    </div>
-  )
-}
-
-const CommentContainer = ({
-  replyCount,
-  eventDetail,
-  refetchEventDetail,
-  contentType,
-}: {
-  replyListRepresent: boolean
-  replyCount: number
   eventDetail: any
   refetchEventDetail: () => void
   contentType: ContentType
@@ -183,14 +25,16 @@ const CommentContainer = ({
       [commentId]: !prev[commentId],
     }))
   }
-  if (eventDetail.commentList.length === 0)
+  if (eventDetail?.commentList?.length === 0)
     return <p className="text-sm text-textLight">아직 남겨진 댓글이 없어요!</p>
-  return eventDetail.commentList.map((comment: any) => (
+  return eventDetail?.commentList?.map((comment: any) => (
     <section className="p-4" key={comment.id}>
       <CommentItem
+        isDeleted={comment.isDeleted}
         comment={comment}
-        eventId={eventDetail.id}
+        eventId={eventDetail?.id ?? ''}
         contentType={contentType}
+        refetchEventDetail={refetchEventDetail}
       />
       <details
         className="mt-4 [&>summary]:list-none"
@@ -203,16 +47,18 @@ const CommentContainer = ({
           }}
           className={`cursor-pointer hover:underline ${replyListRepresents[comment.id] ? 'text-gray-900' : 'text-green'}`}
         >
-          {`답글${replyListRepresents[comment.id] ? '보기' : '달기'}(${replyCount})`}
+          {`답글${replyListRepresents[comment.id] ? '보기' : '달기'}(${comment.replies.length})`}
         </summary>
         <div className="ml-10 mt-4 flex flex-col gap-1">
           {comment.replies.length > 0 &&
             comment.replies.map((reply: any) => (
               <CommentItem
+                isDeleted={reply.isDeleted}
                 key={reply.id}
                 comment={reply}
-                eventId={eventDetail.id}
+                eventId={eventDetail?.id ?? ''}
                 contentType={contentType}
+                refetchEventDetail={refetchEventDetail}
               />
             ))}
           <CommentInput
@@ -227,14 +73,20 @@ const CommentContainer = ({
   ))
 }
 
+export default CommentList
+
 const CommentItem = ({
+  isDeleted,
   comment,
   eventId,
   contentType,
+  refetchEventDetail,
 }: {
+  isDeleted: boolean
   comment: any
   eventId: string
   contentType: ContentType
+  refetchEventDetail: () => void
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
@@ -245,7 +97,6 @@ const CommentItem = ({
   const { user } = useAuthStore() // 로그인한 유저 정보 가져오기
 
   const isAuthor = comment.authorId === user?.userId
-  // const isAuthor = false
 
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(comment.content)
@@ -261,17 +112,40 @@ const CommentItem = ({
     setEditedContent(comment.content) // 원래 내용으로 복구
   }
 
-  const handleReportSubmit = (
-    // reason: string
-  ) => {
-    // reportComment(reason)
-    setIsReportModalOpen(false)
+  const handleReportSubmit = async (reason: string) => {
+    try {
+      const response = await fetch(`/api/report`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reason }),
+      })
+
+      console.log('신고 응답:', response)
+
+      if (response.status === 302) {
+        window.location.href = `${window.location.pathname}?auth=login`
+        return response.json()
+      }
+
+      if (!response.ok) {
+        throw new Error('신고에 실패했습니다.')
+      }
+      alert('신고가 접수되었습니다.')
+      setIsReportModalOpen(false)
+    } catch (error) {
+      console.error('신고 오류:', error)
+      alert(
+        '신고가 정상적으로 접수되지 않았습니다. \n문제가 반복해서 발생할 경우 관리자에게 문의해주세요.',
+      )
+    }
   }
 
   const handleEditSubmit = async () => {
     try {
       const response = await fetch(
-        `/api/${contentType}/comments?eventId=${eventId}&commentId=${comment.id}`,
+        `/api/comments?contentType=${contentType}&eventId=${eventId}&commentId=${comment.id}`,
         {
           method: 'PUT',
           headers: {
@@ -281,12 +155,16 @@ const CommentItem = ({
         },
       )
 
+      if (response.status === 302) {
+        window.location.href = `${window.location.pathname}?auth=login`
+        return response.json()
+      }
       if (!response.ok) {
         throw new Error('댓글 수정에 실패했습니다.')
       }
 
       setIsEditing(false)
-      // UI 업데이트 로직 추가 필요
+      refetchEventDetail()
     } catch (error) {
       console.error('댓글 수정 오류:', error)
     }
@@ -296,17 +174,22 @@ const CommentItem = ({
     try {
       if (!isAuthor) return
       const response = await fetch(
-        `/api/${contentType}/comments?eventId=${eventId}&commentId=${comment.id}`,
+        `/api/comments?contentType=${contentType}&eventId=${eventId}&commentId=${comment.id}`,
         {
           method: 'DELETE',
         },
       )
 
-      if (!response.ok) {
-        throw new Error('댓글 삭제에 실패했습니다.')
+      if (response.status === 302) {
+        window.location.href = `${window.location.pathname}?auth=login`
+        return response.json()
       }
-
-      // UI 업데이트 로직 추가 필요
+      if (response.status === 204) {
+        refetchEventDetail()
+        return
+      }
+      const errorData = await response.json()
+      throw new Error(errorData.error || '댓글 삭제에 실패했습니다.')
     } catch (error) {
       console.error('댓글 삭제 오류:', error)
     }
@@ -324,23 +207,23 @@ const CommentItem = ({
           />
           <p className="text-xl">{comment?.authorName}</p>
         </section>
-        {!isEditing && (
+        {!isEditing && !isDeleted && (
           <div className="relative">
             <button onClick={toggleDropdown}>
               <IcMoreIcon />
             </button>
             {isDropdownOpen && (
-              <div className="absolute rounded border bg-white shadow-md">
+              <div className="absolute w-[60px] rounded border bg-white shadow-md">
                 {isAuthor ? (
                   <>
                     <button
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block placeholder:w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={handleEditClick}
                     >
                       수정
                     </button>
                     <button
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={handleDeleteComment}
                     >
                       삭제
@@ -348,7 +231,7 @@ const CommentItem = ({
                   </>
                 ) : (
                   <button
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="flex-1 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     onClick={() => setIsReportModalOpen(true)}
                   >
                     신고
