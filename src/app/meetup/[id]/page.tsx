@@ -13,7 +13,7 @@ import { IMeetupDetailSectionProps, MeetupDetailType } from '@/types/IMeetup'
 import { useToast } from '@/hooks/use-toast'
 // import LoadingSpinner from '@/components/LoadingSpinner'
 import dayjs from 'dayjs'
-import CommentSection from '@/components/CommentSection'
+import CommentSection from '@/components/comment/CommentSection'
 import EventSidebar from './_EventSidebar'
 
 const MeetupDetailSection = ({

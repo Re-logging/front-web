@@ -21,7 +21,7 @@ import {
   IEventContentCarouselProps,
   IEventDetailSectionProps,
 } from '@/types/IEvent'
-import CommentSection from '@/components/CommentSection'
+import CommentSection from '@/components/comment/CommentSection'
 import EventSidebar from './_EventSidebar'
 import { linkifyContent } from '@/utils/linkifyContent'
 
