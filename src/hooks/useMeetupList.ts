@@ -5,7 +5,7 @@ import { toast } from '@/hooks/use-toast'
 
 export async function fetchMeetupingArticle(
   page: number,
-  size: number,
+  pageSize: number,
   region?: string,
   progressStatus = false,
   sortBy = 'START_DATE',
@@ -13,7 +13,7 @@ export async function fetchMeetupingArticle(
 ) {
   const params = new URLSearchParams({
     page: page.toString(),
-    pageSize: size.toString(),
+    pageSize: pageSize.toString(),
     isOpen: progressStatus.toString(),
     sortBy,
     sortDirection,

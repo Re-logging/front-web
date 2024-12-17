@@ -2,11 +2,22 @@ import { IEventsQueries, IPloggingEventContentList } from '@/types/IEvent'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 
-export async function fetchEventsArticle(page: number, size: number) {
-  const params = new URLSearchParams()
-  params.append('page', page.toString())
-  params.append('size', size.toString())
-  params.append('sort', 'desc')
+export async function fetchEventsArticle(
+  page: number,
+  pageSize: number,
+  region?: string,
+  progressStatus = false,
+  sortBy = 'START_DATE',
+  sortDirection = 'DESC',
+) {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+    isOpen: progressStatus.toString(),
+    sortBy,
+    sortDirection,
+    ...(region && { region }), // region이 있을 때만 추가
+  })
 
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/ploggingEvents/list?${params.toString()}`
 
