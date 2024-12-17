@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Footer from '@/components/layouts/Footer'
 import { useRouter, useSearchParams } from 'next/navigation'
-import MeetupList from '@/components/MeetupList'
+import MeetupList from '@/components/meetup/MeetupList'
 import EventListGrid from '@/components/EventListGrid'
 import NewsListGrid from '@/components/NewsListGrid'
 
