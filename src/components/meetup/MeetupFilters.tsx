@@ -41,9 +41,9 @@ export const MeetupFilters = ({
   ]
 
   return (
-    <div className="flex gap-4">
+    <div className="flex w-auto gap-4 overflow-x-auto">
       <Select onValueChange={setRegion} value={region}>
-        <SelectTrigger className="w-[261px]">
+        <SelectTrigger className="w-full min-w-fit laptop:w-[261px]">
           <SelectValue placeholder="지역 미지정 (전체)" />
         </SelectTrigger>
         <SelectContent>
@@ -61,7 +61,7 @@ export const MeetupFilters = ({
         </SelectContent>
       </Select>
       <Select onValueChange={setSortBy} value={sortBy}>
-        <SelectTrigger className="w-[261px]">
+        <SelectTrigger className="w-full min-w-fit laptop:w-[261px]">
           <SelectValue placeholder="최신순" />
         </SelectTrigger>
         <SelectContent>
@@ -78,7 +78,7 @@ export const MeetupFilters = ({
           })}
         </SelectContent>
       </Select>
-      <div className="flex items-center space-x-2 text-center">
+      <div className="flex w-auto items-center space-x-2 text-center">
         <Switch
           id="progressStatus"
           checked={progressStatus ?? false}
