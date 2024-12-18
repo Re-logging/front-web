@@ -114,7 +114,9 @@ export default function MeetupList() {
           sortBy={sortBy}
           progressStatus={progressStatus}
         />
-        <RegistNewMeetupButton tabType={currentTab || ''} />
+        <div>
+          <RegistNewMeetupButton tabType={currentTab || ''} />
+        </div>
       </div>
       <ContentList
         contentData={meetupList?.ploggingMeetupSimpleResponseList}
