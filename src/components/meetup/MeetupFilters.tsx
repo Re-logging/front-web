@@ -51,7 +51,7 @@ export const MeetupFilters = ({
             return (
               <SelectItem
                 key={region.value}
-                className="text-textLight hover:bg-purple-600"
+                className="text-textLight"
                 value={region.id}
               >
                 {region.value}
@@ -69,7 +69,7 @@ export const MeetupFilters = ({
             return (
               <SelectItem
                 key={type.id}
-                className="text-textLight hover:bg-purple-600"
+                className="text-textLight"
                 value={type.id}
               >
                 {type.value}
@@ -83,10 +83,10 @@ export const MeetupFilters = ({
           id="progressStatus"
           checked={progressStatus ?? false}
           onCheckedChange={setProgressStatus}
-          className="[&:hover_span[data-state=checked]]:bg-hoverGreen data-[state=checked]:bg-solid data-[state=unchecked]:bg-solid hover:data-[state=checked]:bg-hoverGray hover:data-[state=unchecked]:bg-hoverGray [&:hover_span[data-state=unchecked]]:bg-solid [&_span[data-state=checked]]:bg-green [&_span[data-state=unchecked]]:bg-textLight"
+          className="data-[state=checked]:bg-solid data-[state=unchecked]:bg-solid hover:data-[state=checked]:bg-hoverGray hover:data-[state=unchecked]:bg-hoverGray [&:hover_span[data-state=checked]]:bg-hoverGreen [&:hover_span[data-state=unchecked]]:bg-solid [&_span[data-state=checked]]:bg-green [&_span[data-state=unchecked]]:bg-textLight"
         />
         <Label
-          className="text-textMedium whitespace-nowrap text-sm font-medium"
+          className="whitespace-nowrap text-sm font-medium text-textMedium"
           htmlFor="progressStatus"
         >
           진행중만 보기

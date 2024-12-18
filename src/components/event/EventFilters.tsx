@@ -51,7 +51,7 @@ export const EventFilters = ({
             return (
               <SelectItem
                 key={region.value}
-                className="text-textLight hover:bg-purple-600"
+                className="text-textLight"
                 value={region.id}
               >
                 {region.value}
@@ -69,7 +69,7 @@ export const EventFilters = ({
             return (
               <SelectItem
                 key={type.id}
-                className="text-textLight hover:bg-purple-600"
+                className="text-textLight"
                 value={type.id}
               >
                 {type.value}
