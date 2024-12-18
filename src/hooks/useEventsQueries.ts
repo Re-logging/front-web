@@ -49,13 +49,31 @@ export const useEventsQueries = ({
   currentPage,
   pageSize,
   eventId,
+  region,
+  sortBy,
+  progressStatus,
 }: IEventsQueries) => {
   const queryClient = useQueryClient()
   const router = useRouter()
 
+  if (region === '전체') region = undefined
   const eventsListQuery = useQuery<IPloggingEventContentList>({
-    queryKey: ['eventsList', currentPage, pageSize],
-    queryFn: () => fetchEventsArticle(currentPage ?? 0, pageSize ?? 15),
+    queryKey: [
+      'eventsList',
+      currentPage,
+      pageSize,
+      region,
+      sortBy,
+      progressStatus,
+    ],
+    queryFn: () =>
+      fetchEventsArticle(
+        currentPage ?? 0,
+        pageSize ?? 15,
+        region,
+        progressStatus,
+        sortBy,
+      ),
     // staleTime: 5 * 60 * 1000, // 데이터가 "신선"하다고 간주되는 시간 (5분)
     // gcTime: 30 * 60 * 1000, // 데이터가 캐시에 유지되는 시간 (30분)
   })

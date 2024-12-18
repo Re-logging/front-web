@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Footer from '@/components/layouts/Footer'
 import { useRouter, useSearchParams } from 'next/navigation'
 import MeetupList from '@/components/meetup/MeetupList'
-import EventListGrid from '@/components/EventListGrid'
+import EventListGrid from '@/components/event/EventListGrid'
 import NewsListGrid from '@/components/NewsListGrid'
 
 const images = {
