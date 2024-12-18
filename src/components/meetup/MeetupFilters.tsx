@@ -41,9 +41,9 @@ export const MeetupFilters = ({
   ]
 
   return (
-    <div className="flex gap-4">
+    <div className="flex w-auto gap-4 overflow-x-auto">
       <Select onValueChange={setRegion} value={region}>
-        <SelectTrigger className="w-[261px]">
+        <SelectTrigger className="w-full min-w-fit laptop:w-[261px]">
           <SelectValue placeholder="지역 미지정 (전체)" />
         </SelectTrigger>
         <SelectContent>
@@ -61,7 +61,7 @@ export const MeetupFilters = ({
         </SelectContent>
       </Select>
       <Select onValueChange={setSortBy} value={sortBy}>
-        <SelectTrigger className="w-[261px]">
+        <SelectTrigger className="w-full min-w-fit laptop:w-[261px]">
           <SelectValue placeholder="최신순" />
         </SelectTrigger>
         <SelectContent>
@@ -78,15 +78,15 @@ export const MeetupFilters = ({
           })}
         </SelectContent>
       </Select>
-      <div className="flex items-center space-x-2 text-center">
+      <div className="flex w-auto items-center space-x-2 text-center">
         <Switch
           id="progressStatus"
           checked={progressStatus ?? false}
           onCheckedChange={setProgressStatus}
-          className="[&:hover_span[data-state=checked]]:bg-hoverGreen data-[state=checked]:bg-solid data-[state=unchecked]:bg-solid hover:data-[state=checked]:bg-hoverGray hover:data-[state=unchecked]:bg-hoverGray [&:hover_span[data-state=unchecked]]:bg-solid [&_span[data-state=checked]]:bg-green [&_span[data-state=unchecked]]:bg-textLight"
+          className="data-[state=checked]:bg-solid data-[state=unchecked]:bg-solid hover:data-[state=checked]:bg-hoverGray hover:data-[state=unchecked]:bg-hoverGray [&:hover_span[data-state=checked]]:bg-hoverGreen [&:hover_span[data-state=unchecked]]:bg-solid [&_span[data-state=checked]]:bg-green [&_span[data-state=unchecked]]:bg-textLight"
         />
         <Label
-          className="text-textMedium whitespace-nowrap text-sm font-medium"
+          className="whitespace-nowrap text-sm font-medium text-textMedium"
           htmlFor="progressStatus"
         >
           진행중만 보기
