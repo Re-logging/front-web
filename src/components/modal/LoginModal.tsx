@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog'
 import KakaoOauthButton from '@/components/KakaoOauthButton'
 import GoogleOauthButton from '@/components/GoogleOauthButton'
+import { DialogDescription } from '@radix-ui/react-dialog'
 
 export function LoginModal() {
   const { isOpen, closeModal } = useStatusModal({ type: 'auth', mode: 'login' })
@@ -23,6 +24,7 @@ export function LoginModal() {
             <DialogTitle className="text-2xl font-bold text-text">
               로그인
             </DialogTitle>
+            <DialogDescription />
           </div>
         </DialogHeader>
         <div className="margin-auto flex w-full max-w-[400px] flex-col items-center space-y-4 p-6 pt-2">
