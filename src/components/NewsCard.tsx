@@ -1,8 +1,8 @@
 import { NewsArticleCard } from '@/types/INews'
-import { getRandomDefaultImage } from '@/constans/images'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
+import { DEFAULT_IMAGES } from '@/constans/images'
 
 interface IEventCardProps {
   article: NewsArticleCard
@@ -54,7 +54,7 @@ const NewsCard = ({ article, styleType, currentPage }: IEventCardProps) => {
         </div>
         <div className="relative flex-[4]">
           <Image
-            src={article.imagePath ?? getRandomDefaultImage()}
+            src={article.imagePath ?? DEFAULT_IMAGES.THUMBNAIL}
             alt={article?.title}
             fill
             priority
