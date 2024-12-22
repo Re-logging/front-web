@@ -24,14 +24,12 @@ const AccountModalContent = React.memo(
       switch (modalType) {
         case 'main':
           return (
-            <>
-              <MainAccountModalContent
-                profileInfo={user}
-                onEdit={() => onTypeChange('edit')}
-                onDelete={() => onTypeChange('delete')}
-                onClose={onCancel}
-              />
-            </>
+            <MainAccountModalContent
+              profileInfo={user}
+              onEdit={() => onTypeChange('edit')}
+              onDelete={() => onTypeChange('delete')}
+              onClose={onCancel}
+            />
           )
         case 'edit':
           return (
