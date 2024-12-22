@@ -2,10 +2,10 @@ import { IEventContentCard } from '@/types/IEvent'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
-import { getRandomDefaultImage } from '@/constans/images'
 import dayjs from 'dayjs'
 import IconTime from '@/assets/icon_time.svg'
 import IconLocation from '@/assets/icon_location.svg'
+import { DEFAULT_IMAGES } from '@/constans/images'
 
 interface IEventCardProps {
   eventData: IEventContentCard
@@ -64,7 +64,7 @@ export const EventCard = ({
           <div className="relative h-[100px] w-full rounded-lg md:flex-[4]">
             <Image
               id={eventData.image?.id.toString()}
-              src={eventData.image?.url ?? getRandomDefaultImage()}
+              src={eventData.image?.url ?? DEFAULT_IMAGES.THUMBNAIL}
               alt={eventData.caption ?? '플로깅 이미지'}
               fill
               priority
