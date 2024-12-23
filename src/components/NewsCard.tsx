@@ -41,7 +41,7 @@ const NewsCard = ({ article, styleType, currentPage }: IEventCardProps) => {
       {/* 카드 헤더 */}
       <CardHeader className="h-[25%] space-y-0 p-0">
         <p className="text-sm text-textLight">{article?.publishedAt}</p>
-        <CardTitle className="mb-2 line-clamp-1 flex-shrink-0 text-lg font-bold text-text">
+        <CardTitle className="mb-2 line-clamp-2 flex-shrink-0 text-lg font-bold text-text">
           {article?.title}
         </CardTitle>
       </CardHeader>
