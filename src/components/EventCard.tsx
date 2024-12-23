@@ -56,7 +56,7 @@ export const EventCard = ({
         </div>
         <div className="flex items-center gap-4 md:flex-row">
           {/* 제목 - 모바일에서는 전체 너비, 데스크톱에서는 60% */}
-          <h3 className="line-clamp-1 w-full text-lg font-bold text-text md:flex-[6]">
+          <h3 className="line-clamp-2 w-full text-lg font-bold text-text md:flex-[6]">
             {eventData.title}
           </h3>
           {/* 이미지 - 모바일에서는 전체 너비, 데스크톱에서는 40% */}
