@@ -37,7 +37,6 @@ function ImageListCarousel({ imageList }: IEventContentCarouselProps) {
                     height={1080}
                     priority
                     quality={75}
-                    placeholder="blur"
                     className="h-auto w-full rounded-lg"
                   />
                 </CardContent>
