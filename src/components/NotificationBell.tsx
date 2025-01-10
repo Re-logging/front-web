@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useRouter } from 'next/navigation'
-import { Notification } from '@/types/Inotification'
+import { INotification } from '@/types/INotification'
 import { Button } from '@/components/ui/button'
 
 export function NotificationBell() {
@@ -22,7 +22,7 @@ export function NotificationBell() {
   // SSE 연결
   useNotificationSSE()
 
-  const handleNotificationClick = (notification: Notification) => {
+  const handleNotificationClick = (notification: INotification) => {
     markAsRead(notification.id)
     if (notification.targetUrl) {
       router.push(notification.targetUrl)
