@@ -4,7 +4,7 @@
 import { useState } from 'react'
 import { useNotificationStore } from '@/store/notificationStore'
 import { useNotificationSSE } from '@/hooks/useNotificationSSE'
-import { Bell } from 'lucide-react'
+import { Bell, X } from 'lucide-react'
 import {
   Popover,
   PopoverContent,
@@ -13,6 +13,9 @@ import {
 import { useRouter } from 'next/navigation'
 import { INotification } from '@/types/INotification'
 import { Button } from '@/components/ui/button'
+// import UnreadCommentAlarmIcon from '@/assets/icon_unreadComment.svg'
+// import ReadCommentAlarmIcon from '@/assets/icon_readComment.svg'
+import CheckedIcon from '@/assets/icon_checked.svg'
 
 export function NotificationBell() {
   const router = useRouter()
@@ -36,14 +39,25 @@ export function NotificationBell() {
         <Button className="relative cursor-pointer bg-white text-black">
           <Bell className="h-6 w-6" />
           {unreadCount > 0 && (
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+            <span className="absolute -top-0 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
               {unreadCount}
             </span>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0">
+      <PopoverContent className="w-[400px] p-0">
         <div className="max-h-[400px] overflow-y-auto">
+          <div className="flex items-center justify-between border-b p-4">
+            <span className="text-lg font-semibold">알림</span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 text-solid"
+              onClick={() => setIsOpen(false)}
+            >
+              <X className="h-6 w-6" />
+            </Button>
+          </div>
           {notifications.length === 0 ? (
             <div className="p-4 text-center text-gray-500">
               새로운 알림이 없습니다
@@ -52,14 +66,22 @@ export function NotificationBell() {
             notifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`cursor-pointer border-b p-4 hover:bg-gray-50 ${
+                className={`flex h-[80px] cursor-pointer items-center gap-4 border-b p-4 hover:bg-hoverGray ${
                   !notification.isRead ? 'bg-blue-50' : ''
                 }`}
                 onClick={() => handleNotificationClick(notification)}
               >
-                <div className="text-sm">{notification.message}</div>
-                <div className="mt-1 text-xs text-gray-500">
-                  {new Date(notification.createdAt).toLocaleString()}
+                <div>
+                  {/* <UnreadCommentAlarmIcon />
+                   */}
+                  {/* <ReadCommentAlarmIcon /> */}
+                  <CheckedIcon color="#1EE494" />
+                </div>
+                <div>
+                  <p className="text-sm">{notification.message}</p>
+                  <p className="mt-1 text-xs text-gray-500">
+                    {new Date(notification.createdAt).toLocaleString()}
+                  </p>
                 </div>
               </div>
             ))
