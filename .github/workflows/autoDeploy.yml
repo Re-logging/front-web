@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
 
-permissions: # 이 부분 추가
+permissions:
   contents: write
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
         if: success()
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }} # 이 부분 수정 (GITHUB_TOKEN → PAT_TOKEN)
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }} # 이름 변경
         with:
           source-directory: 'output'
           destination-github-username: asroq1
