@@ -8,7 +8,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -33,7 +33,7 @@ jobs:
         if: success() # 이전 단계가 성공했을 때만 실행
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.AUTO_INFORMATION }}
+          API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
         with:
           source-directory: 'output'
           destination-github-username: asroq1
@@ -41,3 +41,4 @@ jobs:
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: 'Update from source repository - ${{ github.sha }}'
           target-branch: main
+          github-server: 'github.com'
