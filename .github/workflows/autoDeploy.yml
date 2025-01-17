@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+permissions: # 이 부분 추가
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -24,16 +27,16 @@ jobs:
         run: npm run build:production
 
       - name: Create output directory and copy files
-        if: success() # 이전 단계가 성공했을 때만 실행
+        if: success()
         run: |
           chmod +x ./build.sh
           ./build.sh
 
       - name: Pushes to another repository
-        if: success() # 이전 단계가 성공했을 때만 실행
+        if: success()
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+          API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }} # 이 부분 수정 (GITHUB_TOKEN → PAT_TOKEN)
         with:
           source-directory: 'output'
           destination-github-username: asroq1
