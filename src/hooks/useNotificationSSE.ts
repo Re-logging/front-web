@@ -1,37 +1,66 @@
-// hooks/useNotificationSSE.ts
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { EventSourcePolyfill } from 'event-source-polyfill'
 import { useNotificationStore } from '@/store/notificationStore'
 
-// 알림 SSE 연결하는
 export const useNotificationSSE = () => {
   const { addNotification } = useNotificationStore()
+  const [status, setStatus] = useState<
+    'connecting' | 'connected' | 'disconnected'
+  >('disconnected')
 
   useEffect(() => {
-    // EventSourcePolyfill 설정
-    const eventSource = new EventSourcePolyfill(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/subscribe`,
-      {
-        withCredentials: true, // Next 서버에서 관리하는 쿠키 전송을 위해 필요
-      },
-    )
-    // 알림 수신
-    eventSource.onmessage = (event) => {
+    let eventSource: EventSourcePolyfill | null = null
+
+    const connectSSE = () => {
       try {
-        const notification = JSON.parse(event.data)
-        addNotification(notification)
+        setStatus('connecting')
+
+        eventSource = new EventSourcePolyfill(`/api/notifications`, {
+          withCredentials: true,
+          headers: {
+            Accept: 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            Connection: 'keep-alive',
+          },
+        })
+
+        eventSource.onopen = () => {
+          setStatus('connected')
+          console.log('SSE 연결 성공')
+        }
+
+        eventSource.onmessage = (event) => {
+          try {
+            const notification = JSON.parse(event.data)
+            addNotification(notification)
+          } catch (error) {
+            console.error('알림 파싱 실패:', error)
+          }
+        }
+
+        eventSource.onerror = (error) => {
+          console.error('SSE 에러:', error)
+          setStatus('disconnected')
+          eventSource?.close()
+
+          // 재연결 시도
+          setTimeout(connectSSE, 5000)
+        }
       } catch (error) {
-        console.error('알림 파싱 실패:', error)
+        console.error('SSE 연결 실패:', error)
+        setStatus('disconnected')
       }
     }
 
-    eventSource.onerror = (error) => {
-      console.error('SSE 에러:', error)
-      eventSource.close()
-    }
-    // 컴포넌트 언마운트 시 SSE 연결 종료
+    connectSSE()
+
     return () => {
-      eventSource.close()
+      if (eventSource) {
+        eventSource.close()
+        setStatus('disconnected')
+      }
     }
   }, [addNotification])
+
+  return status
 }
