@@ -15,7 +15,7 @@ export const useNotificationSSE = () => {
       try {
         setStatus('connecting')
 
-        eventSource = new EventSourcePolyfill(`/api/notifications`, {
+        eventSource = new EventSourcePolyfill(`/api/sse/connect`, {
           withCredentials: true,
           headers: {
             Accept: 'text/event-stream',

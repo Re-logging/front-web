@@ -1,7 +1,7 @@
 // components/NotificationBell.tsx
 'use client'
 
-import { useState } from 'react'
+import { createElement, useState } from 'react'
 import { useNotificationStore } from '@/store/notificationStore'
 import { useNotificationSSE } from '@/hooks/useNotificationSSE'
 import { Bell, X } from 'lucide-react'
@@ -11,17 +11,42 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useRouter } from 'next/navigation'
-import { INotification } from '@/types/INotification'
+import { IMessageMapType, INotification } from '@/types/INotification'
 import { Button } from '@/components/ui/button'
-// import UnreadCommentAlarmIcon from '@/assets/icon_unreadComment.svg'
+import UnreadCommentAlarmIcon from '@/assets/icon_readComment.svg'
 // import ReadCommentAlarmIcon from '@/assets/icon_readComment.svg'
-import CheckedIcon from '@/assets/icon_checked.svg'
+// import CheckedIcon from '@/assets/icon_checked.svg'
+import { useQuery } from '@tanstack/react-query'
+// import Image from 'next/image'
+
+export const fetchNotifications = async (): Promise<INotification[]> => {
+  const response = await fetch('/api/notification')
+  if (!response.ok) {
+    throw new Error('Failed to fetch notifications')
+  }
+  return response.json()
+}
 
 export function NotificationBell() {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
-  const { notifications, unreadCount, markAsRead } = useNotificationStore()
+  const { markAsRead } = useNotificationStore()
 
+  // useQuery에 제네릭 타입 지정
+  const {
+    data: notifications,
+    isError,
+    isLoading,
+  } = useQuery<INotification[]>({
+    queryKey: ['notifications'],
+    queryFn: fetchNotifications,
+    staleTime: 0, // 항상 새로운 데이터로 간주
+    refetchInterval: 30000, // 30초마다 갱신
+    refetchOnWindowFocus: true, // 윈도우 포커스시 새로운 데이터 요청
+  })
+
+  // 이제 filter 메소드 사용 시 타입 에러가 발생하지 않음
+  // const unreadCount = notifications.filter((n) => !n.isRead).length
   // SSE 연결
   useNotificationSSE()
 
@@ -33,16 +58,30 @@ export function NotificationBell() {
     setIsOpen(false)
   }
 
+  const messageMap: IMessageMapType = {
+    COMMENT: {
+      comment: '댓글이 달렸습니다.',
+      iconPath: UnreadCommentAlarmIcon,
+    },
+    REPLY: {
+      comment: '댓글에 답글이 달렸습니다.',
+      iconPath: undefined,
+    },
+  }
+
+  if (!notifications) {
+    return null
+  }
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button className="relative cursor-pointer bg-white text-black">
           <Bell className="h-6 w-6" />
-          {unreadCount > 0 && (
+          {/* {unreadCount > 0 && (
             <span className="absolute -top-0 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
               {unreadCount}
-            </span>
-          )}
+            </span> */}
+          {/* )} */}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[400px] p-0">
@@ -58,12 +97,20 @@ export function NotificationBell() {
               <X className="h-6 w-6" />
             </Button>
           </div>
-          {notifications.length === 0 ? (
+          {isLoading ? (
+            <div className="p-4 text-center text-gray-500">
+              알림을 불러오는 중...
+            </div>
+          ) : isError ? (
+            <div className="p-4 text-center text-red-500">
+              알림을 불러오는데 실패했습니다.
+            </div>
+          ) : notifications?.length === 0 ? (
             <div className="p-4 text-center text-gray-500">
               새로운 알림이 없습니다
             </div>
           ) : (
-            notifications.map((notification) => (
+            notifications?.map((notification: INotification) => (
               <div
                 key={notification.id}
                 className={`flex h-[80px] cursor-pointer items-center gap-4 border-b p-4 hover:bg-hoverGray ${
@@ -72,13 +119,20 @@ export function NotificationBell() {
                 onClick={() => handleNotificationClick(notification)}
               >
                 <div>
-                  {/* <UnreadCommentAlarmIcon />
-                   */}
-                  {/* <ReadCommentAlarmIcon /> */}
-                  <CheckedIcon color="#1EE494" />
+                  {messageMap[notification.type].iconPath && (
+                    <div>
+                      {createElement(messageMap[notification.type].iconPath!, {
+                        className: 'h-8 w-8',
+                        color: notification.isRead ? '#808080' : '#1EE494',
+                      })}
+                    </div>
+                  )}
                 </div>
                 <div>
-                  <p className="text-sm">{notification.message}</p>
+                  <p className="text-sm">
+                    {messageMap[notification.type]?.comment ||
+                      '알 수 없는 알림입니다.'}
+                  </p>
                   <p className="mt-1 text-xs text-gray-500">
                     {new Date(notification.createdAt).toLocaleString()}
                   </p>

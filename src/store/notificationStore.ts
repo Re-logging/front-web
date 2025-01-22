@@ -5,6 +5,7 @@ import { INotification } from '@/types/INotification'
 interface NotificationStore {
   notifications: INotification[] // 알림 목록
   unreadCount: number // 읽지 않은 알림 개수
+  setNotifications: (notifications: INotification[]) => void // 알림 설정
   addNotification: (notification: INotification) => void // 알림 추가
   markAsRead: (id: string) => void // 알림 읽음 처리
   clearAll: () => void // 모든 알림 삭제
@@ -67,6 +68,12 @@ const dummyNotifications: any[] = [
 export const useNotificationStore = create<NotificationStore>((set) => ({
   notifications: dummyNotifications,
   unreadCount: dummyNotifications.filter((n) => !n.isRead).length,
+  // 알림 설정
+  setNotifications: (notifications: INotification[]) =>
+    set(() => ({
+      notifications,
+      unreadCount: notifications.filter((n) => !n.isRead).length,
+    })),
   // 알림 추가
   addNotification: (notification) =>
     set((state) => ({
