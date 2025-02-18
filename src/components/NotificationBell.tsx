@@ -13,11 +13,12 @@ import {
 import { useRouter } from 'next/navigation'
 import { IMessageMapType, INotification } from '@/types/INotification'
 import { Button } from '@/components/ui/button'
-import UnreadCommentAlarmIcon from '@/assets/icon_readComment.svg'
+import UnreadCommentAlarmIcon from '@/assets/icon_unreadComment.svg'
 // import ReadCommentAlarmIcon from '@/assets/icon_readComment.svg'
 // import CheckedIcon from '@/assets/icon_checked.svg'
 import { useQuery } from '@tanstack/react-query'
 // import Image from 'next/image'
+import dayjs from 'dayjs'
 
 export const fetchNotifications = async (): Promise<INotification[]> => {
   const response = await fetch('/api/notification')
@@ -65,7 +66,7 @@ export function NotificationBell() {
     },
     REPLY: {
       comment: '댓글에 답글이 달렸습니다.',
-      iconPath: undefined,
+      iconPath: UnreadCommentAlarmIcon,
     },
   }
 
@@ -84,7 +85,7 @@ export function NotificationBell() {
           {/* )} */}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[400px] p-0">
+      <PopoverContent className="mt-4 w-[400px] border border-gray-200 p-0 shadow-lg animate-in fade-in-50 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2">
         <div className="max-h-[400px] overflow-y-auto">
           <div className="flex items-center justify-between border-b p-4">
             <span className="text-lg font-semibold">알림</span>
@@ -113,9 +114,7 @@ export function NotificationBell() {
             notifications?.map((notification: INotification) => (
               <div
                 key={notification.id}
-                className={`flex h-[80px] cursor-pointer items-center gap-4 border-b p-4 hover:bg-hoverGray ${
-                  !notification.isRead ? 'bg-blue-50' : ''
-                }`}
+                className={`flex h-[80px] cursor-pointer items-center gap-4 border-b p-5 hover:bg-hoverGray ${!notification.isRead}`}
                 onClick={() => handleNotificationClick(notification)}
               >
                 <div>
@@ -133,8 +132,8 @@ export function NotificationBell() {
                     {messageMap[notification.type]?.comment ||
                       '알 수 없는 알림입니다.'}
                   </p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    {new Date(notification.createdAt).toLocaleString()}
+                  <p className="mt-1 text-xs text-textLight">
+                    {dayjs(notification.createdAt).format('YYYY-MM-DD HH:mm')}
                   </p>
                 </div>
               </div>
