@@ -5,7 +5,7 @@ export type IIconComponent = {
 export type IMessageMapType = {
   [key in INotificationTypes]: {
     comment: string
-    iconPath: React.ComponentType<React.SVGProps<SVGSVGElement>> | undefined
+    iconPath: any
   }
 }
 export type INotificationTypes = 'COMMENT' | 'REPLY'
