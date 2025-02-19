@@ -2,7 +2,7 @@
 'use client'
 
 import { createElement, useState } from 'react'
-import { useNotificationStore } from '@/store/notificationStore'
+// import { useNotificationStore } from '@/store/notificationStore'
 import { useNotificationSSE } from '@/hooks/useNotificationSSE'
 import { Bell, X } from 'lucide-react'
 import {
@@ -31,7 +31,7 @@ export const fetchNotifications = async (): Promise<INotification[]> => {
 export function NotificationBell() {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
-  const { markAsRead } = useNotificationStore()
+  // const { markAsRead } = useNotificationStore()
 
   // useQuery에 제네릭 타입 지정
   const {
@@ -52,7 +52,7 @@ export function NotificationBell() {
   useNotificationSSE()
 
   const handleNotificationClick = (notification: INotification) => {
-    markAsRead(notification.id)
+    // markAsRead(notification.id)
     if (notification.targetUrl) {
       router.push(notification.targetUrl)
     }

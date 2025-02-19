@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { EventSourcePolyfill } from 'event-source-polyfill'
-import { useNotificationStore } from '@/store/notificationStore'
+// import { useNotificationStore } from '@/store/notificationStore'
 
 export const useNotificationSSE = () => {
-  const { addNotification } = useNotificationStore()
+  // const { addNotification } = useNotificationStore()
   const [status, setStatus] = useState<
     'connecting' | 'connected' | 'disconnected'
   >('disconnected')
@@ -29,10 +29,10 @@ export const useNotificationSSE = () => {
           console.log('SSE 연결 성공')
         }
 
-        eventSource.onmessage = (event) => {
+        eventSource.onmessage = () => {
           try {
-            const notification = JSON.parse(event.data)
-            addNotification(notification)
+            // const notification = JSON.parse(event.data)
+            // addNotification(notification)
           } catch (error) {
             console.error('알림 파싱 실패:', error)
           }
@@ -60,7 +60,7 @@ export const useNotificationSSE = () => {
         setStatus('disconnected')
       }
     }
-  }, [addNotification])
+  }, [])
 
   return status
 }
