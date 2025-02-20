@@ -1,11 +1,8 @@
-name: git push into production
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
-
-permissions:
-  contents: write
+    branches: [main, develop]
 
 jobs:
   build-and-deploy:
@@ -16,7 +13,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
 
@@ -32,16 +29,30 @@ jobs:
           chmod +x ./build.sh
           ./build.sh
 
-      - name: Pushes to another repository
-        if: success()
+      # main 브랜치일 때 실행
+      - name: Pushes to production repository
+        if: github.ref == 'refs/heads/main'
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }} # 이름 변경
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'output'
           destination-github-username: asroq1
           destination-repository-name: vercel-relogging-web
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
-          commit-message: 'Update from source repository - ${{ github.sha }}'
+          commit-message: '[PROD] Update from source repository - ${{ github.sha }}'
           target-branch: main
-          github-server: 'github.com'
+
+      # develop 브랜치일 때 실행
+      - name: Pushes to test repository
+        if: github.ref == 'refs/heads/develop'
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'output'
+          destination-github-username: asroq1
+          destination-repository-name: vercel-relogging-test
+          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+          commit-message: '[TEST] Update from source repository - ${{ github.sha }}'
+          target-branch: main
