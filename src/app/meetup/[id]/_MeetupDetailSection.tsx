@@ -2,21 +2,22 @@
 
 import dayjs from 'dayjs'
 import HomeButton from '@/components/HomeButton'
-import { MapPin } from 'lucide-react'
+import { EllipsisVertical, MapPin, Pencil, Share2, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import CommentSection from '@/components/comment/CommentSection'
 import LabeledContent from '@/components/LabeledContent'
 import { ErrorAlert } from '@/components/status/ErrorAlert'
 import { LoadingSkeleton } from '@/components/status/LoadingSkeleton'
 import { useMeetupQueries } from '@/hooks/useMeetupList'
-import { useParams, usePathname } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
 export const MeetupDetailSection = () => {
   const pageSize = 5 // 페이지 당 아이템 수
   const params = useParams()
   const path = usePathname()
   const meetupId = path.split('/').pop() || ''
-
+  const router = useRouter()
   const {
     // 이벤트 디테일
     meetupDetail,
@@ -54,6 +55,20 @@ export const MeetupDetailSection = () => {
   //   )
   // }
 
+  const deleteMeetup = async () => {
+    console.log('deleteMeetup')
+    const response = await fetch(`/api/ploggingMeetups/${meetupId}`, {
+      method: 'DELETE',
+    })
+    console.log(response)
+    if (response.status === 200) {
+      alert('모임이 삭제되었습니다.')
+      router.push('/?tab=meetup')
+    } else {
+      alert('모임 삭제에 실패했습니다.')
+    }
+  }
+
   if (meetupDetailiIsLoading) {
     return (
       <section className="flex flex-col gap-10 md:col-span-6 laptop:flex-[8]">
@@ -90,10 +105,45 @@ export const MeetupDetailSection = () => {
               <MapPin className="h-4 w-4" />
               <span className="text-sm">{meetupDetail?.location}</span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
               <p className="text-sm text-textLight">
                 조회수 {meetupDetail?.hits}
               </p>
+
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <button onClick={() => console.log('hi')}>
+                    <EllipsisVertical className="h-6 w-6 text-textLight" />
+                  </button>
+                </DropdownMenu.Trigger>
+
+                <DropdownMenu.Portal>
+                  <DropdownMenu.Content className="flex min-w-[auto] flex-col gap-1 rounded-xl bg-white p-2 shadow-md">
+                    <DropdownMenu.Item className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm text-slate-400 outline-none hover:bg-gray-100 focus:bg-gray-100">
+                      <Pencil className="h-6 w-6 text-textLight" />
+                      수정하기
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm text-slate-400 outline-none hover:bg-gray-100 focus:bg-gray-100">
+                      <Share2 className="h-6 w-6 text-textLight" />
+                      공유하기
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item
+                      className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm text-slate-400 outline-none hover:bg-gray-100 focus:bg-gray-100"
+                      onClick={() => deleteMeetup()}
+                    >
+                      <Trash2 className="h-6 w-6 text-textLight" />
+                      삭제하기
+                    </DropdownMenu.Item>
+
+                    <DropdownMenu.Sub>
+                      <DropdownMenu.SubTrigger />
+                      <DropdownMenu.Portal>
+                        <DropdownMenu.SubContent />
+                      </DropdownMenu.Portal>
+                    </DropdownMenu.Sub>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+              </DropdownMenu.Root>
             </div>
           </div>
         </header>
